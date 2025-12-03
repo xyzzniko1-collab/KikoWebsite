@@ -15,7 +15,7 @@ payment: {
   dana: "0", // Payment Dana
   gopay: "082211029198", // Payment Gopay 
   ovo: "0", // Payment Ovo 
-  qris: "https://linkqr.kamu.mom" // Url Qris
+  qris: "https://gopay.co.id/app/scanqr?deeplink_source=request_money" // Url Qris
 },
 telegram_api: {
   bot: "62828278:7678blablabla", // Token bot father
