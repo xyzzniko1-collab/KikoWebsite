@@ -1,0 +1,20 @@
+{
+  "name": "my-website",
+  "version": "1.0.0",
+  "description": "Personal website with contact form - Created by KikoEnkTau",
+  "main": "index.html",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx serve . --listen 3000"
+  },
+  "keywords": [
+    "website",
+    "portfolio",
+    "vercel",
+    "KikoEnkTau"
+  ],
+  "author": "KikoEnkTau",
+  "license": "MIT",
+  "devDependencies": {},
+  "dependencies": {}
+}
