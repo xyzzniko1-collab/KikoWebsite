@@ -25,10 +25,10 @@ telegram_api: {
 
 // Produk
 const productsData = {
-            "SAMP GTA R1": [
+            "SAMP": [
               {
                 "id": 1,
-                "name": "Panel Pterodactyl",
+                "name": "SAMP GTA R1",
                 "icon": "fas fa-server",
                 "description": "GTA RP TERBAIK",
                 "variants": [
