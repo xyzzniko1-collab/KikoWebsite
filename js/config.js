@@ -81,63 +81,55 @@ const productsData = {
                 ]
               }
             ],
-            "Desain": [
+            "ROBLOX": [
                 {
                     id: 6,
-                    name: "Desain Logo",
+                    name: "ROBLOX SCRIPT",
                     icon: "fas fa-pen-nib",
-                    description: "Jasa pembuatan logo dengan berbagai gaya desain. Cocok untuk brand, usaha, atau komunitas.",
+                    description: "Roblox script developer.",
                     variants: [
-                        { name: "ComingSoon", price: 0 },
-                        { name: "ComingSoon", price: 0 },
-                        { name: "ComingSoon", price: 0 },
-                        { name: "ComingSoon", price: 0 },
-                        { name: "ComingSoon", price: 0 },
-                        { name: "ComingSoon", price: "0" }
+                        { name: "VIP SYSTEM", price: 100 },
+                        { name: "MUSIC SYSTEM", price: 150 },
+                        { name: "AC SYSTEM", price: 100 },
+                        { name: "AC+ADMNPANEL", price: 150 },
+                        { name: "DANCE SYSTEM", price: 150 },
+                        { name: "SETTINGS GRAPHIC SYSTEM", price: "200" }
                     ]
                 },
                 {
                     id: 7,
-                    name: "Desain Banner",
+                    name: "JASA MAP",
                     icon: "fas fa-image",
-                    description: "Jasa pembuatan banner untuk promosi usaha, media sosial, atau event.",
+                    description: "Jasa pembuatan map roblox beserta script script nyaa.",
                     variants: [
-                        { name: "ComingSoon", price: 0 },
-                        { name: "ComingSoon", price: 0 },
-                        { name: "ComingSoon", price: 0 }
+                        { name: "HANGOUT", price: 500 },
+                        { name: "MOUNT/GUNUNG", price: 400 },
+                        { name: "MAP CLUB", price: 550 }
+                        { name: "BUILD", price: 300 }
                     ]
                 },
                 {
                     id: 8,
-                    name: "Desain Poster",
+                    name: "JASA SCRIPT",
                     icon: "fas fa-scroll",
-                    description: "Jasa desain poster kreatif untuk kebutuhan bisnis, acara, atau publikasi.",
+                    description: "Jasa pembuatan script/system harga tergantung low/medium/high.",
                     variants: [
-                        { name: "ComingSoon", price: 0 },
-                        { name: "ComingSoon", price: 0 }
+                        { name: "LOW", price: 50 },
+                        { name: "MEDIUM", price: 100 }
+                        { name: "HIGH", price: 150 }
                     ]
                 },
                 {
                     id: 9,
-                    name: "UI/UX Design",
+                    name: "MAP ROBLOX",
                     icon: "fas fa-laptop-code",
-                    description: "Jasa desain UI/UX untuk website atau aplikasi dengan tampilan modern dan user-friendly.",
+                    description: "Map roblox yang udah jadi/terima beres.",
                     variants: [
-                        { name: "ComingSoon", price: 0 },
-                        { name: "ComingSoon", price: 0 },
-                        { name: "ComingSoon", price: 0 }
+                        { name: "HANGOUT", price: 400 },
+                        { name: "MOUNT/GUNUNG", price: 400 },
+                        { name: "CLUB", price: 500 }
                     ]
                 },
-                {
-                    id: 10,
-                    name: "Desain Kartu Nama",
-                    icon: "fas fa-id-card",
-                    description: "Jasa desain kartu nama profesional untuk bisnis atau personal branding.",
-                    variants: [
-                        { name: "ComingSoon", price: 0 },
-                        { name: "ComingSoon", price: 0 }
-                    ]
-                }
             ],
             "Produk Digital": [
                 {
