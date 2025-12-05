@@ -12,10 +12,55 @@
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'Inter', 'Segoe UI', sans-serif;
+            background: #0a0e27;
             min-height: 100vh;
             color: white;
+            overflow-x: hidden;
+        }
+
+        /* Animated Background */
+        .bg-animation {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #0a0e27, #1a1f3a, #2d1b69);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .particle {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.5);
+            border-radius: 50%;
+            animation: float 20s infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) translateX(0); opacity: 0; }
+            10% { opacity: 1; }
+            90% { opacity: 1; }
+            100% { transform: translateY(-100vh) translateX(100px); opacity: 0; }
         }
 
         .container {
@@ -26,12 +71,14 @@
 
         /* Navigation */
         .navbar {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            padding: 15px 0;
+            background: rgba(15, 20, 45, 0.8);
+            backdrop-filter: blur(20px);
+            padding: 20px 0;
             position: sticky;
             top: 0;
             z-index: 100;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
         }
 
         .navbar .container {
@@ -43,6 +90,10 @@
         .logo {
             font-size: 1.5rem;
             font-weight: bold;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
 
         .nav-links {
@@ -53,34 +104,98 @@
         .nav-links a {
             color: white;
             text-decoration: none;
-            padding: 8px 16px;
-            border-radius: 8px;
-            transition: all 0.3s;
+            padding: 10px 20px;
+            border-radius: 12px;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            font-weight: 500;
+        }
+
+        .nav-links a::before {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            width: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            transition: all 0.4s;
+            transform: translateX(-50%);
+        }
+
+        .nav-links a:hover::before,
+        .nav-links a.active::before {
+            width: 80%;
         }
 
         .nav-links a:hover,
         .nav-links a.active {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(102, 126, 234, 0.2);
+            transform: translateY(-2px);
         }
 
         /* Hero Section */
         .hero {
             text-align: center;
-            padding: 80px 20px;
+            padding: 100px 20px;
+            position: relative;
+        }
+
+        .profile-container {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 40px;
         }
 
         .profile-img {
-            width: 150px;
-            height: 150px;
+            width: 180px;
+            height: 180px;
             border-radius: 50%;
-            border: 5px solid white;
-            margin-bottom: 30px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            border: 4px solid rgba(102, 126, 234, 0.5);
+            box-shadow: 0 0 50px rgba(102, 126, 234, 0.4),
+                        0 20px 40px rgba(0, 0, 0, 0.3);
+            animation: profileFloat 3s ease-in-out infinite;
+            object-fit: cover;
+        }
+
+        @keyframes profileFloat {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        .profile-ring {
+            position: absolute;
+            top: -10px;
+            left: -10px;
+            right: -10px;
+            bottom: -10px;
+            border: 2px solid transparent;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #667eea, #764ba2, #f093fb, #667eea);
+            background-size: 300% 300%;
+            animation: rotateRing 4s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes rotateRing {
+            0% { transform: rotate(0deg); background-position: 0% 50%; }
+            100% { transform: rotate(360deg); background-position: 100% 50%; }
         }
 
         .hero h1 {
-            font-size: 3rem;
-            margin-bottom: 15px;
+            font-size: 3.5rem;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 50%, #f093fb 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            animation: textGlow 3s ease-in-out infinite;
+            font-weight: 800;
+        }
+
+        @keyframes textGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.3); }
         }
 
         .subtitle {
@@ -97,19 +212,160 @@
 
         .cta-btn {
             display: inline-block;
-            padding: 15px 35px;
-            background: white;
-            color: #667eea;
+            padding: 16px 40px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
             text-decoration: none;
             border-radius: 50px;
-            font-weight: bold;
-            transition: all 0.3s;
-            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            font-weight: 600;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cta-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .cta-btn:hover::before {
+            left: 100%;
         }
 
         .cta-btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
+        }
+
+        /* Music Player */
+        .music-player {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background: rgba(15, 20, 45, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            min-width: 280px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .music-header {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 15px;
+        }
+
+        .music-icon {
+            font-size: 1.5rem;
+            animation: musicPulse 2s ease-in-out infinite;
+        }
+
+        @keyframes musicPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.2); }
+        }
+
+        .music-title {
+            font-weight: 600;
+            font-size: 0.95rem;
+        }
+
+        .music-controls {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .play-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .play-btn:hover {
+            transform: scale(1.1);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        .volume-control {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .volume-icon {
+            font-size: 1.2rem;
+        }
+
+        .volume-slider {
+            flex: 1;
+            height: 6px;
+            border-radius: 3px;
+            background: rgba(255, 255, 255, 0.2);
+            outline: none;
+            -webkit-appearance: none;
+        }
+
+        .volume-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            box-shadow: 0 2px 10px rgba(102, 126, 234, 0.5);
+        }
+
+        .volume-slider::-moz-range-thumb {
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            cursor: pointer;
+            border: none;
+        }
+
+        .volume-value {
+            font-size: 0.85rem;
+            opacity: 0.8;
+            min-width: 35px;
+        }
+
+        .music-url-input {
+            width: 100%;
+            padding: 10px;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 10px;
+            color: white;
+            font-size: 0.85rem;
+            margin-top: 10px;
+        }
+
+        .music-url-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
         }
 
         /* Discord Menu Modal */
@@ -120,7 +376,8 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0, 0, 0, 0.7);
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(10px);
             z-index: 1000;
             justify-content: center;
             align-items: center;
@@ -131,14 +388,16 @@
         }
 
         .discord-menu {
-            background: linear-gradient(135deg, #7289da 0%, #5865f2 100%);
-            border-radius: 20px;
-            padding: 40px;
-            max-width: 500px;
+            background: rgba(15, 20, 45, 0.95);
+            backdrop-filter: blur(20px);
+            border-radius: 25px;
+            padding: 45px;
+            max-width: 550px;
             width: 90%;
-            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 25px 70px rgba(0, 0, 0, 0.6);
             position: relative;
-            animation: slideIn 0.3s ease-out;
+            animation: slideIn 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         @keyframes slideIn {
@@ -184,18 +443,21 @@
             display: flex;
             align-items: center;
             gap: 15px;
-            padding: 18px 25px;
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 15px;
+            padding: 20px;
+            background: rgba(102, 126, 234, 0.15);
+            border-radius: 18px;
             text-decoration: none;
             color: white;
-            transition: all 0.3s;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
             backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         .discord-link:hover {
-            background: rgba(255, 255, 255, 0.25);
-            transform: translateX(10px);
+            background: rgba(102, 126, 234, 0.3);
+            transform: translateX(15px) scale(1.02);
+            box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+            border-color: rgba(102, 126, 234, 0.5);
         }
 
         .discord-icon {
@@ -223,15 +485,22 @@
 
         /* Footer */
         footer {
-            background: rgba(0, 0, 0, 0.2);
-            padding: 30px 0;
+            background: rgba(15, 20, 45, 0.8);
+            backdrop-filter: blur(20px);
+            padding: 35px 0;
             text-align: center;
-            margin-top: 80px;
+            margin-top: 100px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
         }
 
         footer a {
-            color: white;
+            color: #667eea;
             text-decoration: underline;
+            transition: color 0.3s;
+        }
+
+        footer a:hover {
+            color: #764ba2;
         }
 
         footer p {
@@ -240,28 +509,54 @@
 
         @media (max-width: 768px) {
             .hero h1 {
-                font-size: 2rem;
+                font-size: 2.2rem;
             }
 
             .nav-links {
-                gap: 15px;
+                gap: 12px;
+            }
+
+            .nav-links a {
+                padding: 8px 15px;
+                font-size: 0.9rem;
             }
 
             .discord-menu {
                 padding: 30px 20px;
             }
+
+            .music-player {
+                bottom: 20px;
+                right: 20px;
+                left: 20px;
+                min-width: auto;
+            }
+
+            .profile-img {
+                width: 140px;
+                height: 140px;
+            }
+
+            .cta-btn {
+                padding: 14px 30px;
+                font-size: 0.9rem;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Animated Background -->
+    <div class="bg-animation"></div>
+    <div class="particles" id="particles"></div>
+
     <!-- Navigation -->
     <nav class="navbar">
         <div class="container">
             <div class="logo">🚀 KikoWebsite</div>
             <div class="nav-links">
-                <a href="index.html" class="active">Home</a>
-                <a href="store.html">Store</a>
-                <a href="contact.html">Contact</a>
+                <a href="#" class="active">Home</a>
+                <a href="#store">Store</a>
+                <a href="#contact">Contact</a>
             </div>
         </div>
     </nav>
@@ -269,21 +564,42 @@
     <!-- Hero Section -->
     <section class="hero">
         <div class="container">
-            <img src="https://via.placeholder.com/150" alt="Profile" class="profile-img" id="profileImg">
+            <div class="profile-container">
+                <div class="profile-ring"></div>
+                <img src="https://i.pinimg.com/originals/8d/3c/6d/8d3c6d6b3f4e3e1e9e1e3e1e3e1e3e1e.gif" alt="Profile" class="profile-img" id="profileImg">
+            </div>
             <h1>Welcome to KikoWebsite</h1>
             <p class="subtitle">Web store/dashboard Kiko</p>
             <p class="description">
               Halo saya kiko
             </p>
             <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                <a href="store.html" class="cta-btn">🛒 Store</a>
-                <button onclick="openDiscordMenu()" class="cta-btn" style="background: #5865f2; color: white; border: none; cursor: pointer;">
+                <a href="#store" class="cta-btn">🛒 Store</a>
+                <button onclick="openDiscordMenu()" class="cta-btn" style="background: linear-gradient(135deg, #5865f2 0%, #4752c4 100%); border: none; cursor: pointer;">
                     💬 Discord Links
                 </button>
-                <a href="contact.html" class="cta-btn" style="background: white; color: #667eea; border: 2px solid white;">📬 Contact Me</a>
+                <a href="#contact" class="cta-btn" style="background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);">📬 Contact Me</a>
             </div>
         </div>
     </section>
+
+    <!-- Music Player -->
+    <div class="music-player">
+        <div class="music-header">
+            <span class="music-icon">🎵</span>
+            <span class="music-title">Background Music</span>
+        </div>
+        <div class="music-controls">
+            <button class="play-btn" id="playBtn" onclick="toggleMusic()">▶️</button>
+            <div class="volume-control">
+                <span class="volume-icon">🔊</span>
+                <input type="range" class="volume-slider" id="volumeSlider" min="0" max="100" value="50">
+                <span class="volume-value" id="volumeValue">50%</span>
+            </div>
+        </div>
+        <input type="text" class="music-url-input" id="musicUrl" placeholder="Paste music URL here..." value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
+        <audio id="bgMusic" loop></audio>
+    </div>
 
     <!-- Discord Menu Modal -->
     <div class="discord-menu-overlay" id="discordMenuOverlay" onclick="closeDiscordMenu(event)">
@@ -339,6 +655,69 @@
     </footer>
 
     <script>
+        // Create floating particles
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 20 + 's';
+                particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+        createParticles();
+
+        // Music Player Functions
+        const bgMusic = document.getElementById('bgMusic');
+        const playBtn = document.getElementById('playBtn');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const volumeValue = document.getElementById('volumeValue');
+        const musicUrl = document.getElementById('musicUrl');
+
+        let isPlaying = false;
+
+        function toggleMusic() {
+            if (!bgMusic.src || bgMusic.src !== musicUrl.value) {
+                bgMusic.src = musicUrl.value;
+            }
+
+            if (isPlaying) {
+                bgMusic.pause();
+                playBtn.innerHTML = '▶️';
+                isPlaying = false;
+            } else {
+                bgMusic.play().catch(e => {
+                    alert('Error playing music. Please check the URL or try a different audio file.');
+                    console.error('Music play error:', e);
+                });
+                playBtn.innerHTML = '⏸️';
+                isPlaying = true;
+            }
+        }
+
+        // Volume Control
+        volumeSlider.addEventListener('input', function() {
+            const volume = this.value / 100;
+            bgMusic.volume = volume;
+            volumeValue.textContent = this.value + '%';
+        });
+
+        // Set initial volume
+        bgMusic.volume = 0.5;
+
+        // Update music source when URL changes
+        musicUrl.addEventListener('change', function() {
+            if (isPlaying) {
+                bgMusic.pause();
+                isPlaying = false;
+                playBtn.innerHTML = '▶️';
+            }
+            bgMusic.src = this.value;
+        });
+
+        // Discord Menu Functions
         function openDiscordMenu() {
             document.getElementById('discordMenuOverlay').classList.add('active');
         }
@@ -355,6 +734,17 @@
                 closeDiscordMenu();
             }
         });
+
+        // Allow user to set custom GIF URL
+        const profileImg = document.getElementById('profileImg');
+        
+        // CARA GANTI GIF PROFILE:
+        // Ganti URL di line 664 (src="...") dengan link GIF pilihan kamu
+        // Contoh link GIF yang bisa dipakai:
+        // - https://i.giphy.com/media/... (dari Giphy)
+        // - https://media.tenor.com/... (dari Tenor)
+        // - https://i.imgur.com/... (dari Imgur)
+        // - Link GIF apa saja yang valid
     </script>
 </body>
 </html>
