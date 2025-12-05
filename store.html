@@ -632,4 +632,305 @@
             
             <div class="payment-methods">
                 <div class="payment-options" id="paymentOptions">
-                    <!-- Payment opt
+                    <!-- Payment options will be loaded here -->
+                </div>
+            </div>
+
+            <div class="payment-details" id="paymentDetails">
+                <h3 id="selectedMethod">Metode Pembayaran</h3>
+                <div class="payment-number" id="paymentNumber"></div>
+                <p>Total Pembayaran: <strong id="paymentAmount">Rp 0</strong></p>
+                <button class="copy-btn" onclick="copyPaymentNumber()">
+                    <i class="fas fa-copy"></i> Salin Nomor
+                </button>
+            </div>
+
+            <button class="continue-btn" id="continueBtn" disabled onclick="continueToWhatsApp()">
+                <i class="fab fa-whatsapp"></i> Lanjutkan ke WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>Made with ❤️ by <a href="https://github.com/KikoEnkTau" target="_blank">KikoEnkTau</a></p>
+            <p>&copy; 2024 All Rights Reserved</p>
+        </div>
+    </footer>
+
+    <script src="js/config.js"></script>
+    <script>
+        let selectedProduct = null;
+        let selectedVariant = 0;
+        let cart = [];
+        let selectedPayment = null;
+
+        // Initialize store
+        function initStore() {
+            renderProducts();
+            updateCartBadge();
+            loadPaymentMethods();
+        }
+
+        // Render products
+        function renderProducts() {
+            const container = document.getElementById('productsContainer');
+            let html = '';
+
+            for (const category in productsData) {
+                html += `
+                    <div class="product-category">
+                        <h2 class="category-title">${category}</h2>
+                        <div class="products-grid">
+                            ${productsData[category].map(product => `
+                                <div class="product-card" onclick="openProductModal(${product.id})">
+                                    <div class="product-icon">
+                                        <i class="${product.icon}"></i>
+                                    </div>
+                                    <h3 class="product-name">${product.name}</h3>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            container.innerHTML = html;
+        }
+
+        // Open product modal
+        function openProductModal(productId) {
+            // Find product
+            for (const category in productsData) {
+                const product = productsData[category].find(p => p.id === productId);
+                if (product) {
+                    selectedProduct = product;
+                    break;
+                }
+            }
+
+            if (!selectedProduct) return;
+
+            // Update modal
+            document.getElementById('modalIcon').innerHTML = `<i class="${selectedProduct.icon}"></i>`;
+            document.getElementById('modalName').textContent = selectedProduct.name;
+            document.getElementById('modalPrice').textContent = `Rp ${selectedProduct.variants[0].price.toLocaleString('id-ID')}`;
+            document.getElementById('modalDescription').textContent = selectedProduct.description;
+
+            // Render variants
+            const variantsHtml = selectedProduct.variants.map((variant, index) => `
+                <div class="variant-option ${index === 0 ? 'selected' : ''}" onclick="selectVariant(${index})">
+                    <span class="variant-name">${variant.name}</span>
+                    <span class="variant-price">Rp ${variant.price.toLocaleString('id-ID')}</span>
+                </div>
+            `).join('');
+
+            document.getElementById('variantOptions').innerHTML = variantsHtml;
+            selectedVariant = 0;
+
+            document.getElementById('productModal').style.display = 'block';
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').style.display = 'none';
+        }
+
+        // Select variant
+        function selectVariant(index) {
+            selectedVariant = index;
+            document.querySelectorAll('.variant-option').forEach((el, i) => {
+                el.classList.toggle('selected', i === index);
+            });
+            document.getElementById('modalPrice').textContent = 
+                `Rp ${selectedProduct.variants[index].price.toLocaleString('id-ID')}`;
+        }
+
+        // Add to cart
+        function addToCart() {
+            if (!selectedProduct) return;
+
+            const variant = selectedProduct.variants[selectedVariant];
+            const existingIndex = cart.findIndex(item => 
+                item.productId === selectedProduct.id && item.variantName === variant.name
+            );
+
+            if (existingIndex >= 0) {
+                cart[existingIndex].quantity += 1;
+            } else {
+                cart.push({
+                    productId: selectedProduct.id,
+                    productName: selectedProduct.name,
+                    variantName: variant.name,
+                    price: variant.price,
+                    quantity: 1,
+                    icon: selectedProduct.icon
+                });
+            }
+
+            updateCartBadge();
+            closeProductModal();
+            alert('✅ Produk ditambahkan ke keranjang!');
+        }
+
+        // Update cart badge
+        function updateCartBadge() {
+            const total = cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartBadge').textContent = total;
+        }
+
+        // Open cart modal
+        function openCartModal() {
+            renderCart();
+            document.getElementById('cartModal').style.display = 'block';
+        }
+
+        function closeCartModal() {
+            document.getElementById('cartModal').style.display = 'none';
+        }
+
+        // Render cart
+        function renderCart() {
+            const container = document.getElementById('cartItems');
+            
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-cart">
+                        <i class="fas fa-shopping-cart"></i>
+                        <h3>Keranjang Kosong</h3>
+                        <p>Belum ada produk di keranjang</p>
+                    </div>
+                `;
+                return;
+            }
+
+            const html = cart.map((item, index) => `
+                <div class="cart-item">
+                    <div class="cart-item-info">
+                        <div class="cart-item-name">${item.productName}</div>
+                        <div class="cart-item-variant">${item.variantName}</div>
+                        <div class="cart-item-price">Rp ${item.price.toLocaleString('id-ID')}</div>
+                    </div>
+                    <div class="cart-item-actions">
+                        <div class="quantity-control">
+                            <button class="quantity-btn" onclick="updateQuantity(${index}, -1)">-</button>
+                            <input type="number" class="quantity-input" value="${item.quantity}" readonly>
+                            <button class="quantity-btn" onclick="updateQuantity(${index}, 1)">+</button>
+                        </div>
+                        <button class="remove-btn" onclick="removeFromCart(${index})">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+
+            container.innerHTML = html;
+            updateCartSummary();
+        }
+
+        // Update quantity
+        function updateQuantity(index, change) {
+            cart[index].quantity += change;
+            if (cart[index].quantity < 1) cart[index].quantity = 1;
+            renderCart();
+            updateCartBadge();
+        }
+
+        // Remove from cart
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            renderCart();
+            updateCartBadge();
+        }
+
+        // Update cart summary
+        function updateCartSummary() {
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            document.getElementById('subtotal').textContent = `Rp ${subtotal.toLocaleString('id-ID')}`;
+            document.getElementById('total').textContent = `Rp ${subtotal.toLocaleString('id-ID')}`;
+            document.getElementById('paymentAmount').textContent = `Rp ${subtotal.toLocaleString('id-ID')}`;
+        }
+
+        // Load payment methods
+        function loadPaymentMethods() {
+            const container = document.getElementById('paymentOptions');
+            const payments = [
+                { method: 'dana', icon: 'fas fa-wallet', name: 'DANA', number: CONFIG.payment.dana },
+                { method: 'gopay', icon: 'fas fa-money-bill-wave', name: 'GoPay', number: CONFIG.payment.gopay },
+                { method: 'ovo', icon: 'fas fa-mobile-alt', name: 'OVO', number: CONFIG.payment.ovo },
+                { method: 'qris', icon: 'fas fa-qrcode', name: 'QRIS', number: CONFIG.payment.qris }
+            ];
+
+            const html = payments.map(payment => `
+                <div class="payment-option" onclick="selectPayment('${payment.method}', '${payment.name}', '${payment.number}')">
+                    <div class="payment-icon"><i class="${payment.icon}"></i></div>
+                    <div class="payment-name">${payment.name}</div>
+                </div>
+            `).join('');
+
+            container.innerHTML = html;
+        }
+
+        // Select payment
+        function selectPayment(method, name, number) {
+            selectedPayment = { method, name, number };
+            
+            document.querySelectorAll('.payment-option').forEach(el => {
+                el.classList.remove('selected');
+            });
+            event.target.closest('.payment-option').classList.add('selected');
+
+            document.getElementById('selectedMethod').textContent = name;
+            document.getElementById('paymentNumber').textContent = number;
+            document.getElementById('paymentDetails').classList.add('active');
+            document.getElementById('continueBtn').disabled = false;
+        }
+
+        // Copy payment number
+        function copyPaymentNumber() {
+            navigator.clipboard.writeText(selectedPayment.number);
+            alert('✅ Nomor pembayaran disalin!');
+        }
+
+        // Open payment modal
+        function openPaymentModal() {
+            if (cart.length === 0) {
+                alert('Keranjang masih kosong!');
+                return;
+            }
+            updateCartSummary();
+            closeCartModal();
+            document.getElementById('paymentModal').style.display = 'block';
+        }
+
+        function closePaymentModal() {
+            document.getElementById('paymentModal').style.display = 'none';
+            document.getElementById('paymentDetails').classList.remove('active');
+            document.getElementById('continueBtn').disabled = true;
+            selectedPayment = null;
+        }
+
+        // Continue to WhatsApp
+        function continueToWhatsApp() {
+            if (!selectedPayment || cart.length === 0) return;
+
+            const orderDetails = cart.map(item => 
+                `${item.productName} (${item.variantName}) - ${item.quantity}x Rp ${item.price.toLocaleString('id-ID')}`
+            ).join('%0A');
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const message = `Halo! Saya ingin order:%0A%0A${orderDetails}%0A%0ATotal: Rp ${subtotal.toLocaleString('id-ID')}%0AMetode: ${selectedPayment.name}%0A%0ASudah transfer ke ${selectedPayment.number}`;
+
+            window.open(`https://wa.me/${CONFIG.sosial_media.whatsapp}?text=${message}`, '_blank');
+            
+            // Clear cart
+            cart = [];
+            updateCartBadge();
+            closePaymentModal();
+        }
+
+        // Initialize on load
+        document.addEventListener('DOMContentLoaded', initStore);
+    </script>
+</body>
+</html>
