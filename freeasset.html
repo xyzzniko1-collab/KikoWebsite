@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Assets Download</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        h1 {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            font-size: 2.5em;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .assets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 25px;
+        }
+
+        .asset-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+        }
+
+        .asset-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.3);
+        }
+
+        .asset-icon {
+            width: 80px;
+            height: 80px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 40px;
+            margin-bottom: 20px;
+        }
+
+        .asset-title {
+            font-size: 1.5em;
+            color: #333;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .asset-description {
+            color: #666;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .asset-info {
+            display: flex;
+            gap: 15px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .info-badge {
+            background: #f0f0f0;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 0.85em;
+            color: #555;
+        }
+
+        .download-btn {
+            width: 100%;
+            padding: 15px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 1.1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .download-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .download-btn:active {
+            transform: scale(0.98);
+        }
+
+        .delete-btn {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 35px;
+            height: 35px;
+            background: #ff4757;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+        }
+
+        .delete-btn:hover {
+            background: #ff3838;
+            transform: scale(1.1);
+        }
+
+        .add-asset-btn {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 60px;
+            height: 60px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 50%;
+            font-size: 30px;
+            cursor: pointer;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+            transition: all 0.3s;
+            z-index: 100;
+        }
+
+        .add-asset-btn:hover {
+            transform: scale(1.1);
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.7);
+            z-index: 1000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            display: flex;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90vh;
+            overflow-y: auto;
+        }
+
+        .modal-content h2 {
+            margin-bottom: 20px;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+            font-weight: 600;
+        }
+
+        .form-group input, .form-group textarea {
+            width: 100%;
+            padding: 10px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border 0.3s;
+        }
+
+        .form-group input:focus, .form-group textarea:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+
+        .file-upload {
+            border: 2px dashed #667eea;
+            padding: 20px;
+            text-align: center;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .file-upload:hover {
+            background: #f8f9ff;
+        }
+
+        .file-upload.dragover {
+            background: #f0f4ff;
+            border-color: #4a5bc6;
+        }
+
+        .file-name {
+            margin-top: 10px;
+            color: #667eea;
+            font-weight: 600;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 8px;
+            font-size: 1em;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: #e0e0e0;
+            color: #555;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: white;
+        }
+
+        .empty-state h2 {
+            font-size: 2em;
+            margin-bottom: 10px;
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 1.8em;
+            }
+            
+            .assets-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎁 Free Assets Download</h1>
+        
+        <div class="assets-grid" id="assetsGrid">
+            <div class="empty-state">
+                <h2>📦 Belum Ada Asset</h2>
+                <p>Klik tombol + untuk upload asset pertama Anda!</p>
+            </div>
+        </div>
+    </div>
+
+    <button class="add-asset-btn" onclick="openModal()">+</button>
+
+    <div class="modal" id="addModal">
+        <div class="modal-content">
+            <h2>Upload Asset Baru</h2>
+            <form id="assetForm">
+                <div class="form-group">
+                    <label>Judul Asset *</label>
+                    <input type="text" id="assetTitle" required>
+                </div>
+                <div class="form-group">
+                    <label>Deskripsi *</label>
+                    <textarea id="assetDesc" required></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Icon (Emoji)</label>
+                    <input type="text" id="assetIcon" placeholder="🎨" maxlength="2">
+                </div>
+                <div class="form-group">
+                    <label>Upload File *</label>
+                    <div class="file-upload" id="fileUpload">
+                        <input type="file" id="fileInput" style="display: none;" required>
+                        <div>📁 Klik atau drag & drop file di sini</div>
+                        <div class="file-name" id="fileName"></div>
+                    </div>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary">Upload Asset</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        let uploadedAssets = [];
+
+        // Load assets dari memory saat halaman dimuat
+        window.addEventListener('load', function() {
+            loadAssets();
+        });
+
+        function loadAssets() {
+            if (uploadedAssets.length > 0) {
+                const emptyState = document.querySelector('.empty-state');
+                if (emptyState) emptyState.remove();
+                
+                uploadedAssets.forEach(asset => {
+                    displayAsset(asset);
+                });
+            }
+        }
+
+        // File upload handling
+        const fileUpload = document.getElementById('fileUpload');
+        const fileInput = document.getElementById('fileInput');
+        const fileName = document.getElementById('fileName');
+
+        fileUpload.addEventListener('click', () => fileInput.click());
+
+        fileInput.addEventListener('change', function(e) {
+            if (this.files.length > 0) {
+                const file = this.files[0];
+                fileName.textContent = `✓ ${file.name} (${formatFileSize(file.size)})`;
+            }
+        });
+
+        // Drag and drop
+        fileUpload.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            fileUpload.classList.add('dragover');
+        });
+
+        fileUpload.addEventListener('dragleave', () => {
+            fileUpload.classList.remove('dragover');
+        });
+
+        fileUpload.addEventListener('drop', (e) => {
+            e.preventDefault();
+            fileUpload.classList.remove('dragover');
+            const file = e.dataTransfer.files[0];
+            fileInput.files = e.dataTransfer.files;
+            fileName.textContent = `✓ ${file.name} (${formatFileSize(file.size)})`;
+        });
+
+        function formatFileSize(bytes) {
+            if (bytes === 0) return '0 Bytes';
+            const k = 1024;
+            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
+            const i = Math.floor(Math.log(bytes) / Math.log(k));
+            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        }
+
+        function openModal() {
+            document.getElementById('addModal').classList.add('active');
+        }
+
+        function closeModal() {
+            document.getElementById('addModal').classList.remove('active');
+            document.getElementById('assetForm').reset();
+            fileName.textContent = '';
+        }
+
+        document.getElementById('assetForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('Silakan pilih file terlebih dahulu!');
+                return;
+            }
+
+            const title = document.getElementById('assetTitle').value;
+            const desc = document.getElementById('assetDesc').value;
+            const icon = document.getElementById('assetIcon').value || '📦';
+
+            // Buat object URL untuk file
+            const fileURL = URL.createObjectURL(file);
+            const fileType = file.name.split('.').pop().toUpperCase();
+            const fileSize = formatFileSize(file.size);
+
+            const asset = {
+                id: Date.now(),
+                title: title,
+                description: desc,
+                icon: icon,
+                fileType: fileType,
+                fileSize: fileSize,
+                fileName: file.name,
+                fileURL: fileURL
+            };
+
+            uploadedAssets.push(asset);
+
+            // Hapus empty state jika ada
+            const emptyState = document.querySelector('.empty-state');
+            if (emptyState) emptyState.remove();
+
+            displayAsset(asset);
+            closeModal();
+        });
+
+        function displayAsset(asset) {
+            const grid = document.getElementById('assetsGrid');
+            const card = document.createElement('div');
+            card.className = 'asset-card';
+            card.dataset.id = asset.id;
+            card.innerHTML = `
+                <button class="delete-btn" onclick="deleteAsset(${asset.id})">×</button>
+                <div class="asset-icon">${asset.icon}</div>
+                <h3 class="asset-title">${asset.title}</h3>
+                <p class="asset-description">${asset.description}</p>
+                <div class="asset-info">
+                    <span class="info-badge">📁 ${asset.fileType}</span>
+                    <span class="info-badge">💾 ${asset.fileSize}</span>
+                    <span class="info-badge">⭐ New</span>
+                </div>
+                <button class="download-btn" onclick="downloadAsset(${asset.id})">Download Gratis</button>
+            `;
+            grid.appendChild(card);
+        }
+
+        function downloadAsset(id) {
+            const asset = uploadedAssets.find(a => a.id === id);
+            if (asset) {
+                const a = document.createElement('a');
+                a.href = asset.fileURL;
+                a.download = asset.fileName;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+            }
+        }
+
+        function deleteAsset(id) {
+            if (confirm('Yakin ingin menghapus asset ini?')) {
+                // Hapus dari array
+                uploadedAssets = uploadedAssets.filter(a => a.id !== id);
+                
+                // Hapus card dari DOM
+                const card = document.querySelector(`[data-id="${id}"]`);
+                if (card) card.remove();
+
+                // Tampilkan empty state jika tidak ada asset
+                if (uploadedAssets.length === 0) {
+                    const grid = document.getElementById('assetsGrid');
+                    grid.innerHTML = `
+                        <div class="empty-state">
+                            <h2>📦 Belum Ada Asset</h2>
+                            <p>Klik tombol + untuk upload asset pertama Anda!</p>
+                        </div>
+                    `;
+                }
+            }
+        }
+
+        // Close modal saat klik di luar
+        document.getElementById('addModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+    </script>
+</body>
+</html>
