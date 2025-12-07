@@ -125,10 +125,14 @@
             border-radius: 50%;
             cursor: pointer;
             font-size: 18px;
-            display: flex;
+            display: none;
             align-items: center;
             justify-content: center;
             transition: all 0.3s;
+        }
+
+        .delete-btn.admin-visible {
+            display: flex;
         }
 
         .delete-btn:hover {
@@ -151,10 +155,72 @@
             box-shadow: 0 5px 20px rgba(0,0,0,0.3);
             transition: all 0.3s;
             z-index: 100;
+            display: none;
+        }
+
+        .add-asset-btn.admin-visible {
+            display: block;
         }
 
         .add-asset-btn:hover {
             transform: scale(1.1);
+        }
+
+        .admin-panel {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 200;
+        }
+
+        .admin-status {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .admin-badge {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 15px;
+            font-weight: 600;
+            font-size: 0.85em;
+        }
+
+        .logout-btn {
+            background: #ff4757;
+            color: white;
+            border: none;
+            padding: 5px 15px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.85em;
+            transition: all 0.3s;
+        }
+
+        .logout-btn:hover {
+            background: #ff3838;
+        }
+
+        .login-btn {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s;
+        }
+
+        .login-btn:hover {
+            transform: scale(1.05);
         }
 
         .modal {
@@ -293,24 +359,62 @@
             .assets-grid {
                 grid-template-columns: 1fr;
             }
+
+            .admin-panel {
+                position: static;
+                margin-bottom: 20px;
+            }
+
+            .admin-status {
+                justify-content: center;
+            }
         }
     </style>
 </head>
 <body>
+    <!-- Admin Panel -->
+    <div class="admin-panel">
+        <div class="admin-status" id="adminStatus">
+            <button class="login-btn" onclick="openLoginModal()">🔐 Admin Login</button>
+        </div>
+    </div>
+
     <div class="container">
         <h1>🎁 Free Assets Download</h1>
         
         <div class="assets-grid" id="assetsGrid">
             <div class="empty-state">
                 <h2>📦 Belum Ada Asset</h2>
-                <p>Klik tombol + untuk upload asset pertama Anda!</p>
+                <p>Asset akan muncul di sini!</p>
             </div>
         </div>
     </div>
 
-    <button class="add-asset-btn" onclick="openModal()">+</button>
+    <button class="add-asset-btn" id="addAssetBtn" onclick="openUploadModal()">+</button>
 
-    <div class="modal" id="addModal">
+    <!-- Login Modal -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <h2>🔐 Admin Login</h2>
+            <form id="loginForm">
+                <div class="form-group">
+                    <label>Username</label>
+                    <input type="text" id="username" required>
+                </div>
+                <div class="form-group">
+                    <label>Password</label>
+                    <input type="password" id="password" required>
+                </div>
+                <div class="btn-group">
+                    <button type="button" class="btn btn-secondary" onclick="closeLoginModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary">Login</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Upload Modal -->
+    <div class="modal" id="uploadModal">
         <div class="modal-content">
             <h2>Upload Asset Baru</h2>
             <form id="assetForm">
@@ -327,15 +431,19 @@
                     <input type="text" id="assetIcon" placeholder="🎨" maxlength="2">
                 </div>
                 <div class="form-group">
-                    <label>Upload File *</label>
-                    <div class="file-upload" id="fileUpload">
-                        <input type="file" id="fileInput" style="display: none;" required>
-                        <div>📁 Klik atau drag & drop file di sini</div>
-                        <div class="file-name" id="fileName"></div>
-                    </div>
+                    <label>Link Download (Google Drive, Mediafire, dll) *</label>
+                    <input type="url" id="downloadLink" placeholder="https://..." required>
+                </div>
+                <div class="form-group">
+                    <label>Tipe File *</label>
+                    <input type="text" id="fileType" placeholder="ZIP, RAR, PDF, dll" required>
+                </div>
+                <div class="form-group">
+                    <label>Ukuran File *</label>
+                    <input type="text" id="fileSize" placeholder="10 MB" required>
                 </div>
                 <div class="btn-group">
-                    <button type="button" class="btn btn-secondary" onclick="closeModal()">Batal</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeUploadModal()">Batal</button>
                     <button type="submit" class="btn btn-primary">Upload Asset</button>
                 </div>
             </form>
@@ -343,111 +451,154 @@
     </div>
 
     <script>
-        let uploadedAssets = [];
+        let isAdmin = false;
+        const ADMIN_USERNAME = 'Mabes2';
+        const ADMIN_PASSWORD = 'KikoEnakTau';
+        const STORAGE_KEY = 'freeassets_data';
 
-        // Load assets dari memory saat halaman dimuat
-        window.addEventListener('load', function() {
-            loadAssets();
+        // Load assets from storage on page load
+        window.addEventListener('load', async function() {
+            await loadAssets();
         });
 
-        function loadAssets() {
-            if (uploadedAssets.length > 0) {
-                const emptyState = document.querySelector('.empty-state');
-                if (emptyState) emptyState.remove();
+        async function loadAssets() {
+            try {
+                const result = await window.storage.get(STORAGE_KEY, true);
+                if (result && result.value) {
+                    const assets = JSON.parse(result.value);
+                    
+                    // Hapus empty state
+                    const emptyState = document.querySelector('.empty-state');
+                    if (emptyState) emptyState.remove();
+                    
+                    // Display all assets
+                    assets.forEach(asset => {
+                        displayAsset(asset);
+                    });
+                }
+            } catch (error) {
+                console.log('No assets found or error loading:', error);
+            }
+        }
+
+        async function saveAssets() {
+            try {
+                const cards = document.querySelectorAll('.asset-card');
+                const assets = [];
                 
-                uploadedAssets.forEach(asset => {
-                    displayAsset(asset);
+                cards.forEach(card => {
+                    const asset = {
+                        id: card.dataset.id,
+                        title: card.querySelector('.asset-title').textContent,
+                        description: card.querySelector('.asset-description').textContent,
+                        icon: card.querySelector('.asset-icon').textContent,
+                        fileType: card.querySelector('.info-badge').textContent.replace('📄 ', ''),
+                        fileSize: card.querySelectorAll('.info-badge')[1].textContent.replace('💾 ', ''),
+                        downloadLink: card.querySelector('.download-btn').dataset.link
+                    };
+                    assets.push(asset);
                 });
+
+                await window.storage.set(STORAGE_KEY, JSON.stringify(assets), true);
+                console.log('Assets saved successfully');
+            } catch (error) {
+                console.error('Error saving assets:', error);
             }
         }
 
-        // File upload handling
-        const fileUpload = document.getElementById('fileUpload');
-        const fileInput = document.getElementById('fileInput');
-        const fileName = document.getElementById('fileName');
-
-        fileUpload.addEventListener('click', () => fileInput.click());
-
-        fileInput.addEventListener('change', function(e) {
-            if (this.files.length > 0) {
-                const file = this.files[0];
-                fileName.textContent = `✓ ${file.name} (${formatFileSize(file.size)})`;
-            }
-        });
-
-        // Drag and drop
-        fileUpload.addEventListener('dragover', (e) => {
-            e.preventDefault();
-            fileUpload.classList.add('dragover');
-        });
-
-        fileUpload.addEventListener('dragleave', () => {
-            fileUpload.classList.remove('dragover');
-        });
-
-        fileUpload.addEventListener('drop', (e) => {
-            e.preventDefault();
-            fileUpload.classList.remove('dragover');
-            const file = e.dataTransfer.files[0];
-            fileInput.files = e.dataTransfer.files;
-            fileName.textContent = `✓ ${file.name} (${formatFileSize(file.size)})`;
-        });
-
-        function formatFileSize(bytes) {
-            if (bytes === 0) return '0 Bytes';
-            const k = 1024;
-            const sizes = ['Bytes', 'KB', 'MB', 'GB'];
-            const i = Math.floor(Math.log(bytes) / Math.log(k));
-            return Math.round(bytes / Math.pow(k, i) * 100) / 100 + ' ' + sizes[i];
+        // Login Modal Functions
+        function openLoginModal() {
+            document.getElementById('loginModal').classList.add('active');
         }
 
-        function openModal() {
-            document.getElementById('addModal').classList.add('active');
+        function closeLoginModal() {
+            document.getElementById('loginModal').classList.remove('active');
+            document.getElementById('loginForm').reset();
         }
 
-        function closeModal() {
-            document.getElementById('addModal').classList.remove('active');
-            document.getElementById('assetForm').reset();
-            fileName.textContent = '';
-        }
-
-        document.getElementById('assetForm').addEventListener('submit', function(e) {
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
             e.preventDefault();
             
-            const file = fileInput.files[0];
-            if (!file) {
-                alert('Silakan pilih file terlebih dahulu!');
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === ADMIN_USERNAME && password === ADMIN_PASSWORD) {
+                isAdmin = true;
+                updateAdminUI();
+                closeLoginModal();
+                alert('✅ Login berhasil! Sekarang Anda dapat mengelola asset.');
+            } else {
+                alert('❌ Username atau password salah!');
+            }
+        });
+
+        function logout() {
+            isAdmin = false;
+            updateAdminUI();
+        }
+
+        function updateAdminUI() {
+            const adminStatus = document.getElementById('adminStatus');
+            const addAssetBtn = document.getElementById('addAssetBtn');
+            const deleteButtons = document.querySelectorAll('.delete-btn');
+
+            if (isAdmin) {
+                adminStatus.innerHTML = `
+                    <span class="admin-badge">👑 Admin</span>
+                    <button class="logout-btn" onclick="logout()">Logout</button>
+                `;
+                addAssetBtn.classList.add('admin-visible');
+                deleteButtons.forEach(btn => btn.classList.add('admin-visible'));
+            } else {
+                adminStatus.innerHTML = `
+                    <button class="login-btn" onclick="openLoginModal()">🔐 Admin Login</button>
+                `;
+                addAssetBtn.classList.remove('admin-visible');
+                deleteButtons.forEach(btn => btn.classList.remove('admin-visible'));
+            }
+        }
+
+        // Upload Modal Functions
+        function openUploadModal() {
+            if (!isAdmin) {
+                alert('⚠️ Hanya admin yang dapat upload asset!');
                 return;
             }
+            document.getElementById('uploadModal').classList.add('active');
+        }
 
+        function closeUploadModal() {
+            document.getElementById('uploadModal').classList.remove('active');
+            document.getElementById('assetForm').reset();
+        }
+
+        document.getElementById('assetForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
             const title = document.getElementById('assetTitle').value;
             const desc = document.getElementById('assetDesc').value;
             const icon = document.getElementById('assetIcon').value || '📦';
-
-            // Buat object URL untuk file
-            const fileURL = URL.createObjectURL(file);
-            const fileType = file.name.split('.').pop().toUpperCase();
-            const fileSize = formatFileSize(file.size);
+            const downloadLink = document.getElementById('downloadLink').value;
+            const fileType = document.getElementById('fileType').value;
+            const fileSize = document.getElementById('fileSize').value;
 
             const asset = {
-                id: Date.now(),
+                id: Date.now().toString(),
                 title: title,
                 description: desc,
                 icon: icon,
                 fileType: fileType,
                 fileSize: fileSize,
-                fileName: file.name,
-                fileURL: fileURL
+                downloadLink: downloadLink
             };
-
-            uploadedAssets.push(asset);
 
             // Hapus empty state jika ada
             const emptyState = document.querySelector('.empty-state');
             if (emptyState) emptyState.remove();
 
             displayAsset(asset);
-            closeModal();
+            await saveAssets();
+            closeUploadModal();
         });
 
         function displayAsset(asset) {
@@ -456,58 +607,62 @@
             card.className = 'asset-card';
             card.dataset.id = asset.id;
             card.innerHTML = `
-                <button class="delete-btn" onclick="deleteAsset(${asset.id})">×</button>
+                <button class="delete-btn ${isAdmin ? 'admin-visible' : ''}" onclick="deleteAsset('${asset.id}')">×</button>
                 <div class="asset-icon">${asset.icon}</div>
                 <h3 class="asset-title">${asset.title}</h3>
                 <p class="asset-description">${asset.description}</p>
                 <div class="asset-info">
-                    <span class="info-badge">📁 ${asset.fileType}</span>
+                    <span class="info-badge">📄 ${asset.fileType}</span>
                     <span class="info-badge">💾 ${asset.fileSize}</span>
-                    <span class="info-badge">⭐ New</span>
+                    <span class="info-badge">⭐ Free</span>
                 </div>
-                <button class="download-btn" onclick="downloadAsset(${asset.id})">Download Gratis</button>
+                <button class="download-btn" data-link="${asset.downloadLink}" onclick="downloadAsset('${asset.downloadLink}')">Download Gratis</button>
             `;
             grid.appendChild(card);
         }
 
-        function downloadAsset(id) {
-            const asset = uploadedAssets.find(a => a.id === id);
-            if (asset) {
-                const a = document.createElement('a');
-                a.href = asset.fileURL;
-                a.download = asset.fileName;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-            }
+        function downloadAsset(link) {
+            window.open(link, '_blank');
         }
 
-        function deleteAsset(id) {
+        async function deleteAsset(id) {
+            if (!isAdmin) {
+                alert('⚠️ Hanya admin yang dapat menghapus asset!');
+                return;
+            }
+
             if (confirm('Yakin ingin menghapus asset ini?')) {
-                // Hapus dari array
-                uploadedAssets = uploadedAssets.filter(a => a.id !== id);
-                
                 // Hapus card dari DOM
                 const card = document.querySelector(`[data-id="${id}"]`);
                 if (card) card.remove();
 
+                // Save updated assets
+                await saveAssets();
+
                 // Tampilkan empty state jika tidak ada asset
-                if (uploadedAssets.length === 0) {
+                const remainingCards = document.querySelectorAll('.asset-card');
+                if (remainingCards.length === 0) {
                     const grid = document.getElementById('assetsGrid');
                     grid.innerHTML = `
                         <div class="empty-state">
                             <h2>📦 Belum Ada Asset</h2>
-                            <p>Klik tombol + untuk upload asset pertama Anda!</p>
+                            <p>Asset akan muncul di sini!</p>
                         </div>
                     `;
                 }
             }
         }
 
-        // Close modal saat klik di luar
-        document.getElementById('addModal').addEventListener('click', function(e) {
+        // Close modal when clicking outside
+        document.getElementById('loginModal').addEventListener('click', function(e) {
             if (e.target === this) {
-                closeModal();
+                closeLoginModal();
+            }
+        });
+
+        document.getElementById('uploadModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeUploadModal();
             }
         });
     </script>
