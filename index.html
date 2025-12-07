@@ -83,14 +83,6 @@
             box-shadow: 0 4px 30px rgba(0, 0, 0, 0.3);
         }
 
-        <div class="nav-links">
-                <a href="index.html" class="active">Home</a>
-                <a href="store.html">Store</a>
-                <a href="freeasset.html">Free Assets</a>
-                <a href="contact.html">Contact</a>
-                <a href="#" onclick="openSettings(); return false;">Settings</a>
-            </div>
-
         .navbar .container {
             display: flex;
             justify-content: space-between;
@@ -255,22 +247,6 @@
         .cta-btn:hover {
             transform: translateY(-5px);
             box-shadow: 0 15px 40px rgba(102, 126, 234, 0.6);
-        }
-
-        /* Music Player */
-        .music-player {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background: rgba(15, 20, 45, 0.9);
-            backdrop-filter: blur(20px);
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
-            z-index: 1000;
-            min-width: 280px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            display: none;
         }
 
         /* Discord Menu Modal */
@@ -718,13 +694,6 @@
                 padding: 30px 20px;
             }
 
-            .music-player {
-                bottom: 20px;
-                right: 20px;
-                left: 20px;
-                min-width: auto;
-            }
-
             .profile-img {
                 width: 140px;
                 height: 140px;
@@ -747,10 +716,10 @@
         <div class="container">
             <div class="logo">🚀 KikoWebsite</div>
             <div class="nav-links">
-                <a href="#" class="active">Home</a>
-                <a href="#store">Store</a>
-                <a href="#freeasset">Free Assets</a>
-                <a href="#contact">Contact</a>
+                <a href="index.html" class="active">Home</a>
+                <a href="store.html">Store</a>
+                <a href="freeasset.html">Free Assets</a>
+                <a href="contact.html">Contact</a>
                 <a href="#" onclick="openSettings(); return false;">Settings</a>
             </div>
         </div>
@@ -769,20 +738,15 @@
               Halo saya kiko
             </p>
             <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
-                <a href="#store" class="cta-btn">🛒 Store</a>
-                <a href="#freeasset" class="cta-btn" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">🎁 Free Assets</a>
+                <a href="store.html" class="cta-btn">🛒 Store</a>
+                <a href="freeasset.html" class="cta-btn" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">🎁 Free Assets</a>
                 <button onclick="openDiscordMenu()" class="cta-btn" style="background: linear-gradient(135deg, #5865f2 0%, #4752c4 100%); border: none; cursor: pointer;">
                     💬 Discord Links
                 </button>
-                <a href="#contact" class="cta-btn" style="background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);">📬 Contact Me</a>
+                <a href="contact.html" class="cta-btn" style="background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);">📬 Contact Me</a>
             </div>
         </div>
     </section>
-
-    <!-- Music Player -->
-    <div class="music-player">
-        <audio id="bgMusic" loop></audio>
-    </div>
 
     <!-- Discord Menu Modal -->
     <div class="discord-menu-overlay" id="discordMenuOverlay" onclick="closeDiscordMenu(event)">
@@ -791,7 +755,7 @@
             <h2>🎮 Discord Links</h2>
             <div class="discord-links">
                 <a href="https://discord.gg/g29UPtVzNm" target="_blank" class="discord-link">
-                    <span class="discord-icon">🏪</span>
+                    <span class="discord-icon">🪐</span>
                     <div class="discord-link-text">
                         <div class="discord-link-title">KIKO STORE</div>
                         <div class="discord-link-desc">MY STORE</div>
@@ -800,7 +764,7 @@
                 </a>
 
                 <a href="https://discord.gg/9rKxg767eU" target="_blank" class="discord-link">
-                    <span class="discord-icon">💥</span>
+                    <span class="discord-icon">👥</span>
                     <div class="discord-link-text">
                         <div class="discord-link-title">ELORAA FAMSS</div>
                         <div class="discord-link-desc">MY COMMUNITY SAMP</div>
@@ -809,7 +773,7 @@
                 </a>
 
                 <a href="https://discord.gg/8jDwzwDGzD" target="_blank" class="discord-link">
-                    <span class="discord-icon">💥</span>
+                    <span class="discord-icon">👥</span>
                     <div class="discord-link-text">
                         <div class="discord-link-title">TALIBAN</div>
                         <div class="discord-link-desc">MY COMMUNITY SAMP</div>
@@ -884,6 +848,8 @@
         </div>
     </footer>
 
+    <audio id="bgMusic" loop></audio>
+
     <script>
         // Create floating particles
         function createParticles() {
@@ -908,7 +874,7 @@
 
         let isPlaying = false;
 
-        // Load saved settings (using variables instead of localStorage for artifact compatibility)
+        // Load saved settings (using variables instead of localStorage)
         let savedTheme = 'dark';
         let savedVolume = 50;
         let savedMusicUrl = 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
@@ -1007,6 +973,3 @@
 
         // Initialize settings on load
         loadSettings();
-    </script>
-</body>
-</html>
