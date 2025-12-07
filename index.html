@@ -224,6 +224,9 @@
             box-shadow: 0 10px 30px rgba(102, 126, 234, 0.4);
             position: relative;
             overflow: hidden;
+            border: none;
+            cursor: pointer;
+            font-size: 1rem;
         }
 
         .cta-btn::before {
@@ -846,6 +849,7 @@
             <div class="nav-links">
                 <a href="index.html" class="active">Home</a>
                 <a href="store.html">Store</a>
+                <a href="freeasset.html">Free Assets</a>
                 <a href="contact.html">Contact</a>
                 <a href="#" onclick="openSettings(); return false;">Settings</a>
             </div>
@@ -866,6 +870,7 @@
             </p>
             <div style="display: flex; gap: 15px; justify-content: center; flex-wrap: wrap;">
                 <a href="store.html" class="cta-btn">🛒 Store</a>
+                <a href="freeasset.html" class="cta-btn" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">🎁 Free Assets</a>
                 <button onclick="openDiscordMenu()" class="cta-btn" style="background: linear-gradient(135deg, #5865f2 0%, #4752c4 100%); border: none; cursor: pointer;">
                     💬 Discord Links
                 </button>
@@ -903,208 +908,4 @@
                     <span class="discord-arrow">→</span>
                 </a>
 
-                <a href="https://discord.gg/8jDwzwDGzD" target="_blank" class="discord-link">
-                    <span class="discord-icon">👥</span>
-                    <div class="discord-link-text">
-                        <div class="discord-link-title">TALIBAN</div>
-                        <div class="discord-link-desc">MY COMMUNITY SAMP</div>
-                    </div>
-                    <span class="discord-arrow">→</span>
-                </a>
-
-                
-                <a href="https://discord.gg/8jDwzwDGzD" target="_blank" class="discord-link">
-                    <span class="discord-icon">🛠️</span>
-                    <div class="discord-link-text">
-                        <div class="discord-link-title">store hosting</div>
-                        <div class="discord-link-desc">dapatkan hosting terjangkau</div>
-                    </div>
-                    <span class="discord-arrow">→</span>
-                </a>
-
-
-                <a href="https://discord.com/users/1261324680636141719" target="_blank" class="discord-link">
-                    <span class="discord-icon">👤</span>
-                    <div class="discord-link-text">
-                        <div class="discord-link-title">Profil Discord</div>
-                        <div class="discord-link-desc">Lihat profil Discord saya</div>
-                    </div>
-                    <span class="discord-arrow">→</span>
-                </a>
-            </div>
-        </div>
-    </div>
-
-    <!-- Settings Modal -->
-    <div class="settings-overlay" id="settingsOverlay" onclick="closeSettings(event)">
-        <div class="settings-modal" onclick="event.stopPropagation()">
-            <button class="close-btn" onclick="closeSettings()">&times;</button>
-            <h2>⚙️ Settings</h2>
-            
-            <!-- Theme Setting -->
-            <div class="setting-section">
-                <h3>🎨 Tema</h3>
-                <div class="setting-item">
-                    <div>
-                        <div class="setting-label">Dark Mode / Light Mode</div>
-                        <div class="setting-description">Pilih tema tampilan website</div>
-                    </div>
-                    <div class="toggle-switch" id="themeToggle" onclick="toggleTheme()">
-                        <div class="toggle-slider"></div>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Music Setting -->
-            <div class="setting-section">
-                <h3>🎵 Background Music</h3>
-                <div class="music-controls-settings">
-                    <div class="music-control-row">
-                        <button class="settings-play-btn" id="settingsPlayBtn" onclick="toggleMusicSettings()">▶️</button>
-                        <div class="volume-control-settings">
-                            <span class="volume-icon-settings">🔊</span>
-                            <input type="range" class="volume-slider-settings" id="volumeSliderSettings" min="0" max="100" value="50">
-                            <span class="volume-value-settings" id="volumeValueSettings">50%</span>
-                        </div>
-                    </div>
-                    <input type="text" class="music-url-input-settings" id="musicUrlSettings" placeholder="Paste music URL here..." value="https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3">
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <p>Made with ❤️ by <a href="https://github.com/KikoEnkTau" target="_blank">KikoEnkTau</a></p>
-            <p>&copy; 2024 All Rights Reserved</p>
-        </div>
-    </footer>
-
-    <script>
-        // Create floating particles
-        function createParticles() {
-            const particlesContainer = document.getElementById('particles');
-            for (let i = 0; i < 50; i++) {
-                const particle = document.createElement('div');
-                particle.className = 'particle';
-                particle.style.left = Math.random() * 100 + '%';
-                particle.style.animationDelay = Math.random() * 20 + 's';
-                particle.style.animationDuration = (Math.random() * 10 + 15) + 's';
-                particlesContainer.appendChild(particle);
-            }
-        }
-        createParticles();
-
-        // Music Player Functions
-        const bgMusic = document.getElementById('bgMusic');
-        const settingsPlayBtn = document.getElementById('settingsPlayBtn');
-        const volumeSliderSettings = document.getElementById('volumeSliderSettings');
-        const volumeValueSettings = document.getElementById('volumeValueSettings');
-        const musicUrlSettings = document.getElementById('musicUrlSettings');
-
-        let isPlaying = false;
-
-        // Load saved settings
-        function loadSettings() {
-            // Load theme
-            const savedTheme = localStorage.getItem('theme') || 'dark';
-            if (savedTheme === 'light') {
-                document.body.classList.add('light-mode');
-                document.getElementById('themeToggle').classList.add('active');
-            }
-
-            // Load music settings
-            const savedVolume = localStorage.getItem('musicVolume') || '50';
-            const savedMusicUrl = localStorage.getItem('musicUrl') || 'https://www.soundhelix.com/examples/mp3/SoundHelix-Song-1.mp3';
-            
-            volumeSliderSettings.value = savedVolume;
-            volumeValueSettings.textContent = savedVolume + '%';
-            musicUrlSettings.value = savedMusicUrl;
-            bgMusic.volume = savedVolume / 100;
-        }
-
-        // Toggle Theme
-        function toggleTheme() {
-            document.body.classList.toggle('light-mode');
-            document.getElementById('themeToggle').classList.toggle('active');
-            
-            const theme = document.body.classList.contains('light-mode') ? 'light' : 'dark';
-            localStorage.setItem('theme', theme);
-        }
-
-        // Toggle Music in Settings
-        function toggleMusicSettings() {
-            if (!bgMusic.src || bgMusic.src !== musicUrlSettings.value) {
-                bgMusic.src = musicUrlSettings.value;
-                localStorage.setItem('musicUrl', musicUrlSettings.value);
-            }
-
-            if (isPlaying) {
-                bgMusic.pause();
-                settingsPlayBtn.innerHTML = '▶️';
-                isPlaying = false;
-            } else {
-                bgMusic.play().catch(e => {
-                    alert('Error playing music. Please check the URL or try a different audio file.');
-                    console.error('Music play error:', e);
-                });
-                settingsPlayBtn.innerHTML = '⏸️';
-                isPlaying = true;
-            }
-        }
-
-        // Volume Control in Settings
-        volumeSliderSettings.addEventListener('input', function() {
-            const volume = this.value / 100;
-            bgMusic.volume = volume;
-            volumeValueSettings.textContent = this.value + '%';
-            localStorage.setItem('musicVolume', this.value);
-        });
-
-        // Update music source when URL changes
-        musicUrlSettings.addEventListener('change', function() {
-            if (isPlaying) {
-                bgMusic.pause();
-                isPlaying = false;
-                settingsPlayBtn.innerHTML = '▶️';
-            }
-            bgMusic.src = this.value;
-            localStorage.setItem('musicUrl', this.value);
-        });
-
-        // Settings Modal Functions
-        function openSettings() {
-            document.getElementById('settingsOverlay').classList.add('active');
-        }
-
-        function closeSettings(event) {
-            if (!event || event.target.id === 'settingsOverlay') {
-                document.getElementById('settingsOverlay').classList.remove('active');
-            }
-        }
-
-        // Discord Menu Functions
-        function openDiscordMenu() {
-            document.getElementById('discordMenuOverlay').classList.add('active');
-        }
-
-        function closeDiscordMenu(event) {
-            if (!event || event.target.id === 'discordMenuOverlay') {
-                document.getElementById('discordMenuOverlay').classList.remove('active');
-            }
-        }
-
-        // Close with ESC key
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape') {
-                closeDiscordMenu();
-                closeSettings();
-            }
-        });
-
-        // Initialize settings on load
-        loadSettings();
-    </script>
-</body>
-</html>
+                <a href="https
