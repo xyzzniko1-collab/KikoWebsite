@@ -8,13 +8,13 @@ const CONFIG = {
         email: "cihe@zass.cloud",
         youtube: "Kiko",
         tiktok: "xyzz.niko",
-        whatsapp: "6282211029198",
+        whatsapp: "6285935042919",
         telegram: ""
     },
     payment: {
-        dana: "082211029198",
+        dana: "hanya pakai gopay/qris",
         gopay: "082211029198",
-        ovo: "082211029198",
+        ovo: "hanya pakai gopay/qris",
         qris: "https://gopay.co.id/app/scanqr?deeplink_source=request_money"
     },
     telegram_api: {
@@ -71,13 +71,13 @@ const productsData = {
         },
         {
             id: 5,
-            name: "Web Hosting",
+            name: "zzzz",
             icon: "fas fa-globe",
-            description: "Hosting website dengan panel cPanel / DirectAdmin, cocok untuk pemula.",
+            description: "zzzz",
             variants: [
-                { name: "Starter (1GB Storage)", price: 15000 },
-                { name: "Basic (5GB Storage)", price: 30000 },
-                { name: "Pro (10GB Storage)", price: 50000 }
+                { name: "zzzz", price: 0 },
+                { name: "zzzz", price: 0 },
+                { name: "zzzz", price: 0 }
             ]
         }
     ],
