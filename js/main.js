@@ -426,6 +426,7 @@ function ubahStatus(id, status) {
     }
 }
 
+// ========== CHAT CS — DIPERBAIKI BISA KIRIM & TERIMA ==========
 function loadChatUserList() {
     if (!isOwner() && !isAdmin()) return;
     const allKeys = Object.keys(localStorage);
@@ -466,111 +467,4 @@ function pilihUserChat(username) {
 
 function kirimBalasanOwner() {
     if (!selectedChatUser) return alert('Pilih user dulu!');
-    const input = document.getElementById('owner-chat-input');
-    const pesan = input.value.trim();
-    if (!pesan) return;
-    
-    const chatKey = 'chat_' + selectedChatUser;
-    const chatData = JSON.parse(localStorage.getItem(chatKey) || '[]');
-    chatData.push({ pengirim: 'owner', pesan, waktu: new Date().toLocaleString('id-ID') });
-    localStorage.setItem(chatKey, JSON.stringify(chatData));
-    
-    const box = document.getElementById('owner-chat-box');
-    box.innerHTML += `<div style="text-align:left;background:var(--gold);color:#000;border-radius:12px 12px 12px 4px;padding:10px 12px;margin:6px 0;max-width:85%;">${pesan}</div>`;
-    box.scrollTop = box.scrollHeight;
-    input.value = '';
-}
-
-function loadUserChat() {
-    if (!currentUser || isOwner() || isAdmin()) return;
-    const chatKey = 'chat_' + currentUser.username;
-    const chatData = JSON.parse(localStorage.getItem(chatKey) || '[]');
-    const box = document.getElementById('chat-box');
-    
-    if (chatData.length === 0) {
-        box.innerHTML = '<div class="chat-bubble system">Selamat datang di CS! Silakan tanya apa saja.</div>';
-        return;
-    }
-    
-    box.innerHTML = chatData.map(c => {
-        if (c.pengirim === currentUser.username) {
-            return `<div style="text-align:right;background:#2a2a2a;color:#fff;border-radius:12px 12px 4px 12px;padding:10px 12px;margin:6px 0;max-width:85%;margin-left:auto;">${c.pesan}</div>`;
-        } else {
-            return `<div style="text-align:left;background:var(--gold);color:#000;border-radius:12px 12px 12px 4px;padding:10px 12px;margin:6px 0;max-width:85%;">${c.pesan}</div>`;
-        }
-    }).join('');
-    box.scrollTop = box.scrollHeight;
-}
-
-function kirimChat() {
-    if (!currentUser || isOwner() || isAdmin()) return;
-    const input = document.getElementById('chat-input');
-    const pesan = input.value.trim();
-    if (!pesan) return;
-    
-    const chatKey = 'chat_' + currentUser.username;
-    const chatData = JSON.parse(localStorage.getItem(chatKey) || '[]');
-    chatData.push({ pengirim: currentUser.username, pesan, waktu: new Date().toLocaleString('id-ID') });
-    localStorage.setItem(chatKey, JSON.stringify(chatData));
-    
-    const box = document.getElementById('chat-box');
-    box.innerHTML += `<div style="text-align:right;background:#2a2a2a;color:#fff;border-radius:12px 12px 4px 12px;padding:10px 12px;margin:6px 0;max-width:85%;margin-left:auto;">${pesan}</div>`;
-    box.scrollTop = box.scrollHeight;
-    input.value = '';
-}
-
-function tambahAdmin() {
-    if (!isOwner()) return alert('Hanya owner yang bisa menambah admin!');
-    const user = document.getElementById('new-admin-user').value.trim();
-    const pass = document.getElementById('new-admin-pass').value.trim();
-    
-    if (!user || !pass) return alert('Isi username & password!');
-    if (user === CONFIG.ownerUsername) return alert('Tidak bisa pakai username owner!');
-    
-    const admins = JSON.parse(localStorage.getItem('admins') || '[]');
-    if (admins.some(a => a.username === user)) return alert('Admin sudah ada!');
-    
-    admins.push({ username: user, password: pass, tanggal: new Date().toLocaleString('id-ID') });
-    localStorage.setItem('admins', JSON.stringify(admins));
-    alert('Admin berhasil ditambahkan!');
-    document.getElementById('new-admin-user').value = '';
-    document.getElementById('new-admin-pass').value = '';
-    loadAdminList();
-}
-
-function loadAdminList() {
-    if (!isOwner()) return;
-    const admins = JSON.parse(localStorage.getItem('admins') || '[]');
-    const tbody = document.getElementById('admin-list-body');
-    
-    if (admins.length === 0) {
-        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:var(--muted);">Belum ada admin.</td></tr>';
-        return;
-    }
-    
-    tbody.innerHTML = admins.map(a => `
-        <tr>
-            <td>${a.username}</td>
-            <td>${a.tanggal}</td>
-            <td><button class="btn" style="padding:4px 10px;width:auto;background:#e74c3c;cursor:pointer;" onclick="hapusAdmin('${a.username}')">Hapus</button></td>
-        </tr>
-    `).join('');
-}
-
-function hapusAdmin(username) {
-    if (!confirm('Yakin ingin menghapus admin ini?')) return;
-    let admins = JSON.parse(localStorage.getItem('admins') || '[]');
-    admins = admins.filter(a => a.username !== username);
-    localStorage.setItem('admins', JSON.stringify(admins));
-    loadAdminList();
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    const savedUser = localStorage.getItem('currentUser');
-    if (savedUser) {
-        currentUser = JSON.parse(savedUser);
-        updateNav();
-    } else {
-        document.getElementById('auth-modal').classList.remove('hidden');
-    }
-});
+    const input = document.getElementById('owner-chat-input
