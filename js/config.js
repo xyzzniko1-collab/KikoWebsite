@@ -6,7 +6,6 @@ const CONFIG = {
     bankNumber: '901369767087',
     bankOwner: 'S Y',
 
-    // ========== NOMOR VIRTUAL — KHUSUS BELI NOMOR ==========
     nomorData: {
         '+62': {
             WhatsApp: { '1': 15000, '5': 60000, '10': 110000 },
@@ -31,7 +30,6 @@ const CONFIG = {
         }
     },
 
-    // ========== BOOSTER — KHUSUS SOSMED SAJA ==========
     hargaData: {
         Instagram: {
             Followers: { '1.000': 24000, '2.000': 49000, '5.000': 110000 },
