@@ -4,7 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIMURU — Jasa Sosmed Terpercaya</title>
+    <title>KIKO — Jasa Sosmed & Nomor Terpercaya</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -67,9 +67,9 @@
         <!-- HEADER TABS -->
         <div class="header-tabs">
             <div class="tab active" id="tab-beranda" onclick="showPage('beranda')">Beranda</div>
-            <div class="tab inactive" id="tab-nomor" onclick="showPage('nomor')">Nomor</div>
-            <div class="tab inactive" id="tab-booster" onclick="showPage('booster')">Booster</div>
-            <div class="tab inactive" id="tab-chat" onclick="showPage('chat')">Chat CS</div>
+            <div class="tab inactive" id="tab-nomor" onclick="showPage('nomor')">📱 Nomor</div>
+            <div class="tab inactive" id="tab-booster" onclick="showPage('booster')">🚀 Sosmed Booster</div>
+            <div class="tab inactive" id="tab-chat" onclick="showPage('chat')">💬 Chat CS</div>
             <div class="tab inactive hidden" id="tab-owner" onclick="showPage('owner')">Owner</div>
             <div class="tab inactive hidden" id="tab-admin" onclick="showPage('admin')">Admin</div>
         </div>
@@ -78,7 +78,7 @@
         <div id="page-beranda">
             <div class="welcome-section" style="text-align:center;padding:60px 20px;">
                 <h1 style="font-size:2.2rem;color:var(--gold);margin-bottom:15px;">Selamat Datang di SIMURU 🎉</h1>
-                <p style="font-size:1.1rem;color:var(--muted);margin-bottom:10px;">Platform Jasa Sosmed & Nomor Terpercaya</p>
+                <p style="font-size:1.1rem;color:var(--muted);margin-bottom:10px;">Platform Jasa Sosmed & Nomor Virtual Terpercaya</p>
                 <p style="color:var(--muted);margin-bottom:30px;">Pilih menu di atas untuk mulai memesan</p>
                 <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
                     <button class="btn" style="flex:1;min-width:140px;" onclick="showPage('nomor')">📱 Beli Nomor</button>
@@ -114,7 +114,7 @@
             </div>
         </div>
 
-        <!-- HALAMAN NOMOR -->
+        <!-- HALAMAN NOMOR — KHUSUS BELI NOMOR VIRTUAL -->
         <div id="page-nomor" class="hidden">
             <h2 class="section-title">📱 Beli Nomor Virtual</h2>
             <div class="card">
@@ -149,47 +149,48 @@
             </div>
         </div>
 
-        <!-- HALAMAN BOOSTER SOSMED -->
+        <!-- HALAMAN BOOSTER — KHUSUS SOSMED SAJA -->
         <div id="page-booster" class="hidden">
             <h2 class="section-title">🚀 Sosmed Booster</h2>
+            <p style="color:var(--muted);margin-bottom:15px;">Pilih platform sosmed yang ingin di-boost:</p>
             <div class="popular-grid">
-                <div class="popular-card" onclick="selectPlatform('Google/YouTube/Gmail')">
-                    <div class="popular-icon">🔍</div>
-                    <p>Google/YouTube/Gmail</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('WhatsApp')">
-                    <div class="popular-icon">💬</div>
-                    <p>WhatsApp</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('Shopee')">
-                    <div class="popular-icon">🛒</div>
-                    <p>Shopee</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('Dana')">
-                    <div class="popular-icon">💰</div>
-                    <p>Dana</p>
+                <div class="popular-card" onclick="selectPlatform('Instagram')">
+                    <div class="popular-icon">📸</div>
+                    <p>Instagram</p>
                 </div>
                 <div class="popular-card" onclick="selectPlatform('Facebook')">
                     <div class="popular-icon">📘</div>
                     <p>Facebook</p>
                 </div>
-                <div class="popular-card" onclick="selectPlatform('Motorku X')">
-                    <div class="popular-icon">🏍️</div>
-                    <p>Motorku X</p>
+                <div class="popular-card" onclick="selectPlatform('YouTube')">
+                    <div class="popular-icon">▶️</div>
+                    <p>YouTube</p>
                 </div>
-                <div class="popular-card" onclick="selectPlatform('Instagram')">
-                    <div class="popular-icon">📸</div>
-                    <p>Instagram</p>
+                <div class="popular-card" onclick="selectPlatform('TikTok')">
+                    <div class="popular-icon">🎵</div>
+                    <p>TikTok</p>
                 </div>
-                <div class="popular-card" onclick="selectPlatform('Gojek')">
-                    <div class="popular-icon">🚗</div>
-                    <p>Gojek</p>
+                <div class="popular-card" onclick="selectPlatform('Twitter/X')">
+                    <div class="popular-icon">🐦</div>
+                    <p>Twitter/X</p>
+                </div>
+                <div class="popular-card" onclick="selectPlatform('Telegram')">
+                    <div class="popular-icon">✈️</div>
+                    <p>Telegram</p>
+                </div>
+                <div class="popular-card" onclick="selectPlatform('LinkedIn')">
+                    <div class="popular-icon">💼</div>
+                    <p>LinkedIn</p>
+                </div>
+                <div class="popular-card" onclick="selectPlatform('Google')">
+                    <div class="popular-icon">🔍</div>
+                    <p>Google</p>
                 </div>
             </div>
 
             <!-- FORM PEMESANAN BOOSTER -->
             <div id="booster-form" class="hidden card">
-                <h3>Form Pemesanan</h3>
+                <h3>Form Pemesanan Sosmed</h3>
                 <label>Platform</label>
                 <input type="text" id="form-platform" readonly>
                 <label>Layanan</label>
@@ -200,9 +201,9 @@
                 <select id="form-jumlah" onchange="updateHargaBooster()">
                     <option value="">-- Pilih Jumlah --</option>
                 </select>
-                <label>Link / Username / No. Target</label>
-                <input type="text" id="form-link" placeholder="Masukkan link, username, atau nomor target">
-                <div class="note">⚠️ Pastikan data benar & akun publik. Tidak bisa refund jika salah.</div>
+                <label>Link / Username</label>
+                <input type="text" id="form-link" placeholder="Masukkan link atau username akun target">
+                <div class="note">⚠️ Pastikan akun publik & data benar. Tidak bisa refund jika salah.</div>
                 
                 <div class="summary-box">
                     <h4>Ringkasan Pesanan</h4>
@@ -215,13 +216,13 @@
             </div>
         </div>
 
-        <!-- FORM PEMBAYARAN (NOMOR & BOOSTER PAKAI INI) -->
+        <!-- FORM PEMBAYARAN -->
         <div id="payment-form" class="hidden card">
             <h3>Pembayaran</h3>
             <div class="summary-box">
                 <h4>Ringkasan Pesanan</h4>
                 <p id="pay-type">Tipe: -</p>
-                <p id="pay-platform-negara">Platform/Negara: -</p>
+                <p id="pay-platform-negara">Detail: -</p>
                 <p id="pay-layanan">Layanan: -</p>
                 <p id="pay-jumlah">Jumlah: -</p>
                 <p class="total">Total: <span id="pay-harga">Rp 0</span></p>
@@ -241,17 +242,17 @@
             <button class="btn btn-secondary" onclick="kembaliKeForm()">Kembali</button>
         </div>
 
-        <!-- HALAMAN CHAT CS -->
+        <!-- HALAMAN CHAT CS — DIPERBAIKI BISA CHAT -->
         <div id="page-chat" class="hidden">
-            <h2 class="section-title">Chat Customer Service</h2>
+            <h2 class="section-title">💬 Chat Customer Service</h2>
             <div class="card">
-                <p style="color:var(--muted);margin-bottom:15px;">💬 Chat ini privat. Hanya Anda & Tim yang bisa melihat.</p>
+                <p style="color:var(--muted);margin-bottom:15px;">Chat ini privat. Hanya Anda & Tim CS yang bisa melihat.</p>
                 <div id="chat-box" class="chat-box">
-                    <div class="chat-bubble system">Selamat datang di CS! Silakan tanya apa saja.</div>
+                    <div class="chat-bubble system">Selamat datang di CS! Silakan tanya apa saja 😊</div>
                 </div>
                 <div class="chat-input-container">
-                    <input type="text" id="chat-input" placeholder="Ketik pesan Anda di sini..." onkeypress="if(event.key==='Enter')kirimChat()">
-                    <button class="btn" onclick="kirimChat()">Kirim</button>
+                    <input type="text" id="chat-input" placeholder="Ketik pesan Anda..." onkeypress="if(event.key==='Enter')kirimChat()">
+                    <button class="btn" style="width:auto;padding:10px 20px;margin:0;" onclick="kirimChat()">Kirim</button>
                 </div>
             </div>
         </div>
@@ -274,7 +275,7 @@
                 </div>
                 <div class="chat-input-container">
                     <input type="text" id="owner-chat-input" placeholder="Ketik balasan..." onkeypress="if(event.key==='Enter')kirimBalasanOwner()">
-                    <button class="btn" onclick="kirimBalasanOwner()">Kirim</button>
+                    <button class="btn" style="width:auto;padding:10px 20px;margin:0;" onclick="kirimBalasanOwner()">Kirim</button>
                 </div>
             </div>
 
@@ -320,7 +321,7 @@
             <div class="nav-item" onclick="showPagePesanan()"><span class="nav-icon">📄</span>Pesanan</div>
         </div>
 
-        <!-- HALAMAN RIWAYAT PESANAN — DIPINDAH KE BAWAH -->
+        <!-- HALAMAN RIWAYAT PESANAN -->
         <div id="page-pesanan" class="hidden" style="margin-top:80px;">
             <h2 class="section-title">📄 Riwayat Pesanan</h2>
             <table>
