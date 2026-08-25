@@ -1,7 +1,7 @@
 
 let currentUser = null;
 let selectedChatUser = null;
-let currentOrderType = null; // 'nomor' atau 'booster'
+let currentOrderType = null;
 let currentNomor = { negara: '', layanan: '', jumlah: 0, harga: 0 };
 let currentBooster = { platform: '', layanan: '', jumlah: 0, harga: 0 };
 
@@ -12,8 +12,8 @@ function formatHarga(angka) {
 function toggleInfo(id) {
     const el = document.getElementById(id);
     const icon = document.getElementById('icon-' + id);
-    el.classList.toggle('hidden');
-    icon.textContent = el.classList.contains('hidden') ? '▼' : '▲';
+    if (el) el.classList.toggle('hidden');
+    if (icon) icon.textContent = el?.classList.contains('hidden') ? '▼' : '▲';
 }
 
 function closeAuthModal() {
@@ -92,26 +92,22 @@ function logout() {
 function updateNav() {
     const tabOwner = document.getElementById('tab-owner');
     const tabAdmin = document.getElementById('tab-admin');
-    if (isOwner() || isAdmin()) tabOwner.classList.remove('hidden');
-    else tabOwner.classList.add('hidden');
-    if (isOwner()) tabAdmin.classList.remove('hidden');
-    else tabAdmin.classList.add('hidden');
+    if (isOwner() || isAdmin()) tabOwner?.classList.remove('hidden');
+    else tabOwner?.classList.add('hidden');
+    if (isOwner()) tabAdmin?.classList.remove('hidden');
+    else tabAdmin?.classList.add('hidden');
 }
 
-// NAVIGASI UTAMA
 function showPage(page) {
     if (!currentUser) return;
     
-    // Sembunyikan semua halaman
     ['page-beranda','page-nomor','page-booster','page-chat','page-owner','page-admin','page-pesanan','payment-form','booster-form'].forEach(id => {
         const el = document.getElementById(id);
         if (el) el.classList.add('hidden');
     });
     
-    // Reset tab header
     document.querySelectorAll('.tab').forEach(t => { t.classList.remove('active'); t.classList.add('inactive'); });
     
-    // Tampilkan halaman yang dipilih
     if (page === 'beranda') {
         document.getElementById('page-beranda').classList.remove('hidden');
         document.getElementById('tab-beranda').classList.add('active');
@@ -144,14 +140,12 @@ function showPage(page) {
     }
 }
 
-// BUKA RIWAYAT PESANAN DARI NAV BAWAH
 function showPagePesanan() {
     if (!currentUser) return;
     document.getElementById('page-pesanan').classList.remove('hidden');
     loadPesanan();
 }
 
-// ========== FITUR NOMOR ==========
 function resetNomorForm() {
     document.getElementById('nomor-negara').value = '';
     document.getElementById('nomor-layanan').innerHTML = '<option value="">-- Pilih Layanan Dulu --</option>';
@@ -227,7 +221,6 @@ function lanjutBayarNomor() {
     document.getElementById('payment-form').classList.remove('hidden');
 }
 
-// ========== FITUR BOOSTER ==========
 function selectPlatform(platform) {
     currentBooster.platform = platform;
     document.getElementById('form-platform').value = platform;
@@ -315,7 +308,6 @@ function previewBukti() {
     }
 }
 
-// ========== KIRIM PESANAN (NOMOR & BOOSTER) ==========
 function kirimPesanan() {
     const buktiTf = document.getElementById('bukti-preview').src;
     if (!buktiTf) return alert('Upload bukti transfer dulu!');
@@ -365,7 +357,6 @@ function kirimPesanan() {
     showPage('beranda');
 }
 
-// ========== LOAD RIWAYAT PESANAN ==========
 function loadPesanan() {
     if (!currentUser) return;
     const list = JSON.parse(localStorage.getItem('pesanan') || '[]');
@@ -392,7 +383,6 @@ function loadPesanan() {
     }).join('');
 }
 
-// ========== OWNER PANEL ==========
 function loadOwnerPesanan() {
     if (!isOwner() && !isAdmin()) return;
     const list = JSON.parse(localStorage.getItem('pesanan') || '[]');
@@ -436,7 +426,6 @@ function ubahStatus(id, status) {
     }
 }
 
-// ========== CHAT CS — DIPERBAIKI TAMPILAN ==========
 function loadChatUserList() {
     if (!isOwner() && !isAdmin()) return;
     const allKeys = Object.keys(localStorage);
@@ -450,7 +439,7 @@ function loadChatUserList() {
     
     userList.innerHTML = chatKeys.map(k => {
         const username = k.replace('chat_', '');
-        return `<button class="btn" style="width:auto;padding:8px 15px;margin:0;" onclick="pilihUserChat('${username}')">💬 ${username}</button>`;
+        return `<button class="btn" style="width:auto;padding:8px 15px;margin:0;cursor:pointer;" onclick="pilihUserChat('${username}')">💬 ${username}</button>`;
     }).join('');
 }
 
@@ -477,4 +466,111 @@ function pilihUserChat(username) {
 
 function kirimBalasanOwner() {
     if (!selectedChatUser) return alert('Pilih user dulu!');
-    const input = document.getElementById('
+    const input = document.getElementById('owner-chat-input');
+    const pesan = input.value.trim();
+    if (!pesan) return;
+    
+    const chatKey = 'chat_' + selectedChatUser;
+    const chatData = JSON.parse(localStorage.getItem(chatKey) || '[]');
+    chatData.push({ pengirim: 'owner', pesan, waktu: new Date().toLocaleString('id-ID') });
+    localStorage.setItem(chatKey, JSON.stringify(chatData));
+    
+    const box = document.getElementById('owner-chat-box');
+    box.innerHTML += `<div style="text-align:left;background:var(--gold);color:#000;border-radius:12px 12px 12px 4px;padding:10px 12px;margin:6px 0;max-width:85%;">${pesan}</div>`;
+    box.scrollTop = box.scrollHeight;
+    input.value = '';
+}
+
+function loadUserChat() {
+    if (!currentUser || isOwner() || isAdmin()) return;
+    const chatKey = 'chat_' + currentUser.username;
+    const chatData = JSON.parse(localStorage.getItem(chatKey) || '[]');
+    const box = document.getElementById('chat-box');
+    
+    if (chatData.length === 0) {
+        box.innerHTML = '<div class="chat-bubble system">Selamat datang di CS! Silakan tanya apa saja.</div>';
+        return;
+    }
+    
+    box.innerHTML = chatData.map(c => {
+        if (c.pengirim === currentUser.username) {
+            return `<div style="text-align:right;background:#2a2a2a;color:#fff;border-radius:12px 12px 4px 12px;padding:10px 12px;margin:6px 0;max-width:85%;margin-left:auto;">${c.pesan}</div>`;
+        } else {
+            return `<div style="text-align:left;background:var(--gold);color:#000;border-radius:12px 12px 12px 4px;padding:10px 12px;margin:6px 0;max-width:85%;">${c.pesan}</div>`;
+        }
+    }).join('');
+    box.scrollTop = box.scrollHeight;
+}
+
+function kirimChat() {
+    if (!currentUser || isOwner() || isAdmin()) return;
+    const input = document.getElementById('chat-input');
+    const pesan = input.value.trim();
+    if (!pesan) return;
+    
+    const chatKey = 'chat_' + currentUser.username;
+    const chatData = JSON.parse(localStorage.getItem(chatKey) || '[]');
+    chatData.push({ pengirim: currentUser.username, pesan, waktu: new Date().toLocaleString('id-ID') });
+    localStorage.setItem(chatKey, JSON.stringify(chatData));
+    
+    const box = document.getElementById('chat-box');
+    box.innerHTML += `<div style="text-align:right;background:#2a2a2a;color:#fff;border-radius:12px 12px 4px 12px;padding:10px 12px;margin:6px 0;max-width:85%;margin-left:auto;">${pesan}</div>`;
+    box.scrollTop = box.scrollHeight;
+    input.value = '';
+}
+
+function tambahAdmin() {
+    if (!isOwner()) return alert('Hanya owner yang bisa menambah admin!');
+    const user = document.getElementById('new-admin-user').value.trim();
+    const pass = document.getElementById('new-admin-pass').value.trim();
+    
+    if (!user || !pass) return alert('Isi username & password!');
+    if (user === CONFIG.ownerUsername) return alert('Tidak bisa pakai username owner!');
+    
+    const admins = JSON.parse(localStorage.getItem('admins') || '[]');
+    if (admins.some(a => a.username === user)) return alert('Admin sudah ada!');
+    
+    admins.push({ username: user, password: pass, tanggal: new Date().toLocaleString('id-ID') });
+    localStorage.setItem('admins', JSON.stringify(admins));
+    alert('Admin berhasil ditambahkan!');
+    document.getElementById('new-admin-user').value = '';
+    document.getElementById('new-admin-pass').value = '';
+    loadAdminList();
+}
+
+function loadAdminList() {
+    if (!isOwner()) return;
+    const admins = JSON.parse(localStorage.getItem('admins') || '[]');
+    const tbody = document.getElementById('admin-list-body');
+    
+    if (admins.length === 0) {
+        tbody.innerHTML = '<tr><td colspan="3" style="text-align:center;color:var(--muted);">Belum ada admin.</td></tr>';
+        return;
+    }
+    
+    tbody.innerHTML = admins.map(a => `
+        <tr>
+            <td>${a.username}</td>
+            <td>${a.tanggal}</td>
+            <td><button class="btn" style="padding:4px 10px;width:auto;background:#e74c3c;cursor:pointer;" onclick="hapusAdmin('${a.username}')">Hapus</button></td>
+        </tr>
+    `).join('');
+}
+
+function hapusAdmin(username) {
+    if (!confirm('Yakin ingin menghapus admin ini?')) return;
+    let admins = JSON.parse(localStorage.getItem('admins') || '[]');
+    admins = admins.filter(a => a.username !== username);
+    localStorage.setItem('admins', JSON.stringify(admins));
+    loadAdminList();
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const savedUser = localStorage.getItem('currentUser');
+    if (savedUser) {
+        currentUser = JSON.parse(savedUser);
+        updateNav();
+    } else {
+        document.getElementById('auth-modal').classList.remove('hidden');
+    }
+});
