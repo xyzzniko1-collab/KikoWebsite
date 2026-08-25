@@ -4,26 +4,125 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SIMURU — Jasa Sosmed Terpercaya</title>
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:'Segoe UI',sans-serif;}
+        :root{
+            --bg:#000000; --card:#121212; --border:#2a2a2a;
+            --gold:#d4af37; --gold-light:#f0d78c; --text:#ffffff;
+            --muted:#999999; --accent:#b8860b; --green:#22c55e; --red:#ef4444;
+        }
+        body{background:var(--bg);color:var(--text);min-height:100vh;padding:15px;}
+        .container{max-width:1200px;margin:0 auto;padding-bottom:80px;}
+        .hidden{display:none !important;}
+
+        /* MODAL LOGIN */
+        .modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;z-index:200;padding:20px;}
+        .modal-content{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:25px;max-width:420px;width:100%;max-height:90vh;overflow-y:auto;}
+        .modal-content h2{color:var(--gold);margin-bottom:20px;text-align:center;}
+        .close{float:right;color:var(--muted);font-size:1.5rem;cursor:pointer;margin-top:-10px;}
+        label{display:block;margin-bottom:8px;color:var(--muted);font-size:0.95rem;}
+        input, select{width:100%;background:#0a0a0a;border:1px solid var(--border);border-radius:8px;padding:12px;color:var(--text);margin-bottom:15px;font-size:1rem;}
+        input:focus, select:focus{outline:none;border-color:var(--gold);}
+        .btn{background:linear-gradient(90deg,var(--gold),var(--accent));color:#000;border:none;padding:12px 24px;border-radius:8px;cursor:pointer;font-weight:bold;font-size:1rem;transition:.3s;width:100%;margin-bottom:10px;}
+        .btn:hover{transform:scale(1.02);}
+        .btn-green{background:linear-gradient(90deg,#22c55e,#16a34a);color:#fff;}
+        .btn-red{background:linear-gradient(90deg,#ef4444,#dc2626);color:#fff;}
+        .link-text{color:var(--gold);cursor:pointer;text-decoration:underline;}
+
+        /* TABS */
+        .tabs{display:flex;gap:10px;margin:20px 0;flex-wrap:wrap;}
+        .tab{padding:10px 18px;border-radius:25px;font-weight:bold;cursor:pointer;transition:.3s;font-size:0.95rem;}
+        .tab.active{background:linear-gradient(90deg,var(--gold),var(--accent));color:#000;}
+        .tab.inactive{background:var(--card);color:var(--muted);border:1px solid var(--border);}
+
+        /* INFO BOX */
+        .info-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:15px;margin-bottom:0;display:flex;justify-content:space-between;align-items:center;cursor:pointer;margin-top:15px;}
+        .info-title{color:var(--gold);font-weight:bold;display:flex;align-items:center;gap:8px;}
+        .info-icon{color:var(--gold);font-size:1.2rem;}
+        .info-content{background:var(--card);border:1px solid var(--border);border-top:none;border-radius:0 0 12px 12px;padding:20px;line-height:1.8;margin-bottom:15px;}
+        .info-content h4{color:var(--gold);margin:15px 0 8px;}
+        .info-highlight{background:rgba(212,175,55,.1);border:1px solid var(--gold);border-radius:8px;padding:12px;margin:10px 0;color:var(--gold-light);font-weight:500;}
+        .info-content ul{padding-left:20px;margin:10px 0;}
+        .info-content li{margin-bottom:6px;}
+
+        /* LAYANAN POPULER */
+        h2.section-title{color:var(--gold);margin:30px 0 20px;text-align:center;font-size:1.5rem;}
+        .popular-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:15px;margin-bottom:30px;}
+        .popular-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px 10px;text-align:center;cursor:pointer;transition:.3s;}
+        .popular-card:hover{border-color:var(--gold);transform:translateY(-3px);}
+        .popular-icon{font-size:2rem;margin-bottom:10px;}
+        .popular-card p{color:var(--text);font-size:0.9rem;}
+
+        /* PLATFORM GRID */
+        .platform-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:15px;margin-bottom:30px;}
+        .platform-card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;cursor:pointer;transition:.3s;}
+        .platform-card:hover{border-color:var(--gold);}
+        .platform-icon{font-size:2rem;margin-bottom:10px;}
+        .platform-name{font-size:1.2rem;font-weight:bold;margin-bottom:5px;}
+        .platform-services{color:var(--muted);font-size:0.9rem;margin-bottom:10px;}
+        .platform-start{color:var(--gold);font-size:0.95rem;}
+
+        /* FORM & CARD */
+        .card{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:20px;margin-bottom:20px;}
+        .card h3{color:var(--gold);margin-bottom:15px;}
+        .note{background:rgba(212,175,55,.1);border:1px solid var(--gold);border-radius:12px;padding:15px;margin:15px 0;color:var(--gold-light);font-size:0.95rem;line-height:1.6;}
+        .summary-box{background:#0a0a0a;border:1px solid var(--border);border-radius:12px;padding:15px;margin:15px 0;}
+        .summary-box p{margin:8px 0;}
+        .summary-box .total{color:var(--gold);font-size:1.2rem;font-weight:bold;margin-top:10px;}
+
+        /* TABEL */
+        table{width:100%;border-collapse:separate;border-spacing:0;border-radius:12px;overflow:hidden;background:var(--card);border:1px solid var(--border);margin-bottom:20px;}
+        th{background:var(--gold);color:#000;padding:12px;text-align:left;font-weight:bold;}
+        td{padding:12px;border-bottom:1px solid var(--border);color:var(--text);font-size:0.95rem;}
+        tr:last-child td{border-bottom:none;}
+        .status-pending{color:#f59e0b;}
+        .status-accept{color:var(--green);}
+        .status-decline{color:var(--red);}
+
+        /* BOTTOM NAV */
+        .bottom-nav{position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);display:grid;grid-template-columns:repeat(5,1fr);padding:10px 0;z-index:100;}
+        .nav-item{display:flex;flex-direction:column;align-items:center;gap:3px;color:var(--muted);font-size:0.75rem;cursor:pointer;}
+        .nav-item.active{color:var(--gold);}
+        .nav-icon{font-size:1.2rem;}
+
+        /* UPLOAD */
+        .upload-box{border:2px dashed var(--border);border-radius:12px;padding:25px;text-align:center;cursor:pointer;margin:15px 0;}
+        .upload-box:hover{border-color:var(--gold);}
+        .preview-img{max-width:100%;border-radius:8px;margin-top:10px;display:none;}
+
+        /* RESPONSIVE */
+        @media(max-width:768px){
+            .popular-grid{grid-template-columns:repeat(2,1fr);}
+            .platform-grid{grid-template-columns:1fr 1fr;}
+        }
+        @media(max-width:480px){
+            .popular-grid{grid-template-columns:repeat(2,1fr);gap:10px;}
+            .tab{padding:8px 12px;font-size:0.9rem;}
+        }
+    </style>
 </head>
 <body>
     <div class="container">
 
-        <!-- LOGIN / DAFTAR MODAL -->
+        <!-- MODAL LOGIN/REGISTER -->
         <div id="auth-modal" class="modal">
             <div class="modal-content">
-                <span class="close" onclick="closeAuthModal()">&times;</span>
+                <span class="close" onclick="closeModal()">&times;</span>
                 <h2 id="auth-title">Login Akun</h2>
+                
+                <!-- FORM LOGIN -->
                 <div id="login-form">
                     <label>Username</label>
                     <input type="text" id="login-usn" placeholder="Masukkan username">
                     <label>Password</label>
                     <input type="password" id="login-pw" placeholder="Masukkan password">
                     <button class="btn" onclick="login()">Login</button>
-                    <p style="margin-top:15px;color:var(--muted);">
-                        Belum punya akun? <span style="color:var(--gold);cursor:pointer;" onclick="showRegister()">Daftar disini</span>
+                    <p style="text-align:center;margin-top:15px;color:var(--muted);">
+                        Belum punya akun? <span class="link-text" onclick="showRegister()">Daftar disini</span>
                     </p>
                 </div>
+
+                <!-- FORM DAFTAR -->
                 <div id="register-form" class="hidden">
                     <label>Username</label>
                     <input type="text" id="reg-usn" placeholder="Masukkan username">
@@ -38,276 +137,211 @@
                         <option value="Seabank">Seabank</option>
                     </select>
                     <label>No. Rekening / No. E-Wallet</label>
-                    <input type="text" id="reg-no-rek" placeholder="Masukkan nomor">
-                    <button class="btn" onclick="register()">Daftar</button>
-                    <p style="margin-top:15px;color:var(--muted);">
-                        Sudah punya akun? <span style="color:var(--gold);cursor:pointer;" onclick="showLogin()">Login disini</span>
+                    <input type="text" id="reg-no" placeholder="Masukkan nomor">
+                    <button class="btn" onclick="daftar()">Daftar</button>
+                    <p style="text-align:center;margin-top:15px;color:var(--muted);">
+                        Sudah punya akun? <span class="link-text" onclick="showLogin()">Login disini</span>
                     </p>
                 </div>
             </div>
         </div>
 
-        <!-- HEADER TABS -->
-        <div class="header-tabs">
-            <div class="tab active" id="tab-pesan" onclick="showPage('pesan')">Pesan</div>
-            <div class="tab inactive" id="tab-pesanan" onclick="showPage('pesanan')">Pesanan</div>
-            <div class="tab inactive" id="tab-chat" onclick="showPage('chat')">Chat CS</div>
-            <div class="tab inactive hidden" id="tab-owner" onclick="showPage('owner')">Owner</div>
+        <!-- TABS NAVIGASI -->
+        <div class="tabs">
+            <div class="tab active" id="tab-pesan" onclick="bukaHalaman('pesan')">Pesan</div>
+            <div class="tab inactive" id="tab-pesanan" onclick="bukaHalaman('pesanan')">Pesanan</div>
+            <div class="tab inactive" id="tab-chat" onclick="bukaHalaman('chat')">Chat CS</div>
+            <div class="tab inactive hidden" id="tab-owner" onclick="bukaHalaman('owner')">Owner</div>
         </div>
 
-        <!-- INFO BOX & KETENTUAN LENGKAP -->
-        <div class="info-box" onclick="toggleInfo('info-penting')">
-            <span class="info-text">⚠️ Info penting sebelum memesan</span>
-            <span class="dropdown-icon" id="icon-info-penting">▼</span>
+        <!-- INFO PENTING -->
+        <div class="info-box" onclick="toggle('info-penting')">
+            <span class="info-title">⚠️ Info penting sebelum memesan</span>
+            <span class="info-icon" id="icon-info">▼</span>
         </div>
         <div id="info-penting" class="info-content hidden">
             <h4>Instagram</h4>
             <p>Sebagian akun perlu <strong>menonaktifkan</strong> pengaturan <em>"Laporkan untuk ditinjau"</em> agar followers masuk dan pesanan tidak error/partial.</p>
-            <div class="info-highlight">
-                Pengaturan dan aktivitas → Ikut dan undang teman → Laporkan untuk ditinjau (nonaktifkan)
-            </div>
+            <div class="info-highlight">Pengaturan dan aktivitas → Ikut dan undang teman → Laporkan untuk ditinjau (nonaktifkan)</div>
+            
             <h4>TikTok</h4>
             <p>Pastikan akun <strong>publik</strong> (bukan privat) dan video tidak disembunyikan, agar followers / likes / views bisa masuk dan tidak error.</p>
+            
             <h4>Telegram (Subscriber Channel)</h4>
             <p>Channel harus <strong>publik</strong> dan punya <strong>username</strong>. Jangan ubah ke privat atau ganti username selama pesanan berjalan agar subscriber masuk.</p>
-            <p style="margin-top:15px; color:var(--muted); font-size:0.9rem;">Pesanan dipantau otomatis untuk estimasi kecepatan pengerjaan tiap layanan.</p>
+            
+            <p style="margin-top:15px;color:var(--muted);font-size:0.9rem;">Pesanan dipantau otomatis untuk estimasi kecepatan pengerjaan tiap layanan.</p>
         </div>
 
-        <div class="info-box" onclick="toggleInfo('ketentuan')">
-            <span class="info-text">📋 Ketentuan (Order · Speed Up · Refill) — wajib baca</span>
-            <span class="dropdown-icon" id="icon-ketentuan">▼</span>
+        <!-- KETENTUAN -->
+        <div class="info-box" onclick="toggle('ketentuan')">
+            <span class="info-title">📋 Ketentuan (Order · Garansi) — wajib baca</span>
+            <span class="info-icon" id="icon-ketentuan">▼</span>
         </div>
         <div id="ketentuan" class="info-content hidden">
             <h4>Order</h4>
             <ul>
-                <li>Input link sesuai format di keterangan — pesanan <strong>tidak bisa dibatalkan</strong>.</li>
-                <li>Jangan pakai 2 layanan sekaligus untuk link yang sama (tunggu <strong>completed</strong> dulu).</li>
-                <li>Link salah / di-private / dihapus setelah order → otomatis <strong>completed, tanpa refund</strong>.</li>
-                <li>Status <strong>partial / canceled</strong> → saldo otomatis di-refund, bisa order ulang.</li>
-                <li>Jumlah maks = kapasitas total per akun/link, bukan per sekali order.</li>
-                <li>Speed & drop rate = estimasi, bisa berubah tergantung server. Report setelah 24 jam.</li>
+                <li>Input link sesuai format — pesanan <strong>tidak bisa dibatalkan</strong>.</li>
+                <li>Jangan pakai 2 layanan sekaligus untuk link yang sama — tunggu selesai dulu.</li>
+                <li>Link salah / di-private / dihapus setelah order → otomatis selesai, <strong>tanpa refund</strong>.</li>
+                <li>Status partial / dibatalkan → saldo dikembalikan otomatis.</li>
+                <li>Kecepatan & estimasi bisa berubah tergantung server.</li>
             </ul>
-            <h4>Speed Up</h4>
+            <h4>Garansi Refill</h4>
             <ul>
-                <li>Untuk order <strong>stuck >24 jam</strong> (kecuali layanan bertanda SLOW).</li>
-                <li>Lapor Order ID ke CS; diproses 1×24 jam; maks 1×/hari per order.</li>
-            </ul>
-            <h4>Refill (garansi isi ulang drop)</h4>
-            <ul>
-                <li>Untuk drop <strong>>30%</strong> setelah status SELESAI (partial tidak bisa refill).</li>
-                <li>Hanya layanan bergaransi refill. Pakai tombol <strong>Refill</strong> di riwayat.</li>
-                <li>Akun harus <strong>PUBLIK</strong> & tidak ganti username — kalau tidak, refill gagal.</li>
-                <li>Jangan order ulang ke link sama selama proses (garansi hangus). Proses 3–5 hari.</li>
-                <li>Klaim tidak berlaku bila masa garansi sudah habis.</li>
+                <li>Jika turun >30% setelah selesai, bisa klaim isi ulang.</li>
+                <li>Akun harus tetap <strong>publik</strong> dan tidak ganti username.</li>
+                <li>Jangan order ulang ke link yang sama selama proses.</li>
             </ul>
         </div>
 
         <!-- HALAMAN PESAN -->
-        <div id="page-pesan">
-            <h2 style="color:var(--gold);margin:30px 0 15px;text-align:center;font-size:1.5rem;">LAYANAN POPULER</h2>
+        <div id="hal-pesan">
+            <h2 class="section-title">LAYANAN POPULER</h2>
             <div class="popular-grid">
-                <div class="popular-card" onclick="selectPlatform('YouTube')">
-                    <div class="popular-icon">
-                        <svg viewBox="0 0 24 24"><path fill="#FF0000" d="M19.615 3.184c-1.104-.614-2.58-.68-3.86-.073C14.93 3.35 12 3.35 12 3.35s-2.93 0-3.755-.238c-1.28-.607-2.756-.54-3.86.073C2.608 4.396 2 6.225 2 9.51v4.98c0 3.285.608 5.114 2.385 6.326 1.104.614 2.58.68 3.86.073C9.07 19.65 12 19.65 12 19.65s2.93 0 3.755.238c1.28.607 2.756.54 3.86-.073C21.392 18.604 22 16.775 22 13.49V8.51c0-3.285-.608-5.114-2.385-6.326zM10 15.5v-7l6 3.5-6 3.5z"/></svg>
-                    </div>
-                    <p>Google/Youtube/Gmail</p>
-                </div>
-                <div class="popular-card" onclick="openWA()">
-                    <div class="popular-icon">
-                        <svg viewBox="0 0 24 24"><path fill="#25D366" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.37-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.217 3.074.149.198 2.096 3.2 5.077 4.487.709.305 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c0-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                    </div>
-                    <p>Whatsapp</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('Shopee')">
-                    <div class="popular-icon">
-                        <svg viewBox="0 0 24 24"><path fill="#EE4D2D" d="M12 21.285c-.517 0-1.013-.199-1.383-.553l-6.857-6.602c-.363-.35-.564-.828-.56-1.327.005-.499.212-.974.578-1.319l6.857-6.463c.366-.345.865-.538 1.383-.538s1.017.193 1.383.538l6.857 6.463c.366.345.573.82.578 1.319.004.499-.197.977-.56 1.327l-6.857 6.602c-.37.354-.866.553-1.383.553zM12 4.587L5.903 10.37 12 16.262 18.097 10.37 12 4.587z"/></svg>
-                    </div>
-                    <p>Shopee</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('Dana')">
-                    <div class="popular-icon">
-                        <svg viewBox="0 0 24 24"><path fill="#0088FF" d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm5.5 15.5h-3.5v-3.5h-4v3.5H6.5v-7h3.5V5h4v3.5h3.5v7z"/></svg>
-                    </div>
-                    <p>Dana</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('Facebook')">
-                    <div class="popular-icon">
-                        <svg viewBox="0 0 24 24"><path fill="#1877F2" d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg>
-                    </div>
-                    <p>Facebook</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('Motorku X')">
-                    <div class="popular-icon">🏍️</div>
-                    <p>Motorku X</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('Instagram')">
-                    <div class="popular-icon">
-                        <svg viewBox="0 0 24 24"><path fill="#E4405F" d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
-                    </div>
+                <div class="popular-card" onclick="pilihPlatform('Instagram')">
+                    <div class="popular-icon">📸</div>
                     <p>Instagram</p>
                 </div>
-                <div class="popular-card" onclick="selectPlatform('Gojek')">
-                    <div class="popular-icon">
-                        <svg viewBox="0 0 24 24"><path fill="#00AA13" d="M12 0C5.373 0 0 5.373 0 12s5.373 12 12 12 12-5.373 12-12S18.627 0 12 0zm-.5 17h-2v-5h2v5zm4 0h-2v-5h2v5zm-1-7.5a1.5 1.5 0 110-3 1.5 1.5 0 010 3z"/></svg>
-                    </div>
-                    <p>Gojek</p>
+                <div class="popular-card" onclick="pilihPlatform('TikTok')">
+                    <div class="popular-icon">🎵</div>
+                    <p>TikTok</p>
+                </div>
+                <div class="popular-card" onclick="pilihPlatform('YouTube')">
+                    <div class="popular-icon">▶️</div>
+                    <p>YouTube</p>
+                </div>
+                <div class="popular-card" onclick="pilihPlatform('Telegram')">
+                    <div class="popular-icon">✈️</div>
+                    <p>Telegram</p>
                 </div>
             </div>
 
-            <p class="section-title">Pilih platform lainnya.</p>
+            <p style="color:var(--muted);margin:20px 0 10px;">Pilih platform lainnya:</p>
             <div class="platform-grid">
-                <div class="platform-card" onclick="selectPlatform('TikTok')">
-                    <div class="platform-icon">🎵</div>
-                    <div class="platform-name">TikTok</div>
-                    <div class="platform-services">Followers & Likes</div>
-                    <div class="platform-start">mulai Rp49.000/1k</div>
-                </div>
-                <div class="platform-card" onclick="selectPlatform('Twitter/X')">
+                <div class="platform-card" onclick="pilihPlatform('Twitter/X')">
                     <div class="platform-icon">🐦</div>
                     <div class="platform-name">Twitter / X</div>
                     <div class="platform-services">Followers & Likes</div>
                     <div class="platform-start">mulai Rp12.000/1k</div>
                 </div>
-                <div class="platform-card" onclick="selectPlatform('Twitch')">
-                    <div class="platform-icon">🟣</div>
-                    <div class="platform-name">Twitch</div>
-                    <div class="platform-services">Views</div>
-                    <div class="platform-start">mulai Rp35.000/1k</div>
-                </div>
-                <div class="platform-card" onclick="selectPlatform('Telegram')">
-                    <div class="platform-icon">💬</div>
-                    <div class="platform-name">Telegram</div>
-                    <div class="platform-services">Member / Grup</div>
-                    <div class="platform-start">mulai Rp35.000/1k</div>
+                <div class="platform-card" onclick="pilihPlatform('Facebook')">
+                    <div class="platform-icon">📘</div>
+                    <div class="platform-name">Facebook</div>
+                    <div class="platform-services">Followers & Likes</div>
+                    <div class="platform-start">mulai Rp15.000/1k</div>
                 </div>
             </div>
 
-            <div id="order-form" class="hidden">
-                <div class="card">
-                    <h2>Form Pemesanan</h2>
-                    <label>Platform</label>
-                    <input type="text" id="form-platform" readonly>
-                    <label>Layanan</label>
-                    <select id="form-layanan"><option value="">-- Pilih Layanan --</option></select>
-                    <label>Jumlah</label>
-                    <select id="form-jumlah"><option value="">-- Pilih Jumlah --</option></select>
-                    <label>Link / Username Akun Target</label>
-                    <input type="text" id="form-link" placeholder="Masukkan link atau username akun target">
-                    <div class="note">⚠️ <strong>Link / username harus sesuai akun target.</strong> Jika salah atau tidak sesuai, pesanan tidak bisa diproses dan uang tidak bisa dikembalikan.</div>
-                    <div class="summary-box">
-                        <h3>Ringkasan Pesanan</h3>
-                        <p>Platform: <span id="sum-platform">-</span></p>
-                        <p>Layanan: <span id="sum-layanan">-</span></p>
-                        <p>Jumlah: <span id="sum-jumlah">-</span></p>
-                        <p class="total">Total: <span id="sum-harga">Rp 0</span></p>
-                    </div>
-                    <button class="btn" onclick="lanjutBayar()">Lanjut ke Pembayaran</button>
+            <!-- FORM PEMESANAN -->
+            <div id="form-pesan" class="hidden card">
+                <h3>Form Pemesanan</h3>
+                <label>Platform</label>
+                <input type="text" id="f-platform" readonly>
+                <label>Layanan</label>
+                <select id="f-layanan"><option value="">-- Pilih Layanan --</option></select>
+                <label>Jumlah</label>
+                <select id="f-jumlah"><option value="">-- Pilih Jumlah --</option></select>
+                <label>Link / Username Akun Target</label>
+                <input type="text" id="f-link" placeholder="Masukkan link akun target">
+                <div class="note">⚠️ Pastikan link & akun <strong>publik</strong> dan benar. Jika salah, pesanan tidak bisa diproses & tidak bisa refund.</div>
+                
+                <div class="summary-box">
+                    <p>Platform: <span id="s-platform">-</span></p>
+                    <p>Layanan: <span id="s-layanan">-</span></p>
+                    <p>Jumlah: <span id="s-jumlah">-</span></p>
+                    <p class="total">Total: <span id="s-harga">Rp 0</span></p>
                 </div>
+                <button class="btn" onclick="lanjutBayar()">Lanjut ke Pembayaran</button>
             </div>
 
-            <div id="payment-form" class="hidden">
-                <div class="card">
-                    <h2>Pembayaran</h2>
-                    <div class="summary-box">
-                        <h3>Ringkasan Pesanan</h3>
-                        <p>Platform: <span id="pay-platform">-</span></p>
-                        <p>Layanan: <span id="pay-layanan">-</span></p>
-                        <p>Jumlah: <span id="pay-jumlah">-</span></p>
-                        <p class="total">Total: <span id="pay-harga">Rp 0</span></p>
-                    </div>
-                    <div class="card" style="background:#0a0a0a;">
-                        <h3>Transfer ke Rekening Owner</h3>
-                        <p style="font-size:1.1rem;margin-bottom:5px;">Bank Seabank</p>
-                        <p style="font-size:1.2rem;font-weight:bold;color:var(--gold);margin-bottom:5px;">901369767087</p>
-                        <p style="color:var(--muted);">A/n S Y</p>
-                    </div>
-                    <div class="note">📝 <strong>Catatan:</strong> Setelah transfer, upload bukti screenshot TF di bawah ini. Pesanan akan dicek terlebih dahulu oleh owner. Minimal proses acc adalah 2–5 jam. Jika dalam waktu lama belum aktif, silakan chat ke WhatsApp.</div>
-                    <label>Upload Bukti Transfer</label>
-                    <div class="upload-box" onclick="document.getElementById('bukti-tf').click()">
-                        <p>📷 Klik untuk upload bukti screenshot TF</p>
-                        <input type="file" id="bukti-tf" accept="image/*" hidden onchange="previewBukti()">
-                        <img id="bukti-preview" class="preview-img" src="" alt="Preview bukti TF">
-                    </div>
-                    <button class="btn" onclick="kirimPesanan()">Kirim Pesanan</button>
-                    <button class="btn" style="background:var(--card);color:var(--text);border:1px solid var(--border);margin-top:10px;" onclick="kembaliKeForm()">Kembali</button>
+            <!-- FORM PEMBAYARAN -->
+            <div id="form-bayar" class="hidden card">
+                <h3>Pembayaran</h3>
+                <div class="summary-box">
+                    <p>Platform: <span id="b-platform">-</span></p>
+                    <p>Layanan: <span id="b-layanan">-</span></p>
+                    <p>Jumlah: <span id="b-jumlah">-</span></p>
+                    <p class="total">Total: <span id="b-harga">Rp 0</span></p>
                 </div>
+                <div class="note">
+                    <strong>Transfer ke:</strong><br>
+                    Bank Seabank<br>
+                    <strong style="font-size:1.2rem;color:var(--gold);">901369767087</strong><br>
+                    a/n S Y
+                </div>
+                <label>Upload Bukti Transfer</label>
+                <div class="upload-box" onclick="document.getElementById('bukti').click()">
+                    <p>📷 Klik upload bukti screenshot TF</p>
+                    <input type="file" id="bukti" accept="image/*" hidden onchange="previewBukti()">
+                    <img id="bukti-img" class="preview-img" src="">
+                </div>
+                <button class="btn" onclick="kirimPesanan()">Kirim Pesanan</button>
+                <button class="btn" style="background:var(--card);color:var(--text);border:1px solid var(--border);margin-top:10px;" onclick="kembali()">Kembali</button>
             </div>
         </div>
 
-        <div id="page-pesanan" class="hidden">
-            <h2 style="color:var(--gold);margin-bottom:15px;">Riwayat Pesanan</h2>
+        <!-- HALAMAN PESANAN -->
+        <div id="hal-pesanan" class="hidden">
+            <h2 class="section-title">Riwayat Pesanan</h2>
             <table>
                 <thead><tr><th>Platform</th><th>Layanan</th><th>Jumlah</th><th>Total</th><th>Status</th></tr></thead>
-                <tbody id="pesanan-list"><tr><td colspan="5" style="text-align:center;color:var(--muted);">Belum ada pesanan.</td></tr></tbody>
+                <tbody id="list-pesanan">
+                    <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">Belum ada pesanan.</td></tr>
+                </tbody>
             </table>
-            <div class="note">📝 Keterangan status:<br>⏳ Menunggu acc = pesanan sedang dicek owner<br>✅ Accept = pesanan sudah disetujui dan diproses<br>❌ Decline = pesanan ditolak, silakan chat WhatsApp</div>
+            <div class="note">
+                ⏳ Menunggu = sedang dicek<br>
+                ✅ Accept = sedang diproses<br>
+                ❌ Decline = ditolak, hubungi WhatsApp
+            </div>
         </div>
 
-        <div id="page-chat" class="hidden">
-            <h2 style="color:var(--gold);margin-bottom:15px;">Chat Customer Service</h2>
+        <!-- HALAMAN CHAT -->
+        <div id="hal-chat" class="hidden">
+            <h2 class="section-title">Chat Customer Service</h2>
             <div class="card">
-                <p style="color:var(--muted);margin-bottom:15px;">💬 Chat ini bersifat privat. Hanya Anda & Owner yang dapat melihat percakapan ini.</p>
-                <div id="chat-box" class="chat-box">
-                    <div class="chat-bubble system">Selamat datang di CS! Silakan tanya apa saja.</div>
+                <p style="color:var(--muted);margin-bottom:15px;">💬 Chat bersifat privat — hanya Anda & Owner yang bisa lihat.</p>
+                <div id="kotak-chat" style="height:350px;overflow-y:auto;background:#0a0a0a;border-radius:12px;padding:15px;margin-bottom:15px;border:1px solid var(--border);">
+                    <p style="color:var(--gold);text-align:center;">Selamat datang! Silakan tanya apa saja.</p>
                 </div>
-                <div class="chat-input-container">
-                    <input type="text" id="chat-input" placeholder="Ketik pesan Anda..." onkeypress="if(event.key==='Enter')kirimChat()">
-                    <button class="btn" onclick="kirimChat()">Kirim</button>
+                <div style="display:flex;gap:10px;">
+                    <input type="text" id="input-chat" placeholder="Ketik pesan..." style="margin-bottom:0;flex:1;" onkeypress="if(event.key==='Enter')kirimChat()">
+                    <button class="btn" style="width:auto;padding:12px 20px;" onclick="kirimChat()">Kirim</button>
                 </div>
             </div>
         </div>
 
-        <div id="page-owner" class="hidden">
-            <h2 style="color:var(--gold);margin-bottom:15px;">Panel Owner</h2>
-            <div class="card">
-                <h3>💬 Chat dari User</h3>
-                <label>Pilih User untuk melihat chat</label>
-                <select id="chat-user-select" onchange="loadChatOwner()">
-                    <option value="">-- Pilih User --</option>
-                </select>
-                <div id="owner-chat-box" class="chat-box" style="margin-top:15px;">
-                    <div class="chat-bubble system">Pilih user untuk melihat percakapan.</div>
-                </div>
-                <div class="chat-input-container" style="margin-top:10px;">
-                    <input type="text" id="owner-chat-input" placeholder="Balas pesan..." onkeypress="if(event.key==='Enter')balasChat()">
-                    <button class="btn btn-green" onclick="balasChat()">Balas</button>
-                </div>
-            </div>
+        <!-- HALAMAN OWNER -->
+        <div id="hal-owner" class="hidden">
+            <h2 class="section-title">Panel Owner</h2>
             <div class="card">
                 <h3>Daftar Pesanan Masuk</h3>
                 <table>
-                    <thead><tr><th>User</th><th>Platform</th><th>Layanan</th><th>Jumlah</th><th>Link</th><th>Bukti TF</th><th>Status</th><th>Aksi</th></tr></thead>
-                    <tbody id="owner-pesanan-list"><tr><td colspan="8" style="text-align:center;color:var(--muted);">Belum ada pesanan masuk.</td></tr></tbody>
-                </table>
-            </div>
-            <div class="card">
-                <h3>Kelola Akun</h3>
-                <label>Pilih Akun User</label>
-                <select id="select-user"><option value="">-- Pilih User --</option></select>
-                <label>Password Baru</label>
-                <input type="password" id="new-pw" placeholder="Masukkan password baru">
-                <button class="btn" onclick="ubahPassword()">Ubah Password Akun</button>
-            </div>
-            <div class="card">
-                <h3>Riwayat Accept / Decline</h3>
-                <table>
-                    <thead><tr><th>User</th><th>Platform</th><th>Status</th><th>Waktu</th></tr></thead>
-                    <tbody id="riwayat-owner"><tr><td colspan="4" style="text-align:center;color:var(--muted);">Belum ada riwayat.</td></tr></tbody>
+                    <thead><tr><th>User</th><th>Platform</th><th>Layanan</th><th>Jumlah</th><th>Status</th><th>Aksi</th></tr></thead>
+                    <tbody id="owner-pesanan">
+                        <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px;">Belum ada pesanan.</td></tr>
+                    </tbody>
                 </table>
             </div>
         </div>
 
+        <!-- NAVIGASI BAWAH -->
         <div class="bottom-nav">
-            <div class="nav-item active" onclick="showPage('pesan')"><span class="nav-icon">🏠</span>Beranda</div>
-            <div class="nav-item" onclick="showPage('pesanan')"><span class="nav-icon">📄</span>Pesanan</div>
-            <div class="nav-item" onclick="showPage('chat')"><span class="nav-icon">💬</span>Chat CS</div>
+            <div class="nav-item active" onclick="bukaHalaman('pesan')"><span class="nav-icon">🏠</span>Beranda</div>
+            <div class="nav-item" onclick="bukaHalaman('pesanan')"><span class="nav-icon">📄</span>Pesanan</div>
+            <div class="nav-item" onclick="bukaHalaman('chat')"><span class="nav-icon">💬</span>Chat CS</div>
             <div class="nav-item"><span class="nav-icon">⚡</span>Booster</div>
             <div class="nav-item" onclick="logout()"><span class="nav-icon">☰</span>Logout</div>
         </div>
     </div>
 
-    <script src="js/config.js"></script>
-    <script src="js/contact.js"></script>
-    <script src="js/main.js"></script>
-</body>
-</html>
+    <script>
+        // ========== DATA HARGA ==========
+        const HARGA = {
+            Instagram: {
+                Followers: { '1.000': 24000, '2.000': 49000, '3.000': 67000 },
+                Likes: { '1.000': 10000, '2.000': 19000, '3.000': 38000 }
+            },
+            TikTok: {
+                Followers: { '1.000': 49000, '2.000': 95000, '5....
