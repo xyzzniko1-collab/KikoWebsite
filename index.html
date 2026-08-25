@@ -1,1 +1,249 @@
 
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kiko — Jasa Sosmed Terpercaya</title>
+    <!-- ✅ PATH BENAR UNTUK GITHUB (huruf kecil) -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="container">
+
+        <!-- MODAL LOGIN / DAFTAR -->
+        <div id="auth-modal" class="modal">
+            <div class="modal-content">
+                <span class="close" onclick="closeAuthModal()">&times;</span>
+                <h2 id="auth-title">Login Akun</h2>
+                
+                <!-- FORM LOGIN -->
+                <div id="login-form">
+                    <label>Username</label>
+                    <input type="text" id="login-usn" placeholder="Masukkan username">
+                    <label>Password</label>
+                    <input type="password" id="login-pw" placeholder="Masukkan password">
+                    <button class="btn" onclick="login()">Login</button>
+                    <p style="margin-top:15px;color:var(--muted);text-align:center;">
+                        Belum punya akun? <span class="link-text" onclick="showRegister()">Daftar disini</span>
+                    </p>
+                </div>
+
+                <!-- FORM DAFTAR -->
+                <div id="register-form" class="hidden">
+                    <label>Username</label>
+                    <input type="text" id="reg-usn" placeholder="Masukkan username">
+                    <label>Password</label>
+                    <input type="password" id="reg-pw" placeholder="Masukkan password">
+                    <label>Pilih Metode Pembayaran</label>
+                    <select id="reg-bank">
+                        <option value="">-- Pilih --</option>
+                        <option value="Gopay">Gopay</option>
+                        <option value="Dana">Dana</option>
+                        <option value="BCA">BCA</option>
+                        <option value="Seabank">Seabank</option>
+                    </select>
+                    <label>No. Rekening / No. E-Wallet</label>
+                    <input type="text" id="reg-no-rek" placeholder="Masukkan nomor">
+                    <button class="btn" onclick="register()">Daftar</button>
+                    <p style="margin-top:15px;color:var(--muted);text-align:center;">
+                        Sudah punya akun? <span class="link-text" onclick="showLogin()">Login disini</span>
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- HEADER TABS -->
+        <div class="header-tabs">
+            <div class="tab active" id="tab-pesan" onclick="showPage('pesan')">Pesan</div>
+            <div class="tab inactive" id="tab-pesanan" onclick="showPage('pesanan')">Pesanan</div>
+            <div class="tab inactive" id="tab-chat" onclick="showPage('chat')">Chat CS</div>
+            <div class="tab inactive hidden" id="tab-owner" onclick="showPage('owner')">Owner</div>
+        </div>
+
+        <!-- INFO PENTING -->
+        <div class="info-box" onclick="toggleInfo('info-penting')">
+            <span class="info-text">⚠️ Info penting sebelum memesan</span>
+            <span class="dropdown-icon" id="icon-info-penting">▼</span>
+        </div>
+        <div id="info-penting" class="info-content hidden">
+            <h4>Instagram</h4>
+            <p>Sebagian akun perlu <strong>menonaktifkan</strong> pengaturan <em>"Laporkan untuk ditinjau"</em> agar followers masuk dan pesanan tidak error/partial.</p>
+            <div class="info-highlight">
+                Pengaturan dan aktivitas → Ikut dan undang teman → Laporkan untuk ditinjau (nonaktifkan)
+            </div>
+            <h4>TikTok</h4>
+            <p>Pastikan akun <strong>publik</strong> (bukan privat) dan video tidak disembunyikan, agar followers / likes / views bisa masuk dan tidak error.</p>
+            <h4>Telegram (Subscriber Channel)</h4>
+            <p>Channel harus <strong>publik</strong> dan punya <strong>username</strong>. Jangan ubah ke privat atau ganti username selama pesanan berjalan agar subscriber masuk.</p>
+            <p style="margin-top:15px; color:var(--muted); font-size:0.9rem;">Pesanan dipantau otomatis untuk estimasi kecepatan pengerjaan tiap layanan.</p>
+        </div>
+
+        <!-- KETENTUAN -->
+        <div class="info-box" onclick="toggleInfo('ketentuan')">
+            <span class="info-text">📋 Ketentuan (Order · Speed Up · Refill) — wajib baca</span>
+            <span class="dropdown-icon" id="icon-ketentuan">▼</span>
+        </div>
+        <div id="ketentuan" class="info-content hidden">
+            <h4>Order</h4>
+            <ul>
+                <li>Input link sesuai format — pesanan <strong>tidak bisa dibatalkan</strong>.</li>
+                <li>Jangan pakai 2 layanan sekaligus untuk link yang sama — tunggu selesai dulu.</li>
+                <li>Link salah / di-private / dihapus setelah order → otomatis selesai, <strong>tanpa refund</strong>.</li>
+                <li>Status partial / dibatalkan → saldo dikembalikan otomatis.</li>
+                <li>Kecepatan & estimasi bisa berubah tergantung server.</li>
+            </ul>
+            <h4>Garansi Refill</h4>
+            <ul>
+                <li>Jika turun >30% setelah selesai, bisa klaim isi ulang.</li>
+                <li>Akun harus tetap <strong>publik</strong> dan tidak ganti username.</li>
+                <li>Jangan order ulang ke link yang sama selama proses.</li>
+            </ul>
+        </div>
+
+        <!-- HALAMAN PESAN -->
+        <div id="page-pesan">
+            <h2 class="section-title">LAYANAN POPULER</h2>
+            <div class="popular-grid">
+                <div class="popular-card" onclick="selectPlatform('Instagram')">
+                    <div class="popular-icon">📸</div>
+                    <p>Instagram</p>
+                </div>
+                <div class="popular-card" onclick="selectPlatform('TikTok')">
+                    <div class="popular-icon">🎵</div>
+                    <p>TikTok</p>
+                </div>
+                <div class="popular-card" onclick="selectPlatform('YouTube')">
+                    <div class="popular-icon">▶️</div>
+                    <p>YouTube</p>
+                </div>
+                <div class="popular-card" onclick="selectPlatform('Telegram')">
+                    <div class="popular-icon">✈️</div>
+                    <p>Telegram</p>
+                </div>
+            </div>
+
+            <p class="sub-title">Pilih platform lainnya</p>
+            <div class="platform-grid">
+                <div class="platform-card" onclick="selectPlatform('Twitter/X')">
+                    <div class="platform-icon">🐦</div>
+                    <div class="platform-name">Twitter / X</div>
+                    <div class="platform-services">Followers & Likes</div>
+                    <div class="platform-start">mulai Rp12.000/1k</div>
+                </div>
+                <div class="platform-card" onclick="selectPlatform('Facebook')">
+                    <div class="platform-icon">📘</div>
+                    <div class="platform-name">Facebook</div>
+                    <div class="platform-services">Followers & Likes</div>
+                    <div class="platform-start">mulai Rp15.000/1k</div>
+                </div>
+            </div>
+
+            <!-- FORM PEMESANAN -->
+            <div id="order-form" class="hidden card">
+                <h3>Form Pemesanan</h3>
+                <label>Platform</label>
+                <input type="text" id="form-platform" readonly>
+                <label>Layanan</label>
+                <select id="form-layanan"><option value="">-- Pilih Layanan --</option></select>
+                <label>Jumlah</label>
+                <select id="form-jumlah"><option value="">-- Pilih Jumlah --</option></select>
+                <label>Link / Username Akun Target</label>
+                <input type="text" id="form-link" placeholder="Masukkan link atau username akun target">
+                <div class="note">⚠️ Pastikan link & akun <strong>publik</strong> dan benar. Jika salah, pesanan tidak bisa diproses & tidak bisa refund.</div>
+                
+                <div class="summary-box">
+                    <h4>Ringkasan Pesanan</h4>
+                    <p>Platform: <span id="sum-platform">-</span></p>
+                    <p>Layanan: <span id="sum-layanan">-</span></p>
+                    <p>Jumlah: <span id="sum-jumlah">-</span></p>
+                    <p class="total">Total: <span id="sum-harga">Rp 0</span></p>
+                </div>
+                <button class="btn" onclick="lanjutBayar()">Lanjut ke Pembayaran</button>
+            </div>
+
+            <!-- FORM PEMBAYARAN -->
+            <div id="payment-form" class="hidden card">
+                <h3>Pembayaran</h3>
+                <div class="summary-box">
+                    <h4>Ringkasan Pesanan</h4>
+                    <p>Platform: <span id="pay-platform">-</span></p>
+                    <p>Layanan: <span id="pay-layanan">-</span></p>
+                    <p>Jumlah: <span id="pay-jumlah">-</span></p>
+                    <p class="total">Total: <span id="pay-harga">Rp 0</span></p>
+                </div>
+                <div class="note">
+                    <strong>Transfer ke Rekening Owner:</strong><br>
+                    Bank Seabank<br>
+                    <strong style="font-size:1.2rem;color:var(--gold);">901369767087</strong><br>
+                    a/n S Y
+                </div>
+                <div class="note">📝 Setelah transfer, upload bukti screenshot TF di bawah ini. Pesanan dicek owner, minimal 2–5 jam.</div>
+                <label>Upload Bukti Transfer</label>
+                <div class="upload-box" onclick="document.getElementById('bukti-tf').click()">
+                    <p>📷 Klik untuk upload bukti screenshot TF</p>
+                    <input type="file" id="bukti-tf" accept="image/*" hidden onchange="previewBukti()">
+                    <img id="bukti-preview" class="preview-img" src="" alt="Preview bukti TF">
+                </div>
+                <button class="btn" onclick="kirimPesanan()">Kirim Pesanan</button>
+                <button class="btn btn-secondary" onclick="kembaliKeForm()">Kembali</button>
+            </div>
+        </div>
+
+        <!-- HALAMAN PESANAN -->
+        <div id="page-pesanan" class="hidden">
+            <h2 class="section-title">Riwayat Pesanan</h2>
+            <table>
+                <thead><tr><th>Platform</th><th>Layanan</th><th>Jumlah</th><th>Total</th><th>Status</th></tr></thead>
+                <tbody id="pesanan-list">
+                    <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">Belum ada pesanan.</td></tr>
+                </tbody>
+            </table>
+            <div class="note">📝 Keterangan status:<br>⏳ Menunggu = sedang dicek owner<br>✅ Accept = sedang diproses<br>❌ Decline = ditolak, hubungi WhatsApp</div>
+        </div>
+
+        <!-- HALAMAN CHAT -->
+        <div id="page-chat" class="hidden">
+            <h2 class="section-title">Chat Customer Service</h2>
+            <div class="card">
+                <p style="color:var(--muted);margin-bottom:15px;">💬 Chat ini bersifat privat. Hanya Anda & Owner yang dapat melihat percakapan ini.</p>
+                <div id="chat-box" class="chat-box">
+                    <div class="chat-bubble system">Selamat datang di CS! Silakan tanya apa saja.</div>
+                </div>
+                <div class="chat-input-container">
+                    <input type="text" id="chat-input" placeholder="Ketik pesan Anda..." onkeypress="if(event.key==='Enter')kirimChat()">
+                    <button class="btn" onclick="kirimChat()">Kirim</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- HALAMAN OWNER -->
+        <div id="page-owner" class="hidden">
+            <h2 class="section-title">Panel Owner</h2>
+            <div class="card">
+                <h3>Daftar Pesanan Masuk</h3>
+                <table>
+                    <thead><tr><th>User</th><th>Platform</th><th>Layanan</th><th>Jumlah</th><th>Link</th><th>Bukti TF</th><th>Status</th><th>Aksi</th></tr></thead>
+                    <tbody id="owner-pesanan-list">
+                        <tr><td colspan="8" style="text-align:center;color:var(--muted);padding:20px;">Belum ada pesanan masuk.</td></tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- NAVIGASI BAWAH -->
+        <div class="bottom-nav">
+            <div class="nav-item active" onclick="showPage('pesan')"><span class="nav-icon">🏠</span>Beranda</div>
+            <div class="nav-item" onclick="showPage('pesanan')"><span class="nav-icon">📄</span>Pesanan</div>
+            <div class="nav-item" onclick="showPage('chat')"><span class="nav-icon">💬</span>Chat CS</div>
+            <div class="nav-item"><span class="nav-icon">⚡</span>Booster</div>
+            <div class="nav-item" onclick="logout()"><span class="nav-icon">☰</span>Logout</div>
+        </div>
+    </div>
+
+    <!-- ✅ PATH JS BENAR UNTUK GITHUB -->
+    <script src="js/config.js"></script>
+    <script src="js/contact.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html>
