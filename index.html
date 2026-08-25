@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Jasa Sosmed Terpercaya</title>
+    <title>SIMURU — Jasa Sosmed Terpercaya</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -29,15 +29,16 @@
                     <input type="text" id="reg-usn" placeholder="Masukkan username">
                     <label>Password</label>
                     <input type="password" id="reg-pw" placeholder="Masukkan password">
-                    <label>Pilih No. Rekening</label>
+                    <label>Pilih Metode Pembayaran</label>
                     <select id="reg-bank">
                         <option value="">-- Pilih --</option>
                         <option value="Gopay">Gopay</option>
                         <option value="Dana">Dana</option>
                         <option value="BCA">BCA</option>
+                        <option value="Seabank">Seabank</option>
                     </select>
                     <label>No. Rekening / No. E-Wallet</label>
-                    <input type="text" id="reg-no-rek" placeholder="Masukkan no rekening">
+                    <input type="text" id="reg-no-rek" placeholder="Masukkan nomor">
                     <button class="btn" onclick="register()">Daftar</button>
                     <p style="margin-top:15px;color:var(--muted);">
                         Sudah punya akun? <span style="color:var(--gold);cursor:pointer;" onclick="showLogin()">Login disini</span>
@@ -54,19 +55,55 @@
             <div class="tab inactive hidden" id="tab-owner" onclick="showPage('owner')">Owner</div>
         </div>
 
-        <!-- INFO BOX -->
-        <div class="info-box">
+        <!-- INFO BOX & KETENTUAN LENGKAP -->
+        <div class="info-box" onclick="toggleInfo('info-penting')">
             <span class="info-text">⚠️ Info penting sebelum memesan</span>
-            <span class="dropdown-icon">▼</span>
+            <span class="dropdown-icon" id="icon-info-penting">▼</span>
         </div>
-        <div class="info-box">
-            <span class="info-text">📋 Ketentuan (Order · Garansi) — wajib baca</span>
-            <span class="dropdown-icon">▼</span>
+        <div id="info-penting" class="info-content hidden">
+            <h4>Instagram</h4>
+            <p>Sebagian akun perlu <strong>menonaktifkan</strong> pengaturan <em>"Laporkan untuk ditinjau"</em> agar followers masuk dan pesanan tidak error/partial.</p>
+            <div class="info-highlight">
+                Pengaturan dan aktivitas → Ikut dan undang teman → Laporkan untuk ditinjau (nonaktifkan)
+            </div>
+            <h4>TikTok</h4>
+            <p>Pastikan akun <strong>publik</strong> (bukan privat) dan video tidak disembunyikan, agar followers / likes / views bisa masuk dan tidak error.</p>
+            <h4>Telegram (Subscriber Channel)</h4>
+            <p>Channel harus <strong>publik</strong> dan punya <strong>username</strong>. Jangan ubah ke privat atau ganti username selama pesanan berjalan agar subscriber masuk.</p>
+            <p style="margin-top:15px; color:var(--muted); font-size:0.9rem;">Pesanan dipantau otomatis untuk estimasi kecepatan pengerjaan tiap layanan.</p>
+        </div>
+
+        <div class="info-box" onclick="toggleInfo('ketentuan')">
+            <span class="info-text">📋 Ketentuan (Order · Speed Up · Refill) — wajib baca</span>
+            <span class="dropdown-icon" id="icon-ketentuan">▼</span>
+        </div>
+        <div id="ketentuan" class="info-content hidden">
+            <h4>Order</h4>
+            <ul>
+                <li>Input link sesuai format di keterangan — pesanan <strong>tidak bisa dibatalkan</strong>.</li>
+                <li>Jangan pakai 2 layanan sekaligus untuk link yang sama (tunggu <strong>completed</strong> dulu).</li>
+                <li>Link salah / di-private / dihapus setelah order → otomatis <strong>completed, tanpa refund</strong>.</li>
+                <li>Status <strong>partial / canceled</strong> → saldo otomatis di-refund, bisa order ulang.</li>
+                <li>Jumlah maks = kapasitas total per akun/link, bukan per sekali order.</li>
+                <li>Speed & drop rate = estimasi, bisa berubah tergantung server. Report setelah 24 jam.</li>
+            </ul>
+            <h4>Speed Up</h4>
+            <ul>
+                <li>Untuk order <strong>stuck >24 jam</strong> (kecuali layanan bertanda SLOW).</li>
+                <li>Lapor Order ID ke CS; diproses 1×24 jam; maks 1×/hari per order.</li>
+            </ul>
+            <h4>Refill (garansi isi ulang drop)</h4>
+            <ul>
+                <li>Untuk drop <strong>>30%</strong> setelah status SELESAI (partial tidak bisa refill).</li>
+                <li>Hanya layanan bergaransi refill. Pakai tombol <strong>Refill</strong> di riwayat.</li>
+                <li>Akun harus <strong>PUBLIK</strong> & tidak ganti username — kalau tidak, refill gagal.</li>
+                <li>Jangan order ulang ke link sama selama proses (garansi hangus). Proses 3–5 hari.</li>
+                <li>Klaim tidak berlaku bila masa garansi sudah habis.</li>
+            </ul>
         </div>
 
         <!-- HALAMAN PESAN -->
         <div id="page-pesan">
-            <!-- LAYANAN POPULER SESUAI GAMBAR -->
             <h2 style="color:var(--gold);margin:30px 0 15px;text-align:center;font-size:1.5rem;">LAYANAN POPULER</h2>
             <div class="popular-grid">
                 <div class="popular-card" onclick="selectPlatform('YouTube')">
@@ -145,7 +182,6 @@
                 </div>
             </div>
 
-            <!-- FORM PESANAN -->
             <div id="order-form" class="hidden">
                 <div class="card">
                     <h2>Form Pemesanan</h2>
@@ -169,7 +205,6 @@
                 </div>
             </div>
 
-            <!-- FORM PEMBAYARAN -->
             <div id="payment-form" class="hidden">
                 <div class="card">
                     <h2>Pembayaran</h2>
@@ -199,7 +234,6 @@
             </div>
         </div>
 
-        <!-- HALAMAN PESANAN -->
         <div id="page-pesanan" class="hidden">
             <h2 style="color:var(--gold);margin-bottom:15px;">Riwayat Pesanan</h2>
             <table>
@@ -209,13 +243,12 @@
             <div class="note">📝 Keterangan status:<br>⏳ Menunggu acc = pesanan sedang dicek owner<br>✅ Accept = pesanan sudah disetujui dan diproses<br>❌ Decline = pesanan ditolak, silakan chat WhatsApp</div>
         </div>
 
-        <!-- HALAMAN CHAT CS (PRIVAT PER USER) -->
         <div id="page-chat" class="hidden">
             <h2 style="color:var(--gold);margin-bottom:15px;">Chat Customer Service</h2>
             <div class="card">
-                <p style="color:var(--muted);margin-bottom:15px;">💬 Chat ini bersifat privat. Hanya Anda dan Owner yang dapat melihat percakapan ini.</p>
+                <p style="color:var(--muted);margin-bottom:15px;">💬 Chat ini bersifat privat. Hanya Anda & Owner yang dapat melihat percakapan ini.</p>
                 <div id="chat-box" class="chat-box">
-                    <div class="chat-bubble system">Selamat datang di CS! Silakan tanya apa saja. Hanya Anda & Owner yang bisa lihat chat ini.</div>
+                    <div class="chat-bubble system">Selamat datang di CS! Silakan tanya apa saja.</div>
                 </div>
                 <div class="chat-input-container">
                     <input type="text" id="chat-input" placeholder="Ketik pesan Anda..." onkeypress="if(event.key==='Enter')kirimChat()">
@@ -224,11 +257,8 @@
             </div>
         </div>
 
-        <!-- HALAMAN OWNER -->
         <div id="page-owner" class="hidden">
             <h2 style="color:var(--gold);margin-bottom:15px;">Panel Owner</h2>
-            
-            <!-- CHAT OWNER - LIHAT SEMUA CHAT USER -->
             <div class="card">
                 <h3>💬 Chat dari User</h3>
                 <label>Pilih User untuk melihat chat</label>
@@ -243,7 +273,6 @@
                     <button class="btn btn-green" onclick="balasChat()">Balas</button>
                 </div>
             </div>
-
             <div class="card">
                 <h3>Daftar Pesanan Masuk</h3>
                 <table>
@@ -268,7 +297,6 @@
             </div>
         </div>
 
-        <!-- NAVIGASI BAWAH -->
         <div class="bottom-nav">
             <div class="nav-item active" onclick="showPage('pesan')"><span class="nav-icon">🏠</span>Beranda</div>
             <div class="nav-item" onclick="showPage('pesanan')"><span class="nav-icon">📄</span>Pesanan</div>
@@ -278,59 +306,8 @@
         </div>
     </div>
 
-    <!-- SCRIPT -->
     <script src="js/config.js"></script>
     <script src="js/contact.js"></script>
     <script src="js/main.js"></script>
 </body>
-</html>         <!-- INFO BOX & KETENTUAN (DARI KEDUA GAMBAR) -->
-        <div class="info-box" onclick="toggleInfo('info-penting')">
-            <span class="info-text">⚠️ Info penting sebelum memesan</span>
-            <span class="dropdown-icon" id="icon-info-penting">▼</span>
-        </div>
-        <div id="info-penting" class="info-content hidden">
-            <h4>Instagram</h4>
-            <p>Sebagian akun perlu <strong>menonaktifkan</strong> pengaturan <em>"Laporkan untuk ditinjau"</em> agar followers masuk dan pesanan tidak error/partial.</p>
-            <div class="info-highlight">
-                Pengaturan dan aktivitas → Ikut dan undang teman → Laporkan untuk ditinjau (nonaktifkan)
-            </div>
-
-            <h4>TikTok</h4>
-            <p>Pastikan akun <strong>publik</strong> (bukan privat) dan video tidak disembunyikan, agar followers / likes / views bisa masuk dan tidak error.</p>
-
-            <h4>Telegram (Subscriber Channel)</h4>
-            <p>Channel harus <strong>publik</strong> dan punya <strong>username</strong>. Jangan ubah ke privat atau ganti username selama pesanan berjalan agar subscriber masuk.</p>
-
-            <p style="margin-top:15px; color:var(--muted); font-size:0.9rem;">Pesanan dipantau otomatis untuk estimasi kecepatan pengerjaan tiap layanan.</p>
-        </div>
-
-        <div class="info-box" onclick="toggleInfo('ketentuan')">
-            <span class="info-text">📋 Ketentuan (Order · Speed Up · Refill) — wajib baca</span>
-            <span class="dropdown-icon" id="icon-ketentuan">▼</span>
-        </div>
-        <div id="ketentuan" class="info-content hidden">
-            <h4>Order</h4>
-            <ul>
-                <li>Input link sesuai format di keterangan — pesanan <strong>tidak bisa dibatalkan</strong>.</li>
-                <li>Jangan pakai 2 layanan sekaligus untuk link yang sama (tunggu <strong>completed</strong> dulu).</li>
-                <li>Link salah / di-private / dihapus setelah order → otomatis <strong>completed, tanpa refund</strong>.</li>
-                <li>Status <strong>partial / canceled</strong> → saldo otomatis di-refund, bisa order ulang.</li>
-                <li>Jumlah maks = kapasitas total per akun/link, bukan per sekali order.</li>
-                <li>Speed & drop rate = estimasi, bisa berubah tergantung server. Report setelah 24 jam.</li>
-            </ul>
-
-            <h4>Speed Up</h4>
-            <ul>
-                <li>Untuk order <strong>stuck >24 jam</strong> (kecuali layanan bertanda SLOW).</li>
-                <li>Lapor Order ID ke CS; diproses 1×24 jam; maks 1×/hari per order.</li>
-            </ul>
-
-            <h4>Refill (garansi isi ulang drop)</h4>
-            <ul>
-                <li>Untuk drop <strong>>30%</strong> setelah status SELESAI (partial tidak bisa refill).</li>
-                <li>Hanya layanan bergaransi refill (lihat keterangan). Pakai tombol <strong>Refill</strong> di riwayat.</li>
-                <li>Akun harus <strong>PUBLIK</strong> & tidak ganti username — kalau tidak, refill gagal.</li>
-                <li>Jangan order ulang ke link sama selama proses (garansi hangus). Proses 3–5 hari.</li>
-                <li>Klaim tidak berlaku bila masa garansi sudah habis.</li>
-            </ul>
-        </div>
+</html>
