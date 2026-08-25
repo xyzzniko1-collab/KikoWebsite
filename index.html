@@ -283,4 +283,54 @@
     <script src="js/contact.js"></script>
     <script src="js/main.js"></script>
 </body>
-</html>
+</html>         <!-- INFO BOX & KETENTUAN (DARI KEDUA GAMBAR) -->
+        <div class="info-box" onclick="toggleInfo('info-penting')">
+            <span class="info-text">⚠️ Info penting sebelum memesan</span>
+            <span class="dropdown-icon" id="icon-info-penting">▼</span>
+        </div>
+        <div id="info-penting" class="info-content hidden">
+            <h4>Instagram</h4>
+            <p>Sebagian akun perlu <strong>menonaktifkan</strong> pengaturan <em>"Laporkan untuk ditinjau"</em> agar followers masuk dan pesanan tidak error/partial.</p>
+            <div class="info-highlight">
+                Pengaturan dan aktivitas → Ikut dan undang teman → Laporkan untuk ditinjau (nonaktifkan)
+            </div>
+
+            <h4>TikTok</h4>
+            <p>Pastikan akun <strong>publik</strong> (bukan privat) dan video tidak disembunyikan, agar followers / likes / views bisa masuk dan tidak error.</p>
+
+            <h4>Telegram (Subscriber Channel)</h4>
+            <p>Channel harus <strong>publik</strong> dan punya <strong>username</strong>. Jangan ubah ke privat atau ganti username selama pesanan berjalan agar subscriber masuk.</p>
+
+            <p style="margin-top:15px; color:var(--muted); font-size:0.9rem;">Pesanan dipantau otomatis untuk estimasi kecepatan pengerjaan tiap layanan.</p>
+        </div>
+
+        <div class="info-box" onclick="toggleInfo('ketentuan')">
+            <span class="info-text">📋 Ketentuan (Order · Speed Up · Refill) — wajib baca</span>
+            <span class="dropdown-icon" id="icon-ketentuan">▼</span>
+        </div>
+        <div id="ketentuan" class="info-content hidden">
+            <h4>Order</h4>
+            <ul>
+                <li>Input link sesuai format di keterangan — pesanan <strong>tidak bisa dibatalkan</strong>.</li>
+                <li>Jangan pakai 2 layanan sekaligus untuk link yang sama (tunggu <strong>completed</strong> dulu).</li>
+                <li>Link salah / di-private / dihapus setelah order → otomatis <strong>completed, tanpa refund</strong>.</li>
+                <li>Status <strong>partial / canceled</strong> → saldo otomatis di-refund, bisa order ulang.</li>
+                <li>Jumlah maks = kapasitas total per akun/link, bukan per sekali order.</li>
+                <li>Speed & drop rate = estimasi, bisa berubah tergantung server. Report setelah 24 jam.</li>
+            </ul>
+
+            <h4>Speed Up</h4>
+            <ul>
+                <li>Untuk order <strong>stuck >24 jam</strong> (kecuali layanan bertanda SLOW).</li>
+                <li>Lapor Order ID ke CS; diproses 1×24 jam; maks 1×/hari per order.</li>
+            </ul>
+
+            <h4>Refill (garansi isi ulang drop)</h4>
+            <ul>
+                <li>Untuk drop <strong>>30%</strong> setelah status SELESAI (partial tidak bisa refill).</li>
+                <li>Hanya layanan bergaransi refill (lihat keterangan). Pakai tombol <strong>Refill</strong> di riwayat.</li>
+                <li>Akun harus <strong>PUBLIK</strong> & tidak ganti username — kalau tidak, refill gagal.</li>
+                <li>Jangan order ulang ke link sama selama proses (garansi hangus). Proses 3–5 hari.</li>
+                <li>Klaim tidak berlaku bila masa garansi sudah habis.</li>
+            </ul>
+        </div>
