@@ -9,12 +9,11 @@
 </head>
 <body>
 
-<!-- === MODAL LOGIN / REGISTER === -->
+<!-- MODAL LOGIN -->
 <div id="auth-modal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeAuthModal()">&times;</span>
         <h2 id="auth-title">Login Akun</h2>
-
         <div id="login-form">
             <label>Username</label>
             <input type="text" id="login-usn" placeholder="Masukkan username">
@@ -25,7 +24,6 @@
                 Belum punya akun? <span class="link-text" onclick="showRegister()">Daftar di sini</span>
             </p>
         </div>
-
         <div id="register-form" class="hidden">
             <label>Username</label>
             <input type="text" id="reg-usn" placeholder="Buat username">
@@ -65,7 +63,6 @@
     <div class="card">
         <h3>🔄 Status Sistem</h3>
         <p id="api-status">🔄 Menghubungkan ke server...</p>
-        <p style="font-size:12px;color:var(--muted);">API: Simuru | Key: Terhubung ✅</p>
     </div>
 
     <div class="header-tabs">
@@ -77,54 +74,47 @@
         <div class="tab inactive hidden" id="tab-admin" onclick="showPage('admin')">👨‍💼 Admin</div>
     </div>
 
+    <!-- BERANDA -->
     <div id="page-beranda">
         <div class="card">
             <h2>👋 Selamat Datang!</h2>
             <p>Terima kasih telah berbelanja di toko kami 😊</p>
             <div class="note">
-                ⚡ <strong>Proses Cepat</strong> — Pesanan diproses maksimal 1x24 jam<br>
-                🔒 <strong>Aman</strong> — Data Anda terjamin aman<br>
-                💳 <strong>Pembayaran</strong> — Seabank, DANA, Gopay, BCA
+                ⚡ Proses Cepat — Maksimal 1x24 jam<br>
+                🔒 Data Aman<br>
+                💳 Seabank, DANA, Gopay, BCA
             </div>
         </div>
-
         <div class="card">
             <h3>🔥 Layanan Populer</h3>
             <div class="popular-grid">
-                <div class="popular-card" onclick="selectPlatform('Instagram'); showPage('booster')">
-                    <span class="popular-icon">📸</span>
-                    <p>Instagram</p>
+                <div class="popular-card" onclick="selectPlatform('Instagram')">
+                    <span class="popular-icon">📸</span><p>Instagram</p>
                 </div>
-                <div class="popular-card" onclick="selectPlatform('TikTok'); showPage('booster')">
-                    <span class="popular-icon">🎵</span>
-                    <p>TikTok</p>
+                <div class="popular-card" onclick="selectPlatform('TikTok')">
+                    <span class="popular-icon">🎵</span><p>TikTok</p>
                 </div>
-                <div class="popular-card" onclick="selectPlatform('YouTube'); showPage('booster')">
-                    <span class="popular-icon">▶️</span>
-                    <p>YouTube</p>
+                <div class="popular-card" onclick="selectPlatform('YouTube')">
+                    <span class="popular-icon">▶️</span><p>YouTube</p>
                 </div>
                 <div class="popular-card" onclick="showPage('nomor')">
-                    <span class="popular-icon">📱</span>
-                    <p>Nomor</p>
+                    <span class="popular-icon">📱</span><p>Nomor</p>
                 </div>
             </div>
         </div>
-
         <div class="card">
             <h3>💰 Info Pembayaran</h3>
             <p><strong>Seabank:</strong> 901369767087</p>
             <p><strong>a.n:</strong> S Y</p>
-            <p style="color:var(--muted);font-size:13px;margin-top:8px;">Lakukan pembayaran lalu upload bukti di halaman pesanan</p>
         </div>
-
         <button class="btn btn-secondary" onclick="showPagePesanan()">📋 Riwayat Pesanan</button>
         <button class="btn" style="background:#e74c3c;margin-top:10px;" onclick="logout()">🚪 Keluar Akun</button>
     </div>
 
+    <!-- NOMOR -->
     <div id="page-nomor" class="hidden">
         <div class="card">
             <h2>📱 Beli Nomor Virtual</h2>
-            
             <label>Pilih Negara</label>
             <select id="nomor-negara" onchange="updateNomorLayanan()">
                 <option value="">-- Pilih Negara --</option>
@@ -133,245 +123,162 @@
                 <option value="+65">🇸🇬 Singapura (+65)</option>
                 <option value="+1">🇺🇸 USA (+1)</option>
             </select>
-
             <label>Layanan</label>
             <select id="nomor-layanan" onchange="updateNomorJumlah()">
-                <option value="">-- Pilih Layanan Dulu --</option>
+                <option value="">-- Pilih Layanan --</option>
             </select>
-
             <label>Jumlah</label>
             <select id="nomor-jumlah" onchange="updateNomorHarga()">
                 <option value="">-- Pilih Jumlah --</option>
             </select>
-
-            <div id="verify-box" class="verify-box hidden">
-                <h4>🔑 Kode Verifikasi Pembelian</h4>
-                <p style="font-size:13px;color:#ccc;margin-bottom:8px;">Kode ini akan dikirim ke Owner untuk konfirmasi nomor</p>
-                <div id="kode-verifikasi" class="verify-code">- - - - - -</div>
-                <button class="btn chat-verify-btn" onclick="kirimKodeKeOwnerSekarang()">📨 Kirim Kode ke Owner</button>
-            </div>
-
             <div class="summary-box">
                 <p>Negara: <span id="nomor-sum-negara">-</span></p>
                 <p>Layanan: <span id="nomor-sum-layanan">-</span></p>
                 <p>Jumlah: <span id="nomor-sum-jumlah">-</span></p>
                 <p class="total">Total: <span id="nomor-sum-harga">Rp 0</span></p>
             </div>
-
             <button class="btn" onclick="lanjutBayarNomor()">Lanjut ke Pembayaran →</button>
         </div>
     </div>
 
+    <!-- BOOSTER -->
     <div id="page-booster" class="hidden">
         <div class="card">
             <h2>🚀 Sosmed Booster</h2>
-            <p style="color:var(--muted);margin-bottom:15px;">Pilih platform yang ingin di-boost</p>
-
+            <p style="color:var(--muted);margin-bottom:15px;">Pilih platform:</p>
             <div class="popular-grid">
                 <div class="popular-card" onclick="selectPlatform('Instagram')">
-                    <span class="popular-icon">📸</span>
-                    <p>Instagram</p>
+                    <span class="popular-icon">📸</span><p>Instagram</p>
                 </div>
                 <div class="popular-card" onclick="selectPlatform('TikTok')">
-                    <span class="popular-icon">🎵</span>
-                    <p>TikTok</p>
+                    <span class="popular-icon">🎵</span><p>TikTok</p>
                 </div>
                 <div class="popular-card" onclick="selectPlatform('Facebook')">
-                    <span class="popular-icon">📘</span>
-                    <p>Facebook</p>
+                    <span class="popular-icon">📘</span><p>Facebook</p>
                 </div>
                 <div class="popular-card" onclick="selectPlatform('YouTube')">
-                    <span class="popular-icon">▶️</span>
-                    <p>YouTube</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('Twitter/X')">
-                    <span class="popular-icon">🐦</span>
-                    <p>Twitter/X</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('Telegram')">
-                    <span class="popular-icon">✈️</span>
-                    <p>Telegram</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('LinkedIn')">
-                    <span class="popular-icon">💼</span>
-                    <p>LinkedIn</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('Google')">
-                    <span class="popular-icon">🔍</span>
-                    <p>Google</p>
+                    <span class="popular-icon">▶️</span><p>YouTube</p>
                 </div>
             </div>
-
             <div id="booster-form" class="hidden" style="margin-top:20px;">
-                <input type="hidden" id="form-platform">
-                
                 <label>Layanan</label>
                 <select id="form-layanan" onchange="updateJumlahBooster()">
                     <option value="">-- Pilih Layanan --</option>
                 </select>
-
                 <label>Jumlah</label>
                 <select id="form-jumlah" onchange="updateHargaBooster()">
                     <option value="">-- Pilih Jumlah --</option>
                 </select>
-
                 <label>Link Akun/Postingan</label>
                 <input type="url" id="form-link" placeholder="https://...">
-
                 <div class="summary-box">
                     <p>Platform: <span id="sum-platform">-</span></p>
                     <p>Layanan: <span id="sum-layanan">-</span></p>
                     <p>Jumlah: <span id="sum-jumlah">-</span></p>
                     <p class="total">Total: <span id="sum-harga">Rp 0</span></p>
                 </div>
-
                 <button class="btn" onclick="lanjutBayarBooster()">Lanjut ke Pembayaran →</button>
             </div>
         </div>
     </div>
 
+    <!-- CHAT CS -->
     <div id="page-chat" class="hidden">
         <div class="card">
-            <h2>💬 Hubungi Customer Service</h2>
-            <p style="color:var(--muted);margin-bottom:15px;">Kirim pesan, owner akan membalas secepatnya</p>
-
+            <h2>💬 Hubungi CS</h2>
             <div id="chat-box" class="chat-box">
-                <div class="chat-bubble system">Selamat datang di CS! Silakan tanya apa saja 😊</div>
+                <div class="chat-bubble system">Selamat datang! Silakan tanya 😊</div>
             </div>
-
             <div class="chat-input-container">
-                <input type="text" id="chat-input" placeholder="Ketik pesan Anda...">
+                <input type="text" id="chat-input" placeholder="Ketik pesan...">
                 <button class="btn" style="width:auto;padding:0 20px;" onclick="kirimChat()">Kirim</button>
             </div>
         </div>
     </div>
 
+    <!-- OWNER PANEL -->
     <div id="page-owner" class="hidden">
         <div class="card">
             <h2>🔐 Panel Owner</h2>
-
-            <h3 class="section-title">🔑 Kode Verifikasi Nomor</h3>
-            <table>
-                <thead><tr><th>User</th><th>Negara/Layanan</th><th>Kode</th><th>Status</th><th>Aksi</th></tr></thead>
-                <tbody id="verify-list-body">
-                    <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">Belum ada kode verifikasi.</td></tr>
-                </tbody>
-            </table>
-
-            <h3 class="section-title">📥 Semua Pesanan Masuk</h3>
-            <table>
-                <thead><tr><th>User</th><th>Tipe</th><th>Detail</th><th>Kode</th><th>Jumlah</th><th>Harga</th><th>Status</th><th>Aksi</th></tr></thead>
+            <h3 class="section-title">📥 Pesanan Masuk</h3>
+            <table><thead><tr><th>User</th><th>Tipe</th><th>Detail</th><th>Harga</th><th>Status</th></tr></thead>
                 <tbody id="owner-pesanan-list">
-                    <tr><td colspan="8" style="text-align:center;color:var(--muted);padding:20px;">Belum ada pesanan masuk.</td></tr>
+                    <tr><td colspan="5" style="text-align:center;color:var(--muted);">Belum ada pesanan.</td></tr>
                 </tbody>
             </table>
-
-            <h3 class="section-title">💬 Chat dari User</h3>
-            <p style="color:var(--muted);font-size:13px;margin-bottom:10px;">Pilih user untuk membalas pesan</p>
-            <div id="chat-user-list" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:15px;">
-                <p style="color:var(--muted);">Belum ada yang chat.</p>
-            </div>
-
+            <h3 class="section-title">💬 Chat User</h3>
+            <div id="chat-user-list"></div>
             <div id="selected-chat-area" class="hidden">
                 <p><strong>User:</strong> <span id="selected-chat-user"></span></p>
                 <div id="owner-chat-box" class="chat-box"></div>
                 <div class="chat-input-container">
-                    <input type="text" id="owner-chat-input" placeholder="Ketik balasan...">
+                    <input type="text" id="owner-chat-input" placeholder="Balasan...">
                     <button class="btn" style="width:auto;padding:0 20px;" onclick="kirimBalasanOwner()">Balas</button>
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- ADMIN PANEL -->
     <div id="page-admin" class="hidden">
         <div class="card">
             <h2>👨‍💼 Kelola Admin</h2>
-            
-            <h3>Tambah Admin Baru</h3>
             <label>Username Admin</label>
             <input type="text" id="new-admin-user" placeholder="Username">
             <label>Password Admin</label>
             <input type="password" id="new-admin-pass" placeholder="Password">
             <button class="btn" onclick="tambahAdmin()">+ Tambah Admin</button>
-
             <h3 class="section-title">Daftar Admin</h3>
-            <table>
-                <thead><tr><th>Username</th><th>Tanggal Dibuat</th><th>Aksi</th></tr></thead>
-                <tbody id="admin-list-body">
-                    <tr><td colspan="3" style="text-align:center;color:var(--muted);">Belum ada admin.</td></tr>
-                </tbody>
+            <table><thead><tr><th>Username</th><th>Tanggal</th><th>Aksi</th></tr></thead>
+                <tbody id="admin-list-body"></tbody>
             </table>
         </div>
     </div>
 
+    <!-- RIWAYAT PESANAN -->
     <div id="page-pesanan" class="hidden">
         <div class="card">
             <h2>📋 Riwayat Pesanan</h2>
-            <table>
-                <thead><tr><th>Tipe</th><th>Detail</th><th>Jumlah</th><th>Harga</th><th>Status</th></tr></thead>
-                <tbody id="pesanan-list">
-                    <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">Belum ada pesanan.</td></tr>
-                </tbody>
+            <table><thead><tr><th>Tipe</th><th>Detail</th><th>Jumlah</th><th>Harga</th><th>Status</th></tr></thead>
+                <tbody id="pesanan-list"></tbody>
             </table>
         </div>
     </div>
 
+    <!-- PEMBAYARAN -->
     <div id="payment-form" class="hidden">
         <div class="card">
             <h2>💳 Pembayaran</h2>
-            
             <div class="summary-box">
                 <p id="pay-type">-</p>
-                <p id="pay-platform-negara">-</p>
-                <p id="pay-layanan">-</p>
-                <p id="pay-jumlah">-</p>
+                <p id="pay-detail">-</p>
                 <p class="total" id="pay-harga">Rp 0</p>
             </div>
-
-            <div class="info-box" onclick="toggleInfo('pembayaran')">
-                <span>💳 Info Pembayaran</span>
-                <span id="icon-pembayaran">▼</span>
+            <div class="info-box">
+                <span>💳 Seabank: 901369767087 a.n S Y</span>
             </div>
-            <div id="info-pembayaran" class="info-content hidden">
-                <p><strong>Seabank:</strong> 901369767087</p>
-                <p><strong>a.n:</strong> S Y</p>
-                <p style="color:var(--muted);font-size:13px;">Transfer sesuai nominal di atas</p>
-            </div>
-
             <label>Upload Bukti Transfer</label>
             <div class="upload-box" onclick="document.getElementById('bukti-tf').click()">
-                📷 Klik untuk upload bukti pembayaran
+                📷 Klik upload bukti
                 <input type="file" id="bukti-tf" accept="image/*" style="display:none;" onchange="previewBukti()">
                 <img id="bukti-preview" class="preview-img" alt="Bukti TF">
             </div>
-
             <button class="btn" onclick="kirimPesanan()">✅ Kirim Pesanan</button>
             <button class="btn btn-secondary" onclick="kembaliKeForm()">← Kembali</button>
         </div>
     </div>
-
 </div>
 
+<!-- BOTTOM NAV -->
 <div class="bottom-nav">
-    <div class="nav-item" onclick="showPage('beranda')">
-        <span class="nav-icon">🏠</span>Beranda
-    </div>
-    <div class="nav-item" onclick="showPage('nomor')">
-        <span class="nav-icon">📱</span>Nomor
-    </div>
-    <div class="nav-item" onclick="showPage('booster')">
-        <span class="nav-icon">🚀</span>Booster
-    </div>
-    <div class="nav-item" onclick="showPage('chat')">
-        <span class="nav-icon">💬</span>CS
-    </div>
-    <div class="nav-item" onclick="showPagePesanan()">
-        <span class="nav-icon">📋</span>Pesanan
-    </div>
+    <div class="nav-item" onclick="showPage('beranda')"><span class="nav-icon">🏠</span>Beranda</div>
+    <div class="nav-item" onclick="showPage('nomor')"><span class="nav-icon">📱</span>Nomor</div>
+    <div class="nav-item" onclick="showPage('booster')"><span class="nav-icon">🚀</span>Booster</div>
+    <div class="nav-item" onclick="showPage('chat')"><span class="nav-icon">💬</span>CS</div>
+    <div class="nav-item" onclick="showPagePesanan()"><span class="nav-icon">📋</span>Pesanan</div>
 </div>
 
 <script src="js/config.js"></script>
 <script src="js/main.js"></script>
-
 </body>
 </html>
