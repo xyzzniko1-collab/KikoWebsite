@@ -1,60 +1,150 @@
 
-// ========== KONFIGURASI HARGA TETAP ==========
+// ========== KONFIGURASI HARGA LENGKAP ==========
 const CONFIG = {
     ownerUsername: 'owner',
     ownerPassword: 'owner123',
+    
+    // HARGA BOOSTER SESUAI PERMINTAAN
     hargaData: {
         Instagram: {
             Followers: { '1000': 24000, '2000': 49000, '3000': 67000 },
-            Likes: { '1000': 10000, '2000': 19000, '3000': 38000 }
+            Likes: { '1000': 10000, '2000': 19000, '3000': 38000 },
+            Views: { '1000': 8000, '5000': 35000, '10000': 65000 },
+            Comments: { '100': 15000, '500': 60000, '1000': 110000 }
         },
         TikTok: {
             Followers: { '1000': 49000, '2000': 80000, '3000': 130000 },
-            Likes: { '1000': 10000, '2000': 19000, '3000': 38000 }
+            Likes: { '1000': 10000, '2000': 19000, '3000': 38000 },
+            Views: { '1000': 12000, '5000': 50000, '10000': 95000 },
+            Shares: { '100': 8000, '500': 35000, '1000': 65000 },
+            Comments: { '100': 12000, '500': 50000, '1000': 90000 }
+        },
+        Facebook: {
+            Followers: { '1000': 35000, '2000': 65000, '5000': 150000 },
+            Likes: { '1000': 15000, '2000': 28000, '5000': 65000 },
+            Views: { '1000': 10000, '5000': 45000, '10000': 85000 },
+            Subscribers: { '1000': 40000, '2000': 75000, '5000': 180000 }
+        },
+        YouTube: {
+            Subscribers: { '100': 25000, '500': 110000, '1000': 200000 },
+            Views: { '1000': 8000, '5000': 35000, '10000': 60000 },
+            Likes: { '1000': 15000, '5000': 65000, '10000': 120000 },
+            Comments: { '100': 20000, '500': 85000, '1000': 150000 }
+        },
+        Twitter: {
+            Followers: { '1000': 30000, '2000': 55000, '5000': 130000 },
+            Likes: { '1000': 12000, '2000': 22000, '5000': 50000 },
+            Retweets: { '1000': 10000, '5000': 45000, '10000': 80000 },
+            Views: { '1000': 9000, '5000': 40000, '10000': 75000 }
+        },
+        Telegram: {
+            Members: { '100': 15000, '500': 65000, '1000': 120000 },
+            Views: { '1000': 8000, '5000': 35000, '10000': 60000 },
+            PostViews: { '1000': 7000, '5000': 30000, '10000': 55000 }
+        },
+        Twitch: {
+            Followers: { '100': 20000, '500': 85000, '1000': 160000 },
+            Views: { '1000': 15000, '5000': 65000, '10000': 120000 },
+            LiveViews: { '100': 25000, '500': 110000, '1000': 200000 }
+        },
+        Spotify: {
+            Followers: { '100': 30000, '500': 130000, '1000': 250000 },
+            Streams: { '1000': 20000, '5000': 90000, '10000': 170000 },
+            MonthlyListeners: { '1000': 25000, '5000': 110000, '10000': 200000 }
         }
     },
+    
+    // NOMOR — SEMUA LAYANAN LENGKAP
     nomorData: {
-        '+62': { WhatsApp: { '1': 15000, '5': 60000, '10': 110000 }, Telegram: { '1': 12000, '5': 50000, '10': 95000 } },
-        '+60': { WhatsApp: { '1': 25000, '5': 110000, '10': 200000 } },
-        '+65': { WhatsApp: { '1': 30000, '5': 135000, '10': 250000 } },
-        '+1': { WhatsApp: { '1': 45000, '5': 200000, '10': 380000 } }
+        '+62': {
+            WhatsApp: { '1': 15000, '5': 60000, '10': 110000, '50': 500000 },
+            Telegram: { '1': 12000, '5': 50000, '10': 95000, '50': 430000 },
+            Google: { '1': 18000, '5': 75000, '10': 140000, '50': 650000 },
+            Facebook: { '1': 16000, '5': 68000, '10': 125000, '50': 580000 },
+            Instagram: { '1': 15000, '5': 63000, '10': 115000, '50': 530000 },
+            Twitter: { '1': 17000, '5': 70000, '10': 130000, '50': 600000 },
+            TikTok: { '1': 20000, '5': 85000, '10': 160000, '50': 750000 },
+            Line: { '1': 14000, '5': 58000, '10': 105000, '50': 480000 },
+            Signal: { '1': 16000, '5': 68000, '10': 125000, '50': 570000 },
+            Viber: { '1': 15000, '5': 62000, '10': 115000, '50': 520000 }
+        },
+        '+60': {
+            WhatsApp: { '1': 25000, '5': 110000, '10': 200000 },
+            Telegram: { '1': 22000, '5': 95000, '10': 175000 },
+            Google: { '1': 28000, '5': 120000, '10': 220000 },
+            Facebook: { '1': 26000, '5': 115000, '10': 210000 }
+        },
+        '+65': {
+            WhatsApp: { '1': 30000, '5': 135000, '10': 250000 },
+            Telegram: { '1': 28000, '5': 125000, '10': 230000 },
+            Google: { '1': 35000, '5': 155000, '10': 280000 }
+        },
+        '+1': {
+            WhatsApp: { '1': 45000, '5': 200000, '10': 380000 },
+            Telegram: { '1': 42000, '5': 185000, '10': 350000 },
+            Google: { '1': 50000, '5': 220000, '10': 420000 },
+            Facebook: { '1': 48000, '5': 210000, '10': 400000 },
+            Instagram: { '1': 47000, '5': 205000, '10': 390000 },
+            Twitter: { '1': 46000, '5': 200000, '10': 380000 },
+            TikTok: { '1': 55000, '5': 250000, '10': 480000 }
+        },
+        '+44': {
+            WhatsApp: { '1': 40000, '5': 180000, '10': 340000 },
+            Telegram: { '1': 38000, '5': 170000, '10': 320000 },
+            Google: { '1': 45000, '5': 200000, '10': 380000 }
+        },
+        '+86': {
+            WhatsApp: { '1': 35000, '5': 155000, '10': 290000 },
+            Telegram: { '1': 32000, '5': 140000, '10': 260000 },
+            WeChat: { '1': 30000, '5': 130000, '10': 240000 }
+        },
+        '+81': {
+            WhatsApp: { '1': 42000, '5': 190000, '10': 360000 },
+            Telegram: { '1': 40000, '5': 180000, '10': 340000 },
+            Line: { '1': 38000, '5': 170000, '10': 320000 }
+        }
     }
 };
 
 let currentUser = null, selectedPlatform = null;
 let currentNomor = { negara: '', layanan: '', jumlah: '', harga: 0 };
 let currentBooster = { platform: '', layanan: '', jumlah: '', harga: 0 };
+let buktiTopUpBase64 = '';
 
 // ========== FUNGSI DASAR ==========
 function formatHarga(angka) { return 'Rp ' + parseInt(angka).toLocaleString('id-ID'); }
 function isOwner() { return currentUser?.username === CONFIG.ownerUsername; }
+function isAdmin() {
+    const admins = JSON.parse(localStorage.getItem('store_admins') || '[]');
+    return isOwner() || admins.some(a => a.username === currentUser?.username);
+}
 function DB_simpan(k, d) { localStorage.setItem(k, JSON.stringify(d)); }
 function DB_ambil(k, def=null) { const d=localStorage.getItem(k); return d?JSON.parse(d):def; }
 
 // ========== SISTEM SALDO ==========
 function getSaldo(username) {
-    const users = DB_ambil('simuru_users', {});
+    const users = DB_ambil('store_users', {});
     return users[username]?.saldo || 0;
 }
 function tambahSaldo(username, jumlah, ket='Top Up') {
-    const users = DB_ambil('simuru_users', {});
+    const users = DB_ambil('store_users', {});
     if (!users[username]) return false;
     users[username].saldo = (users[username].saldo || 0) + parseInt(jumlah);
-    DB_simpan('simuru_users', users);
-    const riwayat = DB_ambil('riwayat_' + username, []);
+    DB_simpan('store_users', users);
+    const riwayat = DB_ambil('riwayat_saldo_' + username, []);
     riwayat.unshift({waktu:new Date().toLocaleString(),tipe:'tambah',jumlah:parseInt(jumlah),ket});
-    DB_simpan('riwayat_' + username, riwayat);
+    DB_simpan('riwayat_saldo_' + username, riwayat);
     updateSaldoDisplay();
     return true;
 }
 function kurangiSaldo(username, jumlah, ket='Pembelian') {
-    const users = DB_ambil('simuru_users', {});
+    const users = DB_ambil('store_users', {});
     if (!users[username] || (users[username].saldo || 0) < jumlah) return false;
     users[username].saldo = (users[username].saldo || 0) - parseInt(jumlah);
-    DB_simpan('simuru_users', users);
-    const riwayat = DB_ambil('riwayat_' + username, []);
+    DB_simpan('store_users', users);
+    const riwayat = DB_ambil('riwayat_saldo_' + username, []);
     riwayat.unshift({waktu:new Date().toLocaleString(),tipe:'kurangi',jumlah:parseInt(jumlah),ket});
-    DB_simpan('riwayat_' + username, riwayat);
+    DB_simpan('riwayat_saldo_' + username, riwayat);
     updateSaldoDisplay();
     return true;
 }
@@ -84,16 +174,20 @@ function showLogin() {
 function login() {
     const usn = document.getElementById('login-usn').value.trim();
     const pw = document.getElementById('login-pw').value.trim();
-    if (!usn || !pw) return alert('Isi semua!');
-    const users = DB_ambil('simuru_users', {});
+    if (!usn || !pw) return alert('Isi username & password!');
+    const users = DB_ambil('store_users', {});
+    const admins = DB_ambil('store_admins', []);
+    
     if (usn === CONFIG.ownerUsername && pw === CONFIG.ownerPassword) {
         currentUser = { username: usn, role: 'owner' };
+    } else if (admins.some(a => a.username === usn && a.password === pw)) {
+        currentUser = { username: usn, role: 'admin' };
     } else if (users[usn] && users[usn].password === pw) {
         currentUser = { ...users[usn], role: 'user' };
     } else {
         return alert('Username/password salah!');
     }
-    DB_simpan('simuru_current_user', currentUser);
+    DB_simpan('store_current_user', currentUser);
     document.getElementById('nama-user').textContent = currentUser.username;
     closeAuthModal();
     updateSaldoDisplay();
@@ -103,260 +197,20 @@ function register() {
     const usn = document.getElementById('reg-usn').value.trim();
     const pw = document.getElementById('reg-pw').value.trim();
     if (!usn || !pw) return alert('Lengkapi data!');
-    const users = DB_ambil('simuru_users', {});
+    const users = DB_ambil('store_users', {});
     if (users[usn]) return alert('Username sudah ada!');
     users[usn] = { username: usn, password: pw, saldo: 0, daftar: new Date().toLocaleString() };
-    DB_simpan('simuru_users', users);
+    DB_simpan('store_users', users);
     alert('✅ Daftar berhasil! Silakan Login.');
     showLogin();
 }
 function logout() {
-    if (!confirm('Keluar?')) return;
+    if (!confirm('Keluar dari akun?')) return;
     currentUser = null;
-    localStorage.removeItem('simuru_current_user');
+    localStorage.removeItem('store_current_user');
     location.reload();
 }
 function updateNav() {
     const tabOwner = document.getElementById('tab-owner');
-    if (tabOwner) tabOwner.classList.toggle('hidden', !isOwner());
-}
-
-// ========== NAVIGASI — SEMUA TOMBOL BISA DIKLIK ==========
-function showPage(page) {
-    if (!currentUser && page !== 'beranda') return;
-    ['page-beranda','page-nomor','page-booster','page-saldo','page-chat','page-owner','page-pesanan'].forEach(id=>{
-        const el = document.getElementById(id); if(el) el.classList.add('hidden');
-    });
-    document.querySelectorAll('.tab').forEach(t=>{t.classList.remove('active');t.classList.add('inactive');});
-
-    if (page === 'beranda') {
-        document.getElementById('page-beranda').classList.remove('hidden');
-        document.getElementById('tab-beranda').classList.add('active');
-    }
-    if (page === 'nomor') {
-        document.getElementById('page-nomor').classList.remove('hidden');
-        document.getElementById('tab-nomor').classList.add('active');
-        resetNomorForm();
-    }
-    if (page === 'booster') {
-        document.getElementById('page-booster').classList.remove('hidden');
-        document.getElementById('tab-booster').classList.add('active');
-    }
-    if (page === 'saldo') {
-        document.getElementById('page-saldo').classList.remove('hidden');
-        document.getElementById('tab-saldo').classList.add('active');
-        loadRiwayatSaldo();
-    }
-    if (page === 'chat') {
-        document.getElementById('page-chat').classList.remove('hidden');
-        document.getElementById('tab-chat').classList.add('active');
-    }
-    if (page === 'owner' && isOwner()) {
-        document.getElementById('page-owner').classList.remove('hidden');
-        document.getElementById('tab-owner').classList.remove('hidden');
-        document.getElementById('tab-owner').classList.add('active');
-    }
-    if (page === 'pesanan') {
-        document.getElementById('page-pesanan').classList.remove('hidden');
-        loadPesanan();
-    }
-    updateSaldoDisplay();
-}
-
-// ========== NOMOR ==========
-function resetNomorForm() {
-    currentNomor = { negara: '', layanan: '', jumlah: '', harga: 0 };
-    document.getElementById('nomor-negara').value = '';
-    document.getElementById('nomor-layanan').innerHTML = '<option value="">-- Pilih Layanan --</option>';
-    document.getElementById('nomor-jumlah').innerHTML = '<option value="">-- Pilih Jumlah --</option>';
-    document.getElementById('nomor-hasil').classList.add('hidden');
-}
-function updateNomorLayanan() {
-    const neg = document.getElementById('nomor-negara').value;
-    currentNomor.negara = neg;
-    document.getElementById('nomor-sum-negara').textContent = neg;
-    const sel = document.getElementById('nomor-layanan');
-    sel.innerHTML = '<option value="">-- Pilih Layanan --</option>';
-    if (neg && CONFIG.nomorData[neg]) {
-        Object.keys(CONFIG.nomorData[neg]).forEach(l=>sel.innerHTML += `<option value="${l}">${l}</option>`);
-    }
-}
-function updateNomorJumlah() {
-    const neg = document.getElementById('nomor-negara').value;
-    const lay = document.getElementById('nomor-layanan').value;
-    currentNomor.layanan = lay;
-    document.getElementById('nomor-sum-layanan').textContent = lay;
-    const sel = document.getElementById('nomor-jumlah');
-    sel.innerHTML = '<option value="">-- Pilih Jumlah --</option>';
-    if (neg && lay && CONFIG.nomorData[neg]?.[lay]) {
-        Object.entries(CONFIG.nomorData[neg][lay]).forEach(([j,h])=>sel.innerHTML += `<option value="${j}" data-harga="${h}">${j} — ${formatHarga(h)}</option>`);
-    }
-}
-function updateNomorHarga() {
-    const opt = document.getElementById('nomor-jumlah').selectedOptions[0];
-    if (opt?.dataset.harga) {
-        currentNomor.jumlah = opt.value;
-        currentNomor.harga = parseInt(opt.dataset.harga);
-        document.getElementById('nomor-sum-jumlah').textContent = opt.value;
-        document.getElementById('nomor-sum-harga').textContent = formatHarga(currentNomor.harga);
-    }
-}
-function beliNomor() {
-    if (!currentNomor.negara || !currentNomor.layanan || !currentNomor.jumlah) return alert('Lengkapi data!');
-    if (getSaldo(currentUser.username) < currentNomor.harga) return alert('Saldo tidak cukup!');
-    if (!kurangiSaldo(currentUser.username, currentNomor.harga, 'Beli Nomor')) return alert('Gagal potong saldo!');
-    
-    // GENERATE NOMOR & KODE OTOMATIS
-    const nomorKeluar = currentNomor.negara + Math.floor(Math.random()*900000000+100000000);
-    const kodeKeluar = Math.floor(100000 + Math.random()*900000);
-    
-    // SIMPAN PESANAN
-    const pesanan = {
-        id: Date.now(), user: currentUser.username, tipe: 'nomor',
-        negara: currentNomor.negara, layanan: currentNomor.layanan,
-        jumlah: currentNomor.jumlah, harga: currentNomor.harga,
-        nomorKeluar, kodeKeluar, status: 'sukses', waktu: new Date().toLocaleString()
-    };
-    const list = DB_ambil('pesanan_' + currentUser.username, []);
-    list.unshift(pesanan);
-    DB_simpan('pesanan_' + currentUser.username, list);
-    
-    // TAMPILKAN HASIL
-    document.getElementById('nomor-keluar-value').textContent = nomorKeluar;
-    document.getElementById('kode-keluar-value').textContent = kodeKeluar;
-    document.getElementById('nomor-hasil').classList.remove('hidden');
-    alert('✅ Berhasil! Nomor & kode sudah dikirim ke Simuru API.');
-}
-
-// ========== BOOSTER ==========
-function selectPlatform(plat) {
-    selectedPlatform = plat;
-    currentBooster.platform = plat;
-    document.getElementById('booster-form').classList.remove('hidden');
-    document.getElementById('sum-platform').textContent = plat;
-    const sel = document.getElementById('form-layanan');
-    sel.innerHTML = '<option value="">-- Pilih Layanan --</option>';
-    Object.keys(CONFIG.hargaData[plat]).forEach(l=>sel.innerHTML += `<option value="${l}">${l}</option>`);
-}
-function updateJumlahBooster() {
-    const lay = document.getElementById('form-layanan').value;
-    currentBooster.layanan = lay;
-    document.getElementById('sum-layanan').textContent = lay;
-    const sel = document.getElementById('form-jumlah');
-    sel.innerHTML = '<option value="">-- Pilih Jumlah --</option>';
-    if (lay && CONFIG.hargaData[selectedPlatform]?.[lay]) {
-        Object.entries(CONFIG.hargaData[selectedPlatform][lay]).forEach(([j,h])=>sel.innerHTML += `<option value="${j}" data-harga="${h}">${j} — ${formatHarga(h)}</option>`);
-    }
-}
-function updateHargaBooster() {
-    const opt = document.getElementById('form-jumlah').selectedOptions[0];
-    if (opt?.dataset.harga) {
-        currentBooster.jumlah = opt.value;
-        currentBooster.harga = parseInt(opt.dataset.harga);
-        document.getElementById('sum-jumlah').textContent = opt.value;
-        document.getElementById('sum-harga').textContent = formatHarga(currentBooster.harga);
-    }
-}
-function beliBooster() {
-    const link = document.getElementById('form-link').value;
-    if (!currentBooster.layanan || !currentBooster.jumlah || !link) return alert('Lengkapi semua data!');
-    if (getSaldo(currentUser.username) < currentBooster.harga) return alert('Saldo tidak cukup!');
-    if (!kurangiSaldo(currentUser.username, currentBooster.harga, 'Booster')) return alert('Gagal!');
-    
-    const pesanan = {
-        id: Date.now(), user: currentUser.username, tipe: 'booster',
-        platform: currentBooster.platform, layanan: currentBooster.layanan,
-        jumlah: currentBooster.jumlah, harga: currentBooster.harga,
-        link, status: 'proses', waktu: new Date().toLocaleString()
-    };
-    const list = DB_ambil('pesanan_' + currentUser.username, []);
-    list.unshift(pesanan);
-    DB_simpan('pesanan_' + currentUser.username, list);
-    alert('✅ Pesanan berhasil! Proses segera dimulai.');
-    showPage('pesanan');
-}
-
-// ========== TOP UP SALDO ==========
-function updateTopUpTotal() {
-    const val = parseInt(document.getElementById('topup-jumlah').value) || 0;
-    const el = document.querySelector('#page-saldo .total');
-    if (el) el.textContent = formatHarga(val);
-}
-function kirimTopUp() {
-    const jumlah = parseInt(document.getElementById('topup-jumlah').value);
-    if (!jumlah || jumlah < 10000) return alert('Pilih nominal minimal Rp 10.000!');
-    const req = DB_ambil('topup_requests', []);
-    req.unshift({
-        id: Date.now(), user: currentUser.username, jumlah, status: 'pending', waktu: new Date().toLocaleString()
-    });
-    DB_simpan('topup_requests', req);
-    alert('✅ Permintaan Top Up terkirim! Menunggu konfirmasi Owner.');
-    document.getElementById('topup-jumlah').value = '';
-}
-function loadRiwayatSaldo() {
-    const riwayat = DB_ambil('riwayat_' + currentUser.username, []);
-    const tbody = document.getElementById('riwayat-saldo-body');
-    tbody.innerHTML = riwayat.length ? riwayat.map(r=>`
-        <tr>
-            <td>${r.waktu}</td>
-            <td>${r.tipe==='tambah'?'💰 Top Up':'🛒 Pembelian'}</td>
-            <td style="color:${r.tipe==='tambah'?'var(--success)':'var(--danger)'}">${r.tipe==='tambah'?'+':'-'}${formatHarga(r.jumlah)}</td>
-        </tr>
-    `).join('') : '<tr><td colspan="3" style="text-align:center;color:var(--muted);">Belum ada riwayat.</td></tr>';
-}
-
-// ========== CHAT ==========
-function kirimChat() {
-    const input = document.getElementById('chat-input');
-    const pesan = input.value.trim();
-    if (!pesan) return;
-    const key = 'chat_' + currentUser.username;
-    const chat = DB_ambil(key, []);
-    chat.push({ dari: currentUser.username, pesan, waktu: new Date().toLocaleString() });
-    DB_simpan(key, chat);
-    input.value = '';
-    alert('✅ Pesan terkirim ke Owner!');
-}
-
-// ========== OWNER PANEL ==========
-function ubahSaldoUser() {
-    if (!isOwner()) return;
-    const user = document.getElementById('saldo-user').value.trim();
-    const jumlah = parseInt(document.getElementById('saldo-jumlah').value);
-    if (!user || isNaN(jumlah)) return alert('Lengkapi data!');
-    const users = DB_ambil('simuru_users', {});
-    if (!users[user]) return alert('User tidak ditemukan!');
-    users[user].saldo = (users[user].saldo || 0) + jumlah;
-    DB_simpan('simuru_users', users);
-    alert(`✅ Saldo ${user} diubah menjadi ${formatHarga(users[user].saldo)}!`);
-    document.getElementById('saldo-user').value = '';
-    document.getElementById('saldo-jumlah').value = '';
-}
-
-// ========== RIWAYAT PESANAN ==========
-function loadPesanan() {
-    const list = DB_ambil('pesanan_' + currentUser.username, []);
-    const tbody = document.getElementById('pesanan-list');
-    tbody.innerHTML = list.length ? list.map(p=>`
-        <tr>
-            <td>${p.tipe==='nomor'?'📱':'🚀'} ${p.tipe}</td>
-            <td>${p.platform || p.layanan}</td>
-            <td>${p.jumlah}</td>
-            <td>${formatHarga(p.harga)}</td>
-            <td>${p.nomorKeluar || '-'}</td>
-            <td style="color:${p.status==='sukses'?'var(--success)':'orange'}">${p.status}</td>
-        </tr>
-    `).join('') : '<tr><td colspan="6" style="text-align:center;color:var(--muted);">Belum ada pesanan.</td></tr>';
-}
-
-// ========== INISIALISASI ==========
-document.addEventListener('DOMContentLoaded', function() {
-    const saved = DB_ambil('simuru_current_user');
-    if (saved) {
-        currentUser = saved;
-        closeAuthModal();
-        document.getElementById('nama-user').textContent = currentUser.username;
-        updateSaldoDisplay();
-        updateNav();
-    }
-});
+    const tabAdmin = document.getElementById('tab-admin');
+    if (tabOwner) tabOwner.classList.toggle('hidden', !(isOwner() ||
