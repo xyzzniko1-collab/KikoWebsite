@@ -14,17 +14,6 @@
     <div class="modal-content">
         <span class="close" onclick="closeAuthModal()">&times;</span>
         <h2 id="auth-title">Login Akun</h2>
-
-        <div id="verify-code-box" class="hidden">
-            <div class="verify-box">
-                <h4>🔑 Kode Verifikasi</h4>
-                <p style="font-size:13px;color:#ccc;margin-bottom:8px;">Otomatis dikirim ke Simuru API</p>
-                <div id="kode-verifikasi" class="verify-code">- - - - - -</div>
-                <button class="btn" onclick="kirimKodeKeSimuru()">📨 Kirim Kode</button>
-            </div>
-            <button class="btn btn-secondary" onclick="tutupKodeVerifikasi()">Lanjut ke Toko →</button>
-        </div>
-
         <div id="login-form">
             <label>Username</label>
             <input type="text" id="login-usn" placeholder="Masukkan username">
@@ -35,7 +24,6 @@
                 Belum punya akun? <span class="link-text" onclick="showRegister()">Daftar di sini</span>
             </p>
         </div>
-
         <div id="register-form" class="hidden">
             <label>Username</label>
             <input type="text" id="reg-usn" placeholder="Buat username">
@@ -83,6 +71,7 @@
         <div class="tab inactive" id="tab-saldo" onclick="showPage('saldo')">💰 Saldo</div>
         <div class="tab inactive" id="tab-chat" onclick="showPage('chat')">💬 CS</div>
         <div class="tab inactive hidden" id="tab-owner" onclick="showPage('owner')">🔐 Owner</div>
+        <div class="tab inactive hidden" id="tab-admin" onclick="showPage('admin')">👨‍💼 Admin</div>
     </div>
 
     <!-- BERANDA -->
@@ -92,7 +81,8 @@
             <div class="note">
                 ⚡ Sistem Saldo — Potong Otomatis Saat Beli<br>
                 📱 Beli Nomor — Langsung Terkirim Otomatis<br>
-                💎 Top Up Saldo — Seabank, DANA, Gopay, BCA
+                💎 Top Up Saldo — Upload Bukti Transfer<br>
+                🔒 Data Aman & Terlindungi
             </div>
         </div>
         <div class="card">
@@ -116,7 +106,7 @@
         <button class="btn" style="background:#e74c3c;margin-top:10px;" onclick="logout()">🚪 Keluar Akun</button>
     </div>
 
-    <!-- NOMOR -->
+    <!-- NOMOR — SEMUA LAYANAN LENGKAP -->
     <div id="page-nomor" class="hidden">
         <div class="card">
             <h2>📱 Beli Nomor Virtual</h2>
@@ -127,6 +117,9 @@
                 <option value="+60">🇲🇾 Malaysia (+60)</option>
                 <option value="+65">🇸🇬 Singapura (+65)</option>
                 <option value="+1">🇺🇸 USA (+1)</option>
+                <option value="+44">🇬🇧 UK (+44)</option>
+                <option value="+86">🇨🇳 China (+86)</option>
+                <option value="+81">🇯🇵 Jepang (+81)</option>
             </select>
             <label>Layanan</label>
             <select id="nomor-layanan" onchange="updateNomorJumlah()">
@@ -150,14 +143,14 @@
             <div class="nomor-keluar">
                 <p><strong>Nomor:</strong></p>
                 <div class="nomor-value" id="nomor-keluar-value">-</div>
-                <p><strong>Kode:</strong></p>
+                <p><strong>Kode Verifikasi:</strong></p>
                 <div class="kode-value" id="kode-keluar-value">-</div>
             </div>
             <button class="btn btn-secondary" onclick="resetNomorForm()">Beli Lagi</button>
         </div>
     </div>
 
-    <!-- BOOSTER -->
+    <!-- BOOSTER — SEMUA LAYANAN LENGKAP -->
     <div id="page-booster" class="hidden">
         <div class="card">
             <h2>🚀 Sosmed Booster</h2>
@@ -174,6 +167,18 @@
                 </div>
                 <div class="popular-card" onclick="selectPlatform('YouTube')">
                     <span class="popular-icon">▶️</span><p>YouTube</p>
+                </div>
+                <div class="popular-card" onclick="selectPlatform('Twitter')">
+                    <span class="popular-icon">🐦</span><p>Twitter/X</p>
+                </div>
+                <div class="popular-card" onclick="selectPlatform('Telegram')">
+                    <span class="popular-icon">✈️</span><p>Telegram</p>
+                </div>
+                <div class="popular-card" onclick="selectPlatform('Twitch')">
+                    <span class="popular-icon">🎮</span><p>Twitch</p>
+                </div>
+                <div class="popular-card" onclick="selectPlatform('Spotify')">
+                    <span class="popular-icon">🎧</span><p>Spotify</p>
                 </div>
             </div>
             <div id="booster-form" class="hidden" style="margin-top:20px;">
@@ -198,7 +203,7 @@
         </div>
     </div>
 
-    <!-- SALDO & TOP UP -->
+    <!-- SALDO & TOP UP — FIX BISA UPLOAD BUKTI -->
     <div id="page-saldo" class="hidden">
         <div class="card">
             <h2>💰 Saldo & Top Up</h2>
@@ -207,26 +212,54 @@
                 <p class="saldo-besar" id="saldo-page-saldo">Rp 0</p>
             </div>
             <h3>💎 Top Up Saldo</h3>
-            <label>Jumlah</label>
+            <label>Jumlah Top Up</label>
             <select id="topup-jumlah" onchange="updateTopUpTotal()">
-                <option value="">-- Pilih --</option>
+                <option value="">-- Pilih Nominal --</option>
                 <option value="10000">Rp 10.000</option>
                 <option value="20000">Rp 20.000</option>
                 <option value="50000">Rp 50.000</option>
                 <option value="100000">Rp 100.000</option>
+                <option value="200000">Rp 200.000</option>
                 <option value="500000">Rp 500.000</option>
+                <option value="1000000">Rp 1.000.000</option>
+                <option value="custom">Lainnya...</option>
             </select>
-            <div class="info-box">
-                <p><strong>Transfer ke:</strong></p>
-                <p>Seabank: 901369767087 a.n S Y</p>
+            <div id="topup-custom-box" class="hidden">
+                <label>Jumlah Custom</label>
+                <input type="number" id="topup-custom" placeholder="Masukkan jumlah" oninput="updateTopUpTotal()">
             </div>
-            <label>Upload Bukti</label>
+            <label>Metode Pembayaran</label>
+            <select id="topup-metode">
+                <option value="Seabank">Seabank — 901369767087 a.n S Y</option>
+                <option value="DANA">DANA</option>
+                <option value="Gopay">Gopay</option>
+                <option value="BCA">BCA</option>
+            </select>
+            <div class="summary-box">
+                <p>Jumlah: <span id="topup-total">Rp 0</span></p>
+                <p>Metode: <span id="topup-metode-text">-</span></p>
+            </div>
+            <label>📸 Upload Bukti Transfer (SS)</label>
             <div class="upload-box" onclick="document.getElementById('topup-bukti').click()">
-                📷 Klik upload bukti
-                <input type="file" id="topup-bukti" accept="image/*" style="display:none;">
+                📷 Klik untuk upload bukti / screenshot
+                <input type="file" id="topup-bukti" accept="image/*,.png,.jpg,.jpeg" style="display:none;" onchange="previewBuktiTopUp()">
             </div>
-            <button class="btn" onclick="kirimTopUp()">✅ Kirim Top Up</button>
+            <div id="bukti-preview-container" class="hidden">
+                <p style="margin:10px 0 5px 0;color:var(--success);">✅ Bukti Terupload:</p>
+                <img id="bukti-preview-img" class="bukti-img" alt="Bukti Transfer">
+            </div>
+            <button class="btn" onclick="kirimTopUp()">✅ Kirim Permintaan Top Up</button>
         </div>
+
+        <!-- RIWAYAT TOP UP USER -->
+        <div class="card">
+            <h3>📋 Riwayat Top Up Saldo</h3>
+            <table>
+                <thead><tr><th>Waktu</th><th>Jumlah</th><th>Metode</th><th>Status</th></tr></thead>
+                <tbody id="riwayat-topup-user"></tbody>
+            </table>
+        </div>
+
         <div class="card">
             <h3>📊 Riwayat Saldo</h3>
             <table><thead><tr><th>Waktu</th><th>Tipe</th><th>Jumlah</th></tr></thead>
@@ -238,37 +271,84 @@
     <!-- CHAT CS -->
     <div id="page-chat" class="hidden">
         <div class="card">
-            <h2>💬 Hubungi CS</h2>
+            <h2>💬 Hubungi Customer Service</h2>
+            <p style="color:var(--muted);margin-bottom:15px;">Pesan hanya terlihat oleh Anda & Owner 🔒</p>
             <div id="chat-box" class="chat-box">
-                <div class="chat-bubble system">Selamat datang! Silakan tanya 😊</div>
+                <div class="chat-bubble system">Selamat datang di CS! Silakan tanya apa saja 😊</div>
             </div>
             <div class="chat-input-container">
-                <input type="text" id="chat-input" placeholder="Ketik pesan...">
+                <input type="text" id="chat-input" placeholder="Ketik pesan Anda...">
                 <button class="btn" style="width:auto;padding:0 15px;" onclick="kirimChat()">Kirim</button>
             </div>
         </div>
     </div>
 
-    <!-- OWNER PANEL -->
+    <!-- OWNER PANEL — LENGKAP SEMUA FITUR -->
     <div id="page-owner" class="hidden">
         <div class="card">
             <h2>🔐 Panel Owner</h2>
-            <h3>💎 Permintaan Top Up</h3>
-            <table><thead><tr><th>User</th><th>Jumlah</th><th>Aksi</th></tr></thead>
-                <tbody id="topup-request-body"></tbody>
+
+            <!-- TOP UP KONFIRMASI — ACC / TOLAK -->
+            <h3 class="section-title">💎 Permintaan Top Up Saldo</h3>
+            <table>
+                <thead><tr><th>User</th><th>Jumlah</th><th>Metode</th><th>Bukti</th><th>Status</th><th>Aksi</th></tr></thead>
+                <tbody id="topup-request-body">
+                    <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px;">Belum ada permintaan top up.</td></tr>
+                </tbody>
             </table>
-            <h3>💰 Ubah Saldo User</h3>
-            <input type="text" id="saldo-user" placeholder="Username">
-            <input type="number" id="saldo-jumlah" placeholder="Jumlah (positif/tambah, negatif/kurang)">
-            <button class="btn" onclick="ubahSaldoUser()">✅ Simpan</button>
+
+            <!-- TAMBAH SALDO USER MANUAL -->
+            <h3 class="section-title">💰 Tambah / Kurangi Saldo User</h3>
+            <label>Username User</label>
+            <input type="text" id="saldo-user" placeholder="Masukkan username">
+            <label>Jumlah (positif = tambah, negatif = kurangi)</label>
+            <input type="number" id="saldo-jumlah" placeholder="Contoh: 50000 atau -10000">
+            <button class="btn" onclick="ubahSaldoUser()">✅ Simpan Perubahan</button>
+
+            <!-- RIWAYAT PESANAN SEMUA USER -->
+            <h3 class="section-title">📋 Riwayat Semua Pesanan</h3>
+            <table>
+                <thead><tr><th>User</th><th>Tipe</th><th>Detail</th><th>Jumlah</th><th>Harga</th><th>Status</th></tr></thead>
+                <tbody id="semua-pesanan-body"></tbody>
+            </table>
+
+            <!-- KELOLA ADMIN -->
+            <h3 class="section-title">👨‍💼 Kelola Admin</h3>
+            <label>Username Admin Baru</label>
+            <input type="text" id="new-admin-user" placeholder="Username">
+            <label>Password Admin Baru</label>
+            <input type="password" id="new-admin-pass" placeholder="Password">
+            <button class="btn" onclick="tambahAdmin()">+ Tambah Admin</button>
+            <table style="margin-top:15px;">
+                <thead><tr><th>Username</th><th>Tanggal Dibuat</th><th>Aksi</th></tr></thead>
+                <tbody id="admin-list-body"></tbody>
+            </table>
         </div>
     </div>
 
-    <!-- RIWAYAT PESANAN -->
+    <!-- ADMIN PANEL -->
+    <div id="page-admin" class="hidden">
+        <div class="card">
+            <h2>👨‍💼 Panel Admin</h2>
+            <h3 class="section-title">💎 Konfirmasi Top Up</h3>
+            <table>
+                <thead><tr><th>User</th><th>Jumlah</th><th>Metode</th><th>Bukti</th><th>Aksi</th></tr></thead>
+                <tbody id="admin-topup-body"></tbody>
+            </table>
+            <h3 class="section-title">📋 Semua Pesanan</h3>
+            <table>
+                <thead><tr><th>User</th><th>Tipe</th><th>Detail</th><th>Jumlah</th><th>Status</th></tr></thead>
+                <tbody id="admin-pesanan-body"></tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- RIWAYAT PESANAN USER -->
     <div id="page-pesanan" class="hidden">
         <div class="card">
-            <h2>📋 Riwayat Pesanan</h2>
-            <table><thead><tr><th>Tipe</th><th>Detail</th><th>Jumlah</th><th>Harga</th><th>Status</th></tr></thead>
+            <h2>📋 Riwayat Pesanan Saya</h2>
+            <table>
+                <thead><tr><th>Tipe</th><th>Detail</th><th>Jumlah</th><th>Harga</th><th>Nomor/Kode</th><th>Status</th></tr></thead>
                 <tbody id="pesanan-list"></tbody>
             </table>
         </div>
