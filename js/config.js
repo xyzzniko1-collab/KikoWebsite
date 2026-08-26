@@ -1,6 +1,6 @@
 
 const CONFIG = {
-    // ========== API INTEGRASI OTOMATIS ==========
+    // ========== API INTEGRASI SIMURU — TIDAK DIUBAH ==========
     API: {
         BASE_URL: 'https://simuru.com',
         OPENAPI_URL: 'https://simuru.com/openapi.json',
@@ -8,7 +8,7 @@ const CONFIG = {
         TIMEOUT: 30000
     },
 
-    ownerUsername: 'owner',
+    ownerUsername: 'niko',
     ownerPassword: 'owner123',
     bankName: 'Seabank',
     bankNumber: '901369767087',
@@ -27,8 +27,7 @@ const CONFIG = {
         API_CACHE: 'simuru_api_cache'
     },
 
-    // ... (sisa config tetap sama seperti sebelumnya)
-
+    // === HARGA NOMOR — TETAP SAMA SESUAI PERMINTAAN ===
     nomorData: {
         '+62': {
             WhatsApp: { '1': 15000, '5': 60000, '10': 110000 },
@@ -53,6 +52,7 @@ const CONFIG = {
         }
     },
 
+    // === HARGA BOOSTER SOSMED — TETAP SAMA SESUAI PERMINTAAN ===
     hargaData: {
         Instagram: {
             Followers: { '1.000': 24000, '2.000': 49000, '3.000': 67000 },
@@ -72,7 +72,7 @@ const CONFIG = {
             Views: { '1.000': 10000, '5.000': 45000 }
         },
         YouTube: {
-            Subscribers: { '1.000': 85000, '2.000': 160000, '5.000': 380000 },
+            Subscribers: { '1.000': 85000, '2.000': 160000, '3.000': 380000 },
             Views: { '1.000': 15000, '5.000': 65000, '10.000': 120000 },
             Likes: { '1.000': 12000, '5.000': 50000 }
         },
@@ -98,24 +98,17 @@ const CONFIG = {
 
 // === FUNGSI DATABASE — SEMUA DATA TERSIMPAN PERMANEN ===
 const DB = {
-    // Simpan Data
     simpan: function(key, data) {
         localStorage.setItem(key, JSON.stringify(data));
         return true;
     },
-    
-    // Ambil Data
     ambil: function(key, defaultValue = null) {
         const data = localStorage.getItem(key);
         return data ? JSON.parse(data) : defaultValue;
     },
-    
-    // Hapus Data
     hapus: function(key) {
         localStorage.removeItem(key);
     },
-    
-    // Hapus Semua Data
     resetSemua: function() {
         localStorage.clear();
         alert('✅ Database di-reset! Halaman akan reload...');
