@@ -9,19 +9,19 @@
 </head>
 <body>
 
-<!-- MODAL LOGIN / REGISTER -->
+<!-- MODAL LOGIN -->
 <div id="auth-modal" class="modal">
     <div class="modal-content">
         <span class="close" onclick="closeAuthModal()">&times;</span>
         <h2 id="auth-title">Login Akun</h2>
 
-        <!-- KODE VERIFIKASI OTOMATIS MUNCUL SETELAH LOGIN -->
+        <!-- KODE VERIFIKASI -->
         <div id="verify-code-box" class="hidden">
             <div class="verify-box">
-                <h4>🔑 Kode Verifikasi Anda</h4>
-                <p style="font-size:13px;color:#ccc;margin-bottom:8px;">Kode ini otomatis dikirim ke sistem Simuru</p>
+                <h4>🔑 Kode Verifikasi</h4>
+                <p style="font-size:13px;color:#ccc;margin-bottom:8px;">Otomatis dikirim ke Simuru API</p>
                 <div id="kode-verifikasi" class="verify-code">- - - - - -</div>
-                <button class="btn chat-verify-btn" onclick="kirimKodeKeSimuru()">📨 Kirim Kode ke Server</button>
+                <button class="btn chat-verify-btn" onclick="kirimKodeKeSimuru()">📨 Kirim Kode</button>
             </div>
             <button class="btn btn-secondary" onclick="tutupKodeVerifikasi()">Lanjut ke Toko →</button>
         </div>
@@ -52,12 +52,10 @@
             <label>Nomor WhatsApp</label>
             <div style="display:flex;gap:8px;">
                 <select id="reg-country-code" style="width:30%;">
-                    <option value="+62">+62 🇮🇩 Indonesia</option>
-                    <option value="+60">+60 🇲🇾 Malaysia</option>
-                    <option value="+65">+65 🇸🇬 Singapura</option>
-                    <option value="+1">+1 🇺🇸 USA</option>
-                    <option value="+44">+44 🇬🇧 UK</option>
-                    <option value="+82">+82 🇰🇷 Korea</option>
+                    <option value="+62">+62 🇮🇩</option>
+                    <option value="+60">+60 🇲🇾</option>
+                    <option value="+65">+65 🇸🇬</option>
+                    <option value="+1">+1 🇺🇸</option>
                 </select>
                 <input type="tel" id="reg-no" placeholder="812xxxxxxx" style="width:70%;">
             </div>
@@ -72,13 +70,12 @@
 <div class="container">
     <div style="text-align:center;margin:20px 0;">
         <h1 style="color:var(--gold);font-size:24px;">🛒 JASA BOOSTER & NOMOR</h1>
-        <p style="color:var(--muted);">Layanan Tercepat & Terpercaya ⚡ Powered by Simuru API</p>
+        <p style="color:var(--muted);">Layanan Tercepat & Terpercaya ⚡</p>
     </div>
 
     <div class="card">
         <h3>🔄 Status Sistem</h3>
-        <p id="api-status">🔄 Menghubungkan ke server Simuru...</p>
-        <p style="font-size:12px;color:var(--muted);">API: Simuru | Status: <span id="api-connect">Menghubungkan...</span></p>
+        <p id="api-status">🔄 Menghubungkan ke server...</p>
     </div>
 
     <div class="header-tabs">
@@ -95,13 +92,11 @@
         <div class="card">
             <h2>👋 Selamat Datang, <span id="nama-user">-</span>!</h2>
             <div class="note">
-                ⚡ <strong>Proses Otomatis</strong> — Terhubung Simuru API<br>
-                🔢 <strong>Kode Verifikasi</strong> — Sudah terkirim otomatis saat login<br>
-                🔒 <strong>Aman</strong> — Data terenkripsi<br>
-                💳 <strong>Pembayaran</strong> — Seabank, DANA, Gopay, BCA
+                ⚡ Proses Cepat — Maksimal 1x24 jam<br>
+                🔒 Data Aman<br>
+                💳 Seabank, DANA, Gopay, BCA
             </div>
         </div>
-
         <div class="card">
             <h3>🔥 Layanan Populer</h3>
             <div class="popular-grid">
@@ -117,38 +112,21 @@
                 <div class="popular-card" onclick="selectPlatform('YouTube')">
                     <span class="popular-icon">▶️</span><p>YouTube</p>
                 </div>
-                <div class="popular-card" onclick="selectPlatform('Twitter/X')">
-                    <span class="popular-icon">🐦</span><p>Twitter/X</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('Telegram')">
-                    <span class="popular-icon">✈️</span><p>Telegram</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('LinkedIn')">
-                    <span class="popular-icon">💼</span><p>LinkedIn</p>
-                </div>
-                <div class="popular-card" onclick="showPage('nomor')">
-                    <span class="popular-icon">📱</span><p>Nomor</p>
-                </div>
             </div>
         </div>
-
         <div class="card">
             <h3>💰 Info Pembayaran</h3>
             <p><strong>Seabank:</strong> 901369767087</p>
             <p><strong>a.n:</strong> S Y</p>
-            <p style="color:var(--muted);font-size:13px;margin-top:8px;">Transfer lalu upload bukti — sistem otomatis proses via Simuru API</p>
         </div>
-
         <button class="btn btn-secondary" onclick="showPagePesanan()">📋 Riwayat Pesanan</button>
         <button class="btn" style="background:#e74c3c;margin-top:10px;" onclick="logout()">🚪 Keluar Akun</button>
     </div>
 
-    <!-- NOMOR — OTOMATIS KIRIM KE API -->
+    <!-- NOMOR -->
     <div id="page-nomor" class="hidden">
         <div class="card">
-            <h2>📱 Beli Nomor Virtual — Otomatis</h2>
-            <p style="color:var(--muted);margin-bottom:15px;">Nomor langsung dikirim ke sistem Simuru API ✅</p>
-            
+            <h2>📱 Beli Nomor Virtual</h2>
             <label>Pilih Negara</label>
             <select id="nomor-negara" onchange="updateNomorLayanan()">
                 <option value="">-- Pilih Negara --</option>
@@ -156,44 +134,31 @@
                 <option value="+60">🇲🇾 Malaysia (+60)</option>
                 <option value="+65">🇸🇬 Singapura (+65)</option>
                 <option value="+1">🇺🇸 USA (+1)</option>
-                <option value="+44">🇬🇧 United Kingdom (+44)</option>
-                <option value="+82">🇰🇷 Korea Selatan (+82)</option>
-                <option value="+81">🇯🇵 Jepang (+81)</option>
-                <option value="+66">🇹🇭 Thailand (+66)</option>
             </select>
-
             <label>Layanan</label>
             <select id="nomor-layanan" onchange="updateNomorJumlah()">
-                <option value="">-- Pilih Layanan Dulu --</option>
+                <option value="">-- Pilih Layanan --</option>
             </select>
-
             <label>Jumlah</label>
             <select id="nomor-jumlah" onchange="updateNomorHarga()">
                 <option value="">-- Pilih Jumlah --</option>
             </select>
-
             <div class="summary-box">
-                <p>🌍 Negara: <span id="nomor-sum-negara">-</span></p>
-                <p>📱 Layanan: <span id="nomor-sum-layanan">-</span></p>
-                <p>🔢 Jumlah: <span id="nomor-sum-jumlah">-</span></p>
-                <p>🔑 Kode Verifikasi: <span id="nomor-kode-verifikasi" style="color:var(--gold);font-weight:bold;">-</span></p>
+                <p>Negara: <span id="nomor-sum-negara">-</span></p>
+                <p>Layanan: <span id="nomor-sum-layanan">-</span></p>
+                <p>Jumlah: <span id="nomor-sum-jumlah">-</span></p>
+                <p>🔑 Kode: <span id="nomor-kode-verifikasi" style="color:var(--gold);font-weight:bold;">-</span></p>
                 <p class="total">Total: <span id="nomor-sum-harga">Rp 0</span></p>
             </div>
-
-            <div class="info-box">
-                <span>ℹ️ Nomor & Kode akan otomatis dikirim ke Simuru API</span>
-            </div>
-
             <button class="btn" onclick="lanjutBayarNomor()">Lanjut ke Pembayaran →</button>
         </div>
     </div>
 
-    <!-- BOOSTER — LENGKAP SEMUA PLATFORM -->
+    <!-- BOOSTER -->
     <div id="page-booster" class="hidden">
         <div class="card">
-            <h2>🚀 Sosmed Booster — Lengkap</h2>
-            <p style="color:var(--muted);margin-bottom:15px;">Semua platform & layanan tersedia ✅</p>
-
+            <h2>🚀 Sosmed Booster</h2>
+            <p style="color:var(--muted);margin-bottom:15px;">Pilih platform:</p>
             <div class="popular-grid">
                 <div class="popular-card" onclick="selectPlatform('Instagram')">
                     <span class="popular-icon">📸</span><p>Instagram</p>
@@ -207,45 +172,24 @@
                 <div class="popular-card" onclick="selectPlatform('YouTube')">
                     <span class="popular-icon">▶️</span><p>YouTube</p>
                 </div>
-                <div class="popular-card" onclick="selectPlatform('Twitter/X')">
-                    <span class="popular-icon">🐦</span><p>Twitter/X</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('Telegram')">
-                    <span class="popular-icon">✈️</span><p>Telegram</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('LinkedIn')">
-                    <span class="popular-icon">💼</span><p>LinkedIn</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('Google')">
-                    <span class="popular-icon">🔍</span><p>Google</p>
-                </div>
             </div>
-
             <div id="booster-form" class="hidden" style="margin-top:20px;">
                 <label>Layanan</label>
                 <select id="form-layanan" onchange="updateJumlahBooster()">
                     <option value="">-- Pilih Layanan --</option>
                 </select>
-
                 <label>Jumlah</label>
                 <select id="form-jumlah" onchange="updateHargaBooster()">
                     <option value="">-- Pilih Jumlah --</option>
                 </select>
-
-                <label>Link Akun/Postingan/Channel</label>
-                <input type="url" id="form-link" placeholder="https://instagram.com/username">
-
+                <label>Link Akun/Postingan</label>
+                <input type="url" id="form-link" placeholder="https://...">
                 <div class="summary-box">
-                    <p>📱 Platform: <span id="sum-platform">-</span></p>
-                    <p>🚀 Layanan: <span id="sum-layanan">-</span></p>
-                    <p>🔢 Jumlah: <span id="sum-jumlah">-</span></p>
+                    <p>Platform: <span id="sum-platform">-</span></p>
+                    <p>Layanan: <span id="sum-layanan">-</span></p>
+                    <p>Jumlah: <span id="sum-jumlah">-</span></p>
                     <p class="total">Total: <span id="sum-harga">Rp 0</span></p>
                 </div>
-
-                <div class="info-box">
-                    <span>ℹ️ Pesanan otomatis dikirim ke Simuru API</span>
-                </div>
-
                 <button class="btn" onclick="lanjutBayarBooster()">Lanjut ke Pembayaran →</button>
             </div>
         </div>
@@ -254,15 +198,12 @@
     <!-- CHAT CS -->
     <div id="page-chat" class="hidden">
         <div class="card">
-            <h2>💬 Hubungi Customer Service</h2>
-            <p style="color:var(--muted);margin-bottom:15px;">Pesan hanya terlihat oleh Anda & Owner 🔒</p>
-
+            <h2>💬 Hubungi CS</h2>
             <div id="chat-box" class="chat-box">
-                <div class="chat-bubble system">Selamat datang di CS! Silakan tanya apa saja 😊</div>
+                <div class="chat-bubble system">Selamat datang! Silakan tanya 😊</div>
             </div>
-
             <div class="chat-input-container">
-                <input type="text" id="chat-input" placeholder="Ketik pesan Anda...">
+                <input type="text" id="chat-input" placeholder="Ketik pesan...">
                 <button class="btn" style="width:auto;padding:0 20px;" onclick="kirimChat()">Kirim</button>
             </div>
         </div>
@@ -272,30 +213,19 @@
     <div id="page-owner" class="hidden">
         <div class="card">
             <h2>🔐 Panel Owner</h2>
-
-            <h3 class="section-title">🔑 Kode Verifikasi Masuk</h3>
-            <table>
-                <thead><tr><th>User</th><th>Negara/Layanan</th><th>Kode</th><th>Status API</th></tr></thead>
-                <tbody id="verify-list-body">
-                    <tr><td colspan="4" style="text-align:center;color:var(--muted);padding:20px;">Belum ada kode verifikasi.</td></tr>
-                </tbody>
-            </table>
-
             <h3 class="section-title">📥 Pesanan Masuk</h3>
-            <table>
-                <thead><tr><th>User</th><th>Tipe</th><th>Detail</th><th>Harga</th><th>API Status</th><th>Aksi</th></tr></thead>
+            <table><thead><tr><th>User</th><th>Tipe</th><th>Detail</th><th>Harga</th><th>Status</th></tr></thead>
                 <tbody id="owner-pesanan-list">
-                    <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px;">Belum ada pesanan.</td></tr>
+                    <tr><td colspan="5" style="text-align:center;color:var(--muted);">Belum ada pesanan.</td></tr>
                 </tbody>
             </table>
-
-            <h3 class="section-title">💬 Chat dari User</h3>
+            <h3 class="section-title">💬 Chat User</h3>
             <div id="chat-user-list"></div>
             <div id="selected-chat-area" class="hidden">
                 <p><strong>User:</strong> <span id="selected-chat-user"></span></p>
                 <div id="owner-chat-box" class="chat-box"></div>
                 <div class="chat-input-container">
-                    <input type="text" id="owner-chat-input" placeholder="Ketik balasan...">
+                    <input type="text" id="owner-chat-input" placeholder="Balasan...">
                     <button class="btn" style="width:auto;padding:0 20px;" onclick="kirimBalasanOwner()">Balas</button>
                 </div>
             </div>
@@ -312,8 +242,7 @@
             <input type="password" id="new-admin-pass" placeholder="Password">
             <button class="btn" onclick="tambahAdmin()">+ Tambah Admin</button>
             <h3 class="section-title">Daftar Admin</h3>
-            <table>
-                <thead><tr><th>Username</th><th>Tanggal Dibuat</th><th>Aksi</th></tr></thead>
+            <table><thead><tr><th>Username</th><th>Tanggal</th><th>Aksi</th></tr></thead>
                 <tbody id="admin-list-body"></tbody>
             </table>
         </div>
@@ -323,8 +252,7 @@
     <div id="page-pesanan" class="hidden">
         <div class="card">
             <h2>📋 Riwayat Pesanan</h2>
-            <table>
-                <thead><tr><th>Tipe</th><th>Detail</th><th>Jumlah</th><th>Harga</th><th>API Status</th><th>Status</th></tr></thead>
+            <table><thead><tr><th>Tipe</th><th>Detail</th><th>Jumlah</th><th>Harga</th><th>Status</th></tr></thead>
                 <tbody id="pesanan-list"></tbody>
             </table>
         </div>
@@ -337,7 +265,7 @@
             <div class="summary-box">
                 <p id="pay-type">-</p>
                 <p id="pay-detail">-</p>
-                <p>🔑 Kode Verifikasi: <span id="pay-kode" style="color:var(--gold);font-weight:bold;">-</span></p>
+                <p>🔑 Kode: <span id="pay-kode" style="color:var(--gold);font-weight:bold;">-</span></p>
                 <p class="total" id="pay-harga">Rp 0</p>
             </div>
             <div class="info-box">
@@ -345,11 +273,11 @@
             </div>
             <label>Upload Bukti Transfer</label>
             <div class="upload-box" onclick="document.getElementById('bukti-tf').click()">
-                📷 Klik untuk upload bukti pembayaran
+                📷 Klik upload bukti
                 <input type="file" id="bukti-tf" accept="image/*" style="display:none;" onchange="previewBukti()">
                 <img id="bukti-preview" class="preview-img" alt="Bukti TF">
             </div>
-            <button class="btn" onclick="kirimPesanan()">✅ Kirim & Proses Otomatis</button>
+            <button class="btn" onclick="kirimPesanan()">✅ Kirim Pesanan</button>
             <button class="btn btn-secondary" onclick="kembaliKeForm()">← Kembali</button>
         </div>
     </div>
@@ -364,7 +292,6 @@
     <div class="nav-item" onclick="showPagePesanan()"><span class="nav-icon">📋</span>Pesanan</div>
 </div>
 
-<script src="js/config.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
