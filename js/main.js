@@ -1,4 +1,86 @@
 
+// ========== API INTEGRASI OTOMATIS ==========
+const API = {
+    // Headers standar dengan API Key
+    getHeaders: function() {
+        return {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer ' + CONFIG.API.API_KEY,
+            'X-API-Key': CONFIG.API.API_KEY
+        };
+    },
+
+    // Ambil Data dari OpenAPI
+    fetchOpenAPI: async function() {
+        try {
+            const response = await fetch(CONFIG.API.OPENAPI_URL, {
+                method: 'GET',
+                headers: this.getHeaders()
+            });
+            if (!response.ok) throw new Error('API Error: ' + response.status);
+            const data = await response.json();
+            // Simpan cache API
+            DB.simpan(CONFIG.DB_KEYS.API_CACHE, {
+                data: data,
+                timestamp: new Date().toISOString()
+            });
+            console.log('✅ API Data berhasil dimuat!', data);
+            return data;
+        } catch (error) {
+            console.error('❌ API Gagal dimuat:', error);
+            alert('⚠️ Koneksi API bermasalah, gunakan data lokal saja.');
+            return null;
+        }
+    },
+
+    // Buat Pesanan ke API
+    buatPesanan: async function(pesananData) {
+        try {
+            const response = await fetch(CONFIG.API.BASE_URL + '/api/order/create', {
+                method: 'POST',
+                headers: this.getHeaders(),
+                body: JSON.stringify(pesananData)
+            });
+            const result = await response.json();
+            return result;
+        } catch (error) {
+            console.error('❌ Pesanan ke API gagal:', error);
+            return { success: false, message: 'API tidak tersimpan, tersimpan lokal saja' };
+        }
+    },
+
+    // Cek Status Pesanan
+    cekStatus: async function(orderId) {
+        try {
+            const response = await fetch(CONFIG.API.BASE_URL + '/api/order/status/' + orderId, {
+                method: 'GET',
+                headers: this.getHeaders()
+            });
+            return await response.json();
+        } catch (error) {
+            console.error('❌ Cek status gagal:', error);
+            return null;
+        }
+    },
+
+    // Ambil Harga Terbaru dari API
+    syncHarga: async function() {
+        const openData = await this.fetchOpenAPI();
+        if (openData && openData.pricing) {
+            // Update harga otomatis dari API
+            if (openData.pricing.instagram) {
+                CONFIG.hargaData.Instagram = { ...CONFIG.hargaData.Instagram, ...openData.pricing.instagram };
+            }
+            if (openData.pricing.tiktok) {
+                CONFIG.hargaData.TikTok = { ...CONFIG.hargaData.TikTok, ...openData.pricing.tiktok };
+            }
+            if (openData.pricing.nomor) {
+                Object.assign(CONFIG.nomorData, openData.pricing.nomor);
+            }
+            console.log('✅ Harga disinkronkan dari API!');
+        }
+    }
+};
 let currentUser = null;
 let selectedChatUser = null;
 let currentOrderType = null;
