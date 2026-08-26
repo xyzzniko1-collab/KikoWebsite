@@ -6,6 +6,18 @@ const CONFIG = {
     bankNumber: '901369767087',
     bankOwner: 'S Y',
 
+    // === DATABASE KEYS ===
+    DB_KEYS: {
+        CURRENT_USER: 'simuru_current_user',
+        USERS: 'simuru_users',
+        PESANAN: 'simuru_pesanan',
+        ADMINS: 'simuru_admins',
+        CHAT_PREFIX: 'simuru_chat_',
+        VERIFY_CODES: 'simuru_verify_codes',
+        NOMOR_STOK: 'simuru_nomor_stok',
+        SETTINGS: 'simuru_settings'
+    },
+
     nomorData: {
         '+62': {
             WhatsApp: { '1': 15000, '5': 60000, '10': 110000 },
@@ -32,10 +44,15 @@ const CONFIG = {
 
     hargaData: {
         Instagram: {
-            Followers: { '1.000': 24000, '2.000': 49000, '5.000': 110000 },
-            Likes: { '1.000': 10000, '5.000': 45000 },
+            Followers: { '1.000': 24000, '2.000': 49000, '3.000': 67000 },
+            Likes: { '1.000': 10000, '2.000': 19000, '3.000': 38000 },
             Views: { '1.000': 8000, '10.000': 60000 },
             Comments: { '100': 15000, '500': 65000 }
+        },
+        TikTok: {
+            Followers: { '1.000': 49000, '2.000': 80000, '3.000': 130000 },
+            Likes: { '1.000': 10000, '2.000': 19000, '3.000': 38000 },
+            Views: { '10.000': 25000, '50.000': 110000 }
         },
         Facebook: {
             Followers: { '1.000': 15000, '5.000': 65000, '10.000': 120000 },
@@ -47,11 +64,6 @@ const CONFIG = {
             Subscribers: { '1.000': 85000, '2.000': 160000, '5.000': 380000 },
             Views: { '1.000': 15000, '5.000': 65000, '10.000': 120000 },
             Likes: { '1.000': 12000, '5.000': 50000 }
-        },
-        TikTok: {
-            Followers: { '1.000': 35000, '5.000': 150000 },
-            Likes: { '1.000': 15000, '10.000': 120000 },
-            Views: { '10.000': 25000, '50.000': 110000 }
         },
         'Twitter/X': {
             Followers: { '1.000': 20000, '5.000': 90000 },
@@ -70,5 +82,32 @@ const CONFIG = {
             Reviews: { '10': 25000, '50': 110000, '100': 200000 },
             MapsViews: { '1.000': 15000, '5.000': 65000 }
         }
+    }
+};
+
+// === FUNGSI DATABASE — SEMUA DATA TERSIMPAN PERMANEN ===
+const DB = {
+    // Simpan Data
+    simpan: function(key, data) {
+        localStorage.setItem(key, JSON.stringify(data));
+        return true;
+    },
+    
+    // Ambil Data
+    ambil: function(key, defaultValue = null) {
+        const data = localStorage.getItem(key);
+        return data ? JSON.parse(data) : defaultValue;
+    },
+    
+    // Hapus Data
+    hapus: function(key) {
+        localStorage.removeItem(key);
+    },
+    
+    // Hapus Semua Data
+    resetSemua: function() {
+        localStorage.clear();
+        alert('✅ Database di-reset! Halaman akan reload...');
+        location.reload();
     }
 };
