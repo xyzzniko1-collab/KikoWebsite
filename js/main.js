@@ -4,69 +4,56 @@ const CONFIG = {
     ownerUsername: 'owner',
     ownerPassword: 'owner123',
     
-    // HARGA BOOSTER SESUAI PERMINTAAN
     hargaData: {
         Instagram: {
             Followers: { '1000': 24000, '2000': 49000, '3000': 67000 },
             Likes: { '1000': 10000, '2000': 19000, '3000': 38000 },
-            Views: { '1000': 8000, '5000': 35000, '10000': 65000 },
-            Comments: { '100': 15000, '500': 60000, '1000': 110000 }
+            Views: { '1000': 8000, '5000': 35000, '10000': 65000 }
         },
         TikTok: {
             Followers: { '1000': 49000, '2000': 80000, '3000': 130000 },
             Likes: { '1000': 10000, '2000': 19000, '3000': 38000 },
-            Views: { '1000': 12000, '5000': 50000, '10000': 95000 },
-            Shares: { '100': 8000, '500': 35000, '1000': 65000 },
-            Comments: { '100': 12000, '500': 50000, '1000': 90000 }
+            Views: { '1000': 12000, '5000': 50000, '10000': 95000 }
         },
         Facebook: {
             Followers: { '1000': 35000, '2000': 65000, '5000': 150000 },
-            Likes: { '1000': 15000, '2000': 28000, '5000': 65000 },
-            Views: { '1000': 10000, '5000': 45000, '10000': 85000 },
-            Subscribers: { '1000': 40000, '2000': 75000, '5000': 180000 }
+            Likes: { '1000': 15000, '2000': 28000, '5000': 65000 }
         },
         YouTube: {
             Subscribers: { '100': 25000, '500': 110000, '1000': 200000 },
             Views: { '1000': 8000, '5000': 35000, '10000': 60000 },
-            Likes: { '1000': 15000, '5000': 65000, '10000': 120000 },
-            Comments: { '100': 20000, '500': 85000, '1000': 150000 }
+            Likes: { '1000': 15000, '5000': 65000, '10000': 120000 }
         },
         Twitter: {
             Followers: { '1000': 30000, '2000': 55000, '5000': 130000 },
-            Likes: { '1000': 12000, '2000': 22000, '5000': 50000 },
-            Retweets: { '1000': 10000, '5000': 45000, '10000': 80000 },
-            Views: { '1000': 9000, '5000': 40000, '10000': 75000 }
+            Likes: { '1000': 12000, '2000': 22000, '5000': 50000 }
         },
         Telegram: {
             Members: { '100': 15000, '500': 65000, '1000': 120000 },
-            Views: { '1000': 8000, '5000': 35000, '10000': 60000 },
-            PostViews: { '1000': 7000, '5000': 30000, '10000': 55000 }
+            Views: { '1000': 8000, '5000': 35000, '10000': 60000 }
         },
         Twitch: {
             Followers: { '100': 20000, '500': 85000, '1000': 160000 },
-            Views: { '1000': 15000, '5000': 65000, '10000': 120000 },
-            LiveViews: { '100': 25000, '500': 110000, '1000': 200000 }
+            Views: { '1000': 15000, '5000': 65000, '10000': 120000 }
         },
         Spotify: {
             Followers: { '100': 30000, '500': 130000, '1000': 250000 },
-            Streams: { '1000': 20000, '5000': 90000, '10000': 170000 },
-            MonthlyListeners: { '1000': 25000, '5000': 110000, '10000': 200000 }
+            Streams: { '1000': 20000, '5000': 90000, '10000': 170000 }
         }
     },
     
-    // NOMOR — SEMUA LAYANAN LENGKAP
     nomorData: {
         '+62': {
-            WhatsApp: { '1': 15000, '5': 60000, '10': 110000, '50': 500000 },
-            Telegram: { '1': 12000, '5': 50000, '10': 95000, '50': 430000 },
-            Google: { '1': 18000, '5': 75000, '10': 140000, '50': 650000 },
-            Facebook: { '1': 16000, '5': 68000, '10': 125000, '50': 580000 },
-            Instagram: { '1': 15000, '5': 63000, '10': 115000, '50': 530000 },
-            Twitter: { '1': 17000, '5': 70000, '10': 130000, '50': 600000 },
-            TikTok: { '1': 20000, '5': 85000, '10': 160000, '50': 750000 },
-            Line: { '1': 14000, '5': 58000, '10': 105000, '50': 480000 },
-            Signal: { '1': 16000, '5': 68000, '10': 125000, '50': 570000 },
-            Viber: { '1': 15000, '5': 62000, '10': 115000, '50': 520000 }
+            WhatsApp: { '1': 15000, '5': 60000, '10': 110000 },
+            Telegram: { '1': 12000, '5': 50000, '10': 95000 },
+            Google: { '1': 18000, '5': 75000, '10': 140000 },
+            Facebook: { '1': 16000, '5': 68000, '10': 125000 },
+            Instagram: { '1': 15000, '5': 63000, '10': 115000 },
+            Twitter: { '1': 17000, '5': 70000, '10': 130000 },
+            TikTok: { '1': 20000, '5': 85000, '10': 160000 },
+            Line: { '1': 14000, '5': 58000, '10': 105000 },
+            Signal: { '1': 16000, '5': 68000, '10': 125000 },
+            Viber: { '1': 15000, '5': 62000, '10': 115000 }
         },
         '+60': {
             WhatsApp: { '1': 25000, '5': 110000, '10': 200000 },
@@ -161,6 +148,46 @@ function updateSaldoDisplay() {
     }
 }
 
+// ========== NAVIGASI PAGE ==========
+document.addEventListener('DOMContentLoaded', () => {
+    const savedUser = DB_ambil('store_current_user');
+    if (savedUser) {
+        currentUser = savedUser;
+        document.getElementById('nama-user').textContent = currentUser.username;
+        document.getElementById('auth-modal').classList.add('hidden');
+        updateSaldoDisplay();
+        updateNavVisibility();
+        loadRiwayatTopUp();
+        loadRiwayatSaldo();
+        loadPesananUser();
+        if (isOwner() || isAdmin()) loadOwnerPanel();
+    }
+});
+
+function showPage(pageName) {
+    document.querySelectorAll('.page').forEach(p => p.classList.add('hidden'));
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    
+    const page = document.getElementById('page-' + pageName);
+    const tab = document.getElementById('tab-' + pageName);
+    if (page) page.classList.remove('hidden');
+    if (tab) tab.classList.add('active');
+    
+    if (pageName === 'saldo') {
+        loadRiwayatTopUp();
+        loadRiwayatSaldo();
+    }
+    if (pageName === 'pesanan') loadPesananUser();
+    if (pageName === 'owner' || pageName === 'admin') loadOwnerPanel();
+}
+
+function updateNavVisibility() {
+    const tabOwner = document.getElementById('tab-owner');
+    const tabAdmin = document.getElementById('tab-admin');
+    if (tabOwner) tabOwner.classList.toggle('hidden', !isOwner());
+    if (tabAdmin) tabAdmin.classList.toggle('hidden', !(isAdmin() && !isOwner()));
+}
+
 // ========== LOGIN & REGISTER ==========
 function closeAuthModal() { document.getElementById('auth-modal').classList.add('hidden'); }
 function showRegister() {
@@ -174,43 +201,4 @@ function showLogin() {
 function login() {
     const usn = document.getElementById('login-usn').value.trim();
     const pw = document.getElementById('login-pw').value.trim();
-    if (!usn || !pw) return alert('Isi username & password!');
-    const users = DB_ambil('store_users', {});
-    const admins = DB_ambil('store_admins', []);
-    
-    if (usn === CONFIG.ownerUsername && pw === CONFIG.ownerPassword) {
-        currentUser = { username: usn, role: 'owner' };
-    } else if (admins.some(a => a.username === usn && a.password === pw)) {
-        currentUser = { username: usn, role: 'admin' };
-    } else if (users[usn] && users[usn].password === pw) {
-        currentUser = { ...users[usn], role: 'user' };
-    } else {
-        return alert('Username/password salah!');
-    }
-    DB_simpan('store_current_user', currentUser);
-    document.getElementById('nama-user').textContent = currentUser.username;
-    closeAuthModal();
-    updateSaldoDisplay();
-    updateNav();
-}
-function register() {
-    const usn = document.getElementById('reg-usn').value.trim();
-    const pw = document.getElementById('reg-pw').value.trim();
-    if (!usn || !pw) return alert('Lengkapi data!');
-    const users = DB_ambil('store_users', {});
-    if (users[usn]) return alert('Username sudah ada!');
-    users[usn] = { username: usn, password: pw, saldo: 0, daftar: new Date().toLocaleString() };
-    DB_simpan('store_users', users);
-    alert('✅ Daftar berhasil! Silakan Login.');
-    showLogin();
-}
-function logout() {
-    if (!confirm('Keluar dari akun?')) return;
-    currentUser = null;
-    localStorage.removeItem('store_current_user');
-    location.reload();
-}
-function updateNav() {
-    const tabOwner = document.getElementById('tab-owner');
-    const tabAdmin = document.getElementById('tab-admin');
-    if (tabOwner) tabOwner.classList.toggle('hidden', !(isOwner() ||
+    if (!usn || !pw
