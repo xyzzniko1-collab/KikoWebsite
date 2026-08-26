@@ -1,16 +1,15 @@
 :root {
     --bg: #0f0f0f; --card: #1a1a1a; --gold: #d4af37;
-    --text: #ffffff; --muted: #999999; --border: #333333;
-    --success: #2ecc71; --danger: #e74c3c; --info: #3498db;
+    --text: #fff; --muted: #999; --border: #333;
+    --success: #2ecc71; --danger: #e74c3c;
 }
-
 * {margin:0;padding:0;box-sizing:border-box;}
 body {background:var(--bg);color:var(--text);min-height:100vh;padding-bottom:80px;font-family:system-ui,-apple-system,sans-serif;}
 .container {max-width:480px;margin:0 auto;padding:0 15px;}
 
-/* MODAL */
-.modal {position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;z-index:999;}
-.modal.hidden {display:none;}
+/* MODAL — PASTI BISA DIKLIK */
+.modal {position:fixed;inset:0;width:100%;height:100%;background:rgba(0,0,0,.9);display:flex;align-items:center;justify-content:center;z-index:9999;}
+.modal.hidden {display:none !important;}
 .modal-content {background:var(--card);padding:25px;border-radius:12px;width:90%;max-width:420px;border:1px solid var(--border);max-height:90vh;overflow-y:auto;}
 .close {float:right;font-size:24px;cursor:pointer;color:var(--muted);transition:.2s;}
 .close:hover {color:var(--text);}
@@ -19,43 +18,40 @@ h4 {font-size:16px;}
 label {display:block;margin:12px 0 5px;font-size:14px;color:#ccc;}
 input,select {width:100%;padding:12px;border:1px solid var(--border);border-radius:6px;background:#252525;color:var(--text);font-size:15px;outline:none;}
 input:focus,select:focus {border-color:var(--gold);}
-.btn {width:100%;padding:13px;background:var(--gold);color:#000;border:none;border-radius:6px;font-size:16px;font-weight:600;cursor:pointer;margin-top:15px;transition:.2s;}
+.btn {width:100%;padding:13px;background:var(--gold);color:#000;border:none;border-radius:6px;font-size:16px;font-weight:600;cursor:pointer;margin-top:15px;transition:.2s;user-select:none;}
 .btn:hover {opacity:.9;transform:translateY(-1px);}
+.btn:active {transform:translateY(0);}
 .btn-secondary {background:#333;color:var(--text);}
-.btn-secondary:hover {background:#444;}
 .link-text {color:var(--gold);cursor:pointer;text-decoration:underline;}
 .hidden {display:none !important;}
 
-/* VERIFY BOX — KODE VERIFIKASI */
-.verify-box {background:rgba(212,175,55,.08);border:2px solid var(--gold);border-radius:10px;padding:20px;margin:20px 0;text-align:center;}
+/* KODE VERIFIKASI */
+.verify-box {background:rgba(212,175,55,.1);border:2px solid var(--gold);border-radius:10px;padding:20px;margin:20px 0;text-align:center;}
 .verify-code {font-size:32px;font-weight:bold;color:var(--gold);letter-spacing:8px;padding:15px;background:#000;border-radius:8px;margin:15px 0;font-family:monospace;}
 .chat-verify-btn {background:var(--success);color:#fff;}
-.chat-verify-btn:hover {background:#27ae60;}
 
-/* CARD & TABS */
+/* CARD & TABS — TOMBOL BISA DIKLIK */
 .card {background:var(--card);padding:20px;border-radius:12px;margin-bottom:15px;border:1px solid var(--border);}
-.note {background:rgba(52,152,219,.1);border-left:3px solid var(--info);padding:15px;margin:15px 0;border-radius:0 8px 8px 0;font-size:14px;line-height:1.8;}
+.note {background:rgba(52,152,219,.1);border-left:3px solid #3498db;padding:15px;margin:15px 0;border-radius:0 8px 8px 0;font-size:14px;line-height:1.8;}
 .header-tabs {display:flex;gap:8px;margin-bottom:20px;overflow-x:auto;padding-bottom:5px;}
-.tab {padding:10px 16px;border-radius:20px;font-size:14px;cursor:pointer;white-space:nowrap;transition:.2s;user-select:none;}
+.tab {padding:10px 16px;border-radius:20px;font-size:14px;cursor:pointer;white-space:nowrap;user-select:none;transition:.2s;}
 .tab.active {background:var(--gold);color:#000;font-weight:600;}
 .tab.inactive {background:#2a2a2a;color:#ccc;}
 .tab.inactive:hover {background:#333;}
 
-/* GRID PLATFORM */
+/* GRID PLATFORM — TOMBOL BISA DIKLIK */
 .popular-grid {display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:15px;}
 @media (max-width:380px) {.popular-grid {grid-template-columns:repeat(2,1fr);}}
 .popular-card {background:#252525;padding:15px 8px;border-radius:10px;text-align:center;cursor:pointer;transition:.2s;border:2px solid transparent;user-select:none;}
-.popular-card:hover {border-color:var(--gold);transform:translateY(-3px);background:#2a2a2a;}
+.popular-card:hover {border-color:var(--gold);transform:translateY(-2px);background:#2a2a2a;}
 .popular-icon {font-size:26px;display:block;margin-bottom:6px;}
 .popular-card p {font-size:13px;color:#ddd;}
 
-/* SUMMARY BOX */
+/* SUMMARY */
 .summary-box {background:#252525;padding:18px;border-radius:10px;margin:15px 0;border:1px solid #3a3a3a;}
 .summary-box p {margin:10px 0;font-size:15px;}
 .summary-box .total {font-size:20px;font-weight:bold;color:var(--gold);margin-top:12px;padding-top:12px;border-top:1px solid var(--border);}
-
-/* INFO BOX */
-.info-box {background:rgba(52,152,219,.1);border-left:3px solid var(--info);padding:12px 15px;border-radius:0 6px 6px 6px;margin:15px 0;}
+.info-box {background:rgba(52,152,219,.1);border-left:3px solid #3498db;padding:12px 15px;border-radius:0 6px 6px 6px;margin:15px 0;}
 
 /* TABLE */
 table {width:100%;border-collapse:collapse;margin-top:15px;font-size:13px;}
@@ -76,14 +72,8 @@ select {padding:8px;}
 .upload-box:hover {border-color:var(--gold);background:rgba(212,175,55,.03);}
 .preview-img {max-width:100%;margin-top:15px;border-radius:8px;display:none;}
 
-/* BOTTOM NAV */
-.bottom-nav {position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:10px 0;z-index:100;}
+/* BOTTOM NAV — BISA DIKLIK */
+.bottom-nav {position:fixed;bottom:0;left:0;right:0;background:var(--card);border-top:1px solid var(--border);display:flex;justify-content:space-around;padding:10px 0;z-index:1000;}
 .nav-item {display:flex;flex-direction:column;align-items:center;font-size:11px;color:#ccc;cursor:pointer;transition:.2s;user-select:none;}
 .nav-item:hover {color:var(--gold);}
 .nav-icon {font-size:22px;margin-bottom:3px;}
-
-/* STATUS COLOR */
-.status-pending {color:#f39c12;}
-.status-proses {color:#3498db;}
-.status-selesai {color:var(--success);}
-.status-error {color:var(--danger);}
