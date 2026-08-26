@@ -6,7 +6,7 @@ const CONFIG = {
     ownerUsername: 'owner',
     ownerPassword: 'owner123',
     
-    // HARGA TETAP SAMA
+    // HARGA TETAP SESUAI PERMINTAAN
     hargaData: {
         Instagram: {
             Followers: { '1000': 24000, '2000': 49000, '3000': 67000 },
@@ -18,21 +18,25 @@ const CONFIG = {
         }
     },
     nomorData: {
-        '+62': { WhatsApp: { '1': 15000, '5': 60000, '10': 110000 }, Telegram: { '1': 12000, '5': 50000, '10': 95000 } },
+        '+62': { 
+            WhatsApp: { '1': 15000, '5': 60000, '10': 110000 }, 
+            Telegram: { '1': 12000, '5': 50000, '10': 95000 },
+            Google: { '1': 18000, '5': 75000, '10': 140000 }
+        },
         '+60': { WhatsApp: { '1': 25000, '5': 110000, '10': 200000 } },
         '+65': { WhatsApp: { '1': 30000, '5': 135000, '10': 250000 } },
         '+1': { WhatsApp: { '1': 45000, '5': 200000, '10': 380000 } }
     }
 };
 
-// ========== VARIABEL ==========
+// ========== VARIABEL GLOBAL ==========
 let currentUser = null, selectedPlatform = null, currentOrder = null;
 let currentNomor = { negara: '', layanan: '', jumlah: '', harga: 0 };
 let currentBooster = { platform: '', layanan: '', jumlah: '', harga: 0 };
 let kodeVerifikasiUser = null;
 
 // ========== FUNGSI DASAR ==========
-function formatHarga(angka) { return 'Rp ' + angka.toLocaleString('id-ID'); }
+function formatHarga(angka) { return 'Rp ' + parseInt(angka).toLocaleString('id-ID'); }
 function isOwner() { return currentUser?.username === CONFIG.ownerUsername; }
 function isAdmin() { 
     const admins = JSON.parse(localStorage.getItem('simuru_admins') || '[]');
@@ -40,6 +44,68 @@ function isAdmin() {
 }
 function DB_simpan(k, d) { localStorage.setItem(k, JSON.stringify(d)); }
 function DB_ambil(k, def=null) { const d=localStorage.getItem(k); return d?JSON.parse(d):def; }
+
+// ========== SALDO SISTEM — INTI FITUR ==========
+function getSaldo(username) {
+    const users = DB_ambil('simuru_users', {});
+    return users[username]?.saldo || 0;
+}
+function tambahSaldo(username, jumlah, keterangan='Top Up') {
+    const users = DB_ambil('simuru_users', {});
+    if (!users[username]) return false;
+    users[username].saldo = (users[username].saldo || 0) + parseInt(jumlah);
+    DB_simpan('simuru_users', users);
+    
+    // Simpan riwayat saldo
+    const riwayat = DB_ambil('simuru_riwayat_saldo_' + username, []);
+    riwayat.unshift({
+        waktu: new Date().toLocaleString('id-ID'),
+        tipe: 'tambah',
+        jumlah: parseInt(jumlah),
+        keterangan: keterangan
+    });
+    DB_simpan('simuru_riwayat_saldo_' + username, riwayat);
+    
+    updateSaldoDisplay();
+    return users[username].saldo;
+}
+function kurangiSaldo(username, jumlah, keterangan='Pembelian') {
+    const users = DB_ambil('simuru_users', {});
+    if (!users[username] || (users[username].saldo || 0) < jumlah) return false;
+    users[username].saldo = (users[username].saldo || 0) - parseInt(jumlah);
+    DB_simpan('simuru_users', users);
+    
+    // Simpan riwayat saldo
+    const riwayat = DB_ambil('simuru_riwayat_saldo_' + username, []);
+    riwayat.unshift({
+        waktu: new Date().toLocaleString('id-ID'),
+        tipe: 'kurangi',
+        jumlah: parseInt(jumlah),
+        keterangan: keterangan
+    });
+    DB_simpan('simuru_riwayat_saldo_' + username, riwayat);
+    
+    updateSaldoDisplay();
+    return users[username].saldo;
+}
+function cekSaldoCukup(username, jumlah) {
+    return getSaldo(username) >= jumlah;
+}
+function updateSaldoDisplay() {
+    if (!currentUser) return;
+    const saldo = getSaldo(currentUser.username);
+    document.getElementById('user-saldo').textContent = formatHarga(saldo);
+    const saldoPage = document.getElementById('saldo-page-saldo');
+    if (saldoPage) saldoPage.textContent = formatHarga(saldo);
+    
+    // Update estimasi sisa saldo di form beli
+    if (currentNomor.harga > 0) {
+        document.getElementById('nomor-sisa-saldo').textContent = formatHarga(saldo - currentNomor.harga);
+    }
+    if (currentBooster.harga > 0) {
+        document.getElementById('booster-sisa-saldo').textContent = formatHarga(saldo - currentBooster.harga);
+    }
+}
 
 // ========== KODE VERIFIKASI ==========
 function buatKodeVerifikasi() {
@@ -54,10 +120,11 @@ function tutupKodeVerifikasi() {
     document.getElementById('verify-code-box').classList.add('hidden');
     closeAuthModal();
     updateNav();
+    updateSaldoDisplay();
     loadPesanan();
 }
 
-// ========== LOGIN & REGISTER — TOMBOL BISA DIKLIK ==========
+// ========== LOGIN & REGISTER — SALDO AWAL 0 ==========
 function closeAuthModal() { document.getElementById('auth-modal').classList.add('hidden'); }
 function showRegister() {
     document.getElementById('login-form').classList.add('hidden');
@@ -90,7 +157,7 @@ function login() {
     document.getElementById('verify-code-box').classList.remove('hidden');
     document.getElementById('kode-verifikasi').textContent = kodeVerifikasiUser.replace(/(\d{3})(\d{3})/, '$1 $2');
     document.getElementById('nomor-kode-verifikasi').textContent = kodeVerifikasiUser;
-    document.getElementById('pay-kode').textContent = kodeVerifikasiUser;
+    updateSaldoDisplay();
 }
 function register() {
     const usn = document.getElementById('reg-usn').value.trim();
@@ -98,9 +165,14 @@ function register() {
     if (!usn || !pw) return alert('Lengkapi data!');
     const users = DB_ambil('simuru_users', {});
     if (users[usn]) return alert('Username sudah ada!');
-    users[usn] = { username: usn, password: pw };
+    users[usn] = { 
+        username: usn, 
+        password: pw, 
+        saldo: 0, // SALDO AWAL 0
+        tanggalDaftar: new Date().toLocaleString('id-ID')
+    };
     DB_simpan('simuru_users', users);
-    alert('✅ Daftar berhasil! Silakan login.');
+    alert('✅ Daftar berhasil! Saldo awal Rp 0. Silakan Top Up.');
     showLogin();
 }
 function logout() {
@@ -114,12 +186,12 @@ function updateNav() {
     document.getElementById('tab-admin').classList.toggle('hidden', !isOwner());
 }
 
-// ========== NAVIGASI HALAMAN — SEMUA TOMBOL BISA DIKLIK ==========
+// ========== NAVIGASI HALAMAN ==========
 function showPage(page) {
     if (!currentUser && page !== 'beranda') return;
     
     // Sembunyikan semua
-    ['page-beranda','page-nomor','page-booster','page-chat','page-owner','page-admin','page-pesanan','payment-form'].forEach(id=>{
+    ['page-beranda','page-nomor','page-booster','page-saldo','page-chat','page-owner','page-admin','page-pesanan'].forEach(id=>{
         const el = document.getElementById(id); if(el) el.classList.add('hidden');
     });
     document.querySelectorAll('.tab').forEach(t=>{t.classList.remove('active');t.classList.add('inactive');});
@@ -137,6 +209,11 @@ function showPage(page) {
         document.getElementById('page-booster').classList.remove('hidden');
         document.getElementById('tab-booster').classList.add('active');
     }
+    if (page === 'saldo') {
+        document.getElementById('page-saldo').classList.remove('hidden');
+        document.getElementById('tab-saldo').classList.add('active');
+        loadRiwayatSaldo();
+    }
     if (page === 'chat') {
         document.getElementById('page-chat').classList.remove('hidden');
         document.getElementById('tab-chat').classList.add('active');
@@ -146,7 +223,7 @@ function showPage(page) {
         document.getElementById('page-owner').classList.remove('hidden');
         document.getElementById('tab-owner').classList.remove('hidden');
         document.getElementById('tab-owner').classList.add('active');
-        loadOwnerPesanan();
+        loadOwnerPanel();
     }
     if (page === 'admin' && isOwner()) {
         document.getElementById('page-admin').classList.remove('hidden');
@@ -157,239 +234,56 @@ function showPage(page) {
         document.getElementById('page-pesanan').classList.remove('hidden');
         loadPesanan();
     }
+    updateSaldoDisplay();
 }
 function showPagePesanan() { showPage('pesanan'); }
 
-// ========== BOOSTER ==========
-function selectPlatform(plat) {
-    selectedPlatform = plat;
-    currentBooster.platform = plat;
-    document.getElementById('booster-form').classList.remove('hidden');
-    document.getElementById('sum-platform').textContent = plat;
-    const laySelect = document.getElementById('form-layanan');
-    laySelect.innerHTML = '<option value="">-- Pilih Layanan --</option>';
-    Object.keys(CONFIG.hargaData[plat]).forEach(l=>{
-        laySelect.innerHTML += `<option value="${l}">${l}</option>`;
-    });
+// ========== 💎 TOP UP SALDO — USER ==========
+function showTopUpModal() {
+    alert('Buka halaman Saldo untuk melakukan Top Up!');
+    showPage('saldo');
 }
-function updateJumlahBooster() {
-    const lay = document.getElementById('form-layanan').value;
-    currentBooster.layanan = lay;
-    document.getElementById('sum-layanan').textContent = lay;
-    const jumSelect = document.getElementById('form-jumlah');
-    jumSelect.innerHTML = '<option value="">-- Pilih Jumlah --</option>';
-    if (lay && CONFIG.hargaData[selectedPlatform]?.[lay]) {
-        Object.entries(CONFIG.hargaData[selectedPlatform][lay]).forEach(([j,h])=>{
-            jumSelect.innerHTML += `<option value="${j}" data-harga="${h}">${j} — ${formatHarga(h)}</option>`;
-        });
-    }
-}
-function updateHargaBooster() {
-    const opt = document.getElementById('form-jumlah').selectedOptions[0];
-    if (opt?.dataset.harga) {
-        currentBooster.jumlah = opt.value;
-        currentBooster.harga = parseInt(opt.dataset.harga);
-        document.getElementById('sum-jumlah').textContent = opt.value;
-        document.getElementById('sum-harga').textContent = formatHarga(currentBooster.harga);
-    }
-}
-function lanjutBayarBooster() {
-    if (!currentBooster.layanan || !currentBooster.jumlah) return alert('Lengkapi data!');
-    currentOrder = { type: 'booster', ...currentBooster, link: document.getElementById('form-link').value };
-    showPaymentForm();
-}
-
-// ========== NOMOR ==========
-function resetNomorForm() {
-    currentNomor = { negara: '', layanan: '', jumlah: '', harga: 0 };
-    document.getElementById('nomor-negara').value = '';
-    document.getElementById('nomor-layanan').innerHTML = '<option value="">-- Pilih Layanan --</option>';
-    document.getElementById('nomor-jumlah').innerHTML = '<option value="">-- Pilih Jumlah --</option>';
-    document.getElementById('nomor-sum-negara').textContent = '-';
-    document.getElementById('nomor-sum-layanan').textContent = '-';
-    document.getElementById('nomor-sum-jumlah').textContent = '-';
-    document.getElementById('nomor-sum-harga').textContent = 'Rp 0';
-}
-function updateNomorLayanan() {
-    const neg = document.getElementById('nomor-negara').value;
-    currentNomor.negara = neg;
-    document.getElementById('nomor-sum-negara').textContent = neg;
-    const laySelect = document.getElementById('nomor-layanan');
-    laySelect.innerHTML = '<option value="">-- Pilih Layanan --</option>';
-    if (neg && CONFIG.nomorData[neg]) {
-        Object.keys(CONFIG.nomorData[neg]).forEach(l=>{
-            laySelect.innerHTML += `<option value="${l}">${l}</option>`;
-        });
-    }
-}
-function updateNomorJumlah() {
-    const neg = document.getElementById('nomor-negara').value;
-    const lay = document.getElementById('nomor-layanan').value;
-    currentNomor.layanan = lay;
-    document.getElementById('nomor-sum-layanan').textContent = lay;
-    const jumSelect = document.getElementById('nomor-jumlah');
-    jumSelect.innerHTML = '<option value="">-- Pilih Jumlah --</option>';
-    if (neg && lay && CONFIG.nomorData[neg]?.[lay]) {
-        Object.entries(CONFIG.nomorData[neg][lay]).forEach(([j,h])=>{
-            jumSelect.innerHTML += `<option value="${j}" data-harga="${h}">${j} — ${formatHarga(h)}</option>`;
-        });
-    }
-}
-function updateNomorHarga() {
-    const opt = document.getElementById('nomor-jumlah').selectedOptions[0];
-    if (opt?.dataset.harga) {
-        currentNomor.jumlah = opt.value;
-        currentNomor.harga = parseInt(opt.dataset.harga);
-        document.getElementById('nomor-sum-jumlah').textContent = opt.value;
-        document.getElementById('nomor-sum-harga').textContent = formatHarga(currentNomor.harga);
-    }
-}
-function lanjutBayarNomor() {
-    if (!currentNomor.negara || !currentNomor.layanan || !currentNomor.jumlah) return alert('Lengkapi data!');
-    currentOrder = { type: 'nomor', ...currentNomor };
-    showPaymentForm();
-}
-
-// ========== PEMBAYARAN ==========
-function showPaymentForm() {
-    document.getElementById('page-nomor').classList.add('hidden');
-    document.getElementById('page-booster').classList.add('hidden');
-    document.getElementById('payment-form').classList.remove('hidden');
-    if (currentOrder.type === 'nomor') {
-        document.getElementById('pay-type').textContent = '📱 Beli Nomor Virtual';
-        document.getElementById('pay-detail').textContent = `${currentOrder.negara} — ${currentOrder.layanan} × ${currentOrder.jumlah}`;
+function updateTopUpTotal() {
+    const select = document.getElementById('topup-jumlah');
+    const custom = document.getElementById('topup-custom');
+    const customBox = document.getElementById('topup-custom-box');
+    
+    if (select.value === 'custom') {
+        customBox.classList.remove('hidden');
+        const val = parseInt(custom.value) || 0;
+        document.getElementById('topup-total').textContent = formatHarga(val);
     } else {
-        document.getElementById('pay-type').textContent = '🚀 Sosmed Booster';
-        document.getElementById('pay-detail').textContent = `${currentOrder.platform} — ${currentOrder.layanan} × ${currentOrder.jumlah}`;
+        customBox.classList.add('hidden');
+        document.getElementById('topup-total').textContent = formatHarga(select.value);
     }
-    document.getElementById('pay-harga').textContent = formatHarga(currentOrder.harga);
+    document.getElementById('topup-metode-text').textContent = document.getElementById('topup-metode').value;
 }
-function kembaliKeForm() {
-    document.getElementById('payment-form').classList.add('hidden');
-    currentOrder.type === 'nomor' ? showPage('nomor') : showPage('booster');
-}
-function previewBukti() {
-    const file = document.getElementById('bukti-tf').files[0];
+function previewTopUpBukti() {
+    const file = document.getElementById('topup-bukti').files[0];
     if (file) {
         const r = new FileReader();
-        r.onload = e => { const img = document.getElementById('bukti-preview'); img.src = e.target.result; img.style.display = 'block'; };
+        r.onload = e => { 
+            const img = document.getElementById('topup-bukti-preview'); 
+            img.src = e.target.result; 
+            img.style.display = 'block'; 
+        };
         r.readAsDataURL(file);
     }
 }
-function kirimPesanan() {
-    if (!document.getElementById('bukti-preview').src) return alert('Upload bukti dulu!');
-    const pesanan = {
-        id: Date.now(), user: currentUser.username, ...currentOrder,
-        status: 'pending', waktu: new Date().toLocaleString('id-ID')
-    };
-    const list = DB_ambil('simuru_pesanan', []);
-    list.push(pesanan);
-    DB_simpan('simuru_pesanan', list);
-    alert('✅ Pesanan terkirim! Menunggu konfirmasi.');
-    document.getElementById('payment-form').classList.add('hidden');
-    currentOrder = null;
-    showPage('beranda');
-}
-
-// ========== RIWAYAT PESANAN ==========
-function loadPesanan() {
-    const list = DB_ambil('simuru_pesanan', []).filter(p=>p.user === currentUser?.username);
-    const tbody = document.getElementById('pesanan-list');
-    tbody.innerHTML = list.length ? list.map(p=>`
-        <tr>
-            <td>${p.type==='nomor'?'📱':'🚀'} ${p.type}</td>
-            <td>${p.platform || p.layanan}</td>
-            <td>${p.jumlah}</td>
-            <td>${formatHarga(p.harga)}</td>
-            <td style="color:${p.status==='pending'?'orange':'green'}">${p.status}</td>
-        </tr>
-    `).join('') : '<tr><td colspan="5" style="text-align:center;color:var(--muted);">Belum ada pesanan.</td></tr>';
-}
-
-// ========== CHAT ==========
-function kirimChat() {
-    const input = document.getElementById('chat-input');
-    const pesan = input.value.trim();
-    if (!pesan) return;
-    const key = 'simuru_chat_' + currentUser.username;
-    const chat = DB_ambil(key, []);
-    chat.push({ dari: currentUser.username, pesan, waktu: new Date().toLocaleString('id-ID'), isUser: true });
-    DB_simpan(key, chat);
-    input.value = '';
-    loadUserChat();
-}
-function loadUserChat() {
-    const key = 'simuru_chat_' + currentUser.username;
-    const chat = DB_ambil(key, []);
-    const box = document.getElementById('chat-box');
-    box.innerHTML = '<div class="chat-bubble system">Selamat datang! Silakan tanya 😊</div>' + chat.map(c=>`
-        <div style="margin:8px 0;padding:10px;border-radius:12px;max-width:85%;${c.isUser?'background:var(--gold);color:#000;margin-left:auto;':'background:#333;margin-right:auto;'}">
-            <div style="font-size:11px;opacity:.7;margin-bottom:4px;">${c.waktu}</div>
-            <div>${c.pesan}</div>
-        </div>
-    `).join('');
-    box.scrollTop = box.scrollHeight;
-}
-
-// ========== OWNER & ADMIN ==========
-function loadOwnerPesanan() {
-    const list = DB_ambil('simuru_pesanan', []);
-    const tbody = document.getElementById('owner-pesanan-list');
-    tbody.innerHTML = list.length ? list.map(p=>`
-        <tr>
-            <td>${p.user}</td>
-            <td>${p.type}</td>
-            <td>${p.platform || p.layanan}</td>
-            <td>${formatHarga(p.harga)}</td>
-            <td><select onchange="ubahStatus(${p.id}, this.value)">
-                <option value="pending" ${p.status==='pending'?'selected':''}>Pending</option>
-                <option value="selesai" ${p.status==='selesai'?'selected':''}>Selesai</option>
-            </select></td>
-        </tr>
-    `).join('') : '<tr><td colspan="5" style="text-align:center;color:var(--muted);">Belum ada pesanan.</td></tr>';
-}
-function ubahStatus(id, status) {
-    const list = DB_ambil('simuru_pesanan', []);
-    const idx = list.findIndex(p=>p.id === id);
-    if (idx > -1) { list[idx].status = status; DB_simpan('simuru_pesanan', list); }
-    loadOwnerPesanan();
-}
-function tambahAdmin() {
-    const user = document.getElementById('new-admin-user').value.trim();
-    const pass = document.getElementById('new-admin-pass').value.trim();
-    if (!user || !pass) return alert('Lengkapi data!');
-    const admins = DB_ambil('simuru_admins', []);
-    if (admins.some(a=>a.username === user)) return alert('Admin sudah ada!');
-    admins.push({ username: user, password: pass });
-    DB_simpan('simuru_admins', admins);
-    alert('✅ Admin ditambahkan!');
-    document.getElementById('new-admin-user').value = '';
-    document.getElementById('new-admin-pass').value = '';
-    loadAdminList();
-}
-function loadAdminList() {
-    const admins = DB_ambil('simuru_admins', []);
-    const tbody = document.getElementById('admin-list-body');
-    tbody.innerHTML = admins.length ? admins.map((a,i)=>`
-        <tr>
-            <td>${a.username}</td>
-            <td>${a.tanggal || '-'}</td>
-            <td><button class="btn" style="padding:5px 10px;margin:0;background:var(--danger);" onclick="hapusAdmin(${i})">Hapus</button></td>
-        </tr>
-    `).join('') : '<tr><td colspan="3" style="text-align:center;color:var(--muted);">Belum ada admin.</td></tr>';
-}
-
-// ========== INISIALISASI SAAT BUKA ==========
-document.addEventListener('DOMContentLoaded', function() {
-    const saved = DB_ambil('simuru_current_user');
-    if (saved) {
-        currentUser = saved;
-        closeAuthModal();
-        updateNav();
-        loadPesanan();
-        document.getElementById('nama-user').textContent = currentUser.username;
-    }
-    // Status API
-    document.getElementById('api-status').innerHTML = '✅ Terhubung ke Simuru API';
-    document.getElementById('api-status').style.color = '#2ecc71';
-});
+function kirimTopUp() {
+    let jumlah = document.getElementById('topup-jumlah').value;
+    if (jumlah === 'custom') jumlah = document.getElementById('topup-custom').value;
+    jumlah = parseInt(jumlah);
+    
+    const metode = document.getElementById('topup-metode').value;
+    const bukti = document.getElementById('topup-bukti').files[0];
+    
+    if (!jumlah || jumlah < 10000) return alert('Masukkan jumlah minimal Rp 10.000!');
+    if (!bukti) return alert('Upload bukti transfer dulu!');
+    
+    const topupList = DB_ambil('simuru_topup_requests', []);
+    topupList.unshift({
+        id: Date.now(),
+        user: currentUser.username,
+        jumlah: jumlah,
+        metode:
