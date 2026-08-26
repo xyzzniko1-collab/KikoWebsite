@@ -15,7 +15,6 @@
         <span class="close" onclick="closeAuthModal()">&times;</span>
         <h2 id="auth-title">Login Akun</h2>
 
-        <!-- FORM LOGIN -->
         <div id="login-form">
             <label>Username</label>
             <input type="text" id="login-usn" placeholder="Masukkan username">
@@ -27,7 +26,6 @@
             </p>
         </div>
 
-        <!-- FORM REGISTER -->
         <div id="register-form" class="hidden">
             <label>Username</label>
             <input type="text" id="reg-usn" placeholder="Buat username">
@@ -59,13 +57,17 @@
 </div>
 
 <div class="container">
-    <!-- === HEADER === -->
     <div style="text-align:center;margin:20px 0;">
         <h1 style="color:var(--gold);font-size:24px;">🛒 JASA BOOSTER & NOMOR</h1>
         <p style="color:var(--muted);">Layanan Tercepat & Terpercaya ⚡</p>
     </div>
 
-    <!-- === NAVIGASI TAB === -->
+    <div class="card">
+        <h3>🔄 Status Sistem</h3>
+        <p id="api-status">🔄 Menghubungkan ke server...</p>
+        <p style="font-size:12px;color:var(--muted);">API: Simuru | Key: Terhubung ✅</p>
+    </div>
+
     <div class="header-tabs">
         <div class="tab active" id="tab-beranda" onclick="showPage('beranda')">🏠 Beranda</div>
         <div class="tab inactive" id="tab-nomor" onclick="showPage('nomor')">📱 Nomor</div>
@@ -75,7 +77,6 @@
         <div class="tab inactive hidden" id="tab-admin" onclick="showPage('admin')">👨‍💼 Admin</div>
     </div>
 
-    <!-- ==================== BERANDA ==================== -->
     <div id="page-beranda">
         <div class="card">
             <h2>👋 Selamat Datang!</h2>
@@ -120,7 +121,6 @@
         <button class="btn" style="background:#e74c3c;margin-top:10px;" onclick="logout()">🚪 Keluar Akun</button>
     </div>
 
-    <!-- ==================== NOMOR ==================== -->
     <div id="page-nomor" class="hidden">
         <div class="card">
             <h2>📱 Beli Nomor Virtual</h2>
@@ -144,7 +144,6 @@
                 <option value="">-- Pilih Jumlah --</option>
             </select>
 
-            <!-- KODE VERIFIKASI OTOMATIS -->
             <div id="verify-box" class="verify-box hidden">
                 <h4>🔑 Kode Verifikasi Pembelian</h4>
                 <p style="font-size:13px;color:#ccc;margin-bottom:8px;">Kode ini akan dikirim ke Owner untuk konfirmasi nomor</p>
@@ -163,7 +162,6 @@
         </div>
     </div>
 
-    <!-- ==================== BOOSTER SOSMED ==================== -->
     <div id="page-booster" class="hidden">
         <div class="card">
             <h2>🚀 Sosmed Booster</h2>
@@ -204,7 +202,6 @@
                 </div>
             </div>
 
-            <!-- FORM BOOSTER -->
             <div id="booster-form" class="hidden" style="margin-top:20px;">
                 <input type="hidden" id="form-platform">
                 
@@ -233,7 +230,6 @@
         </div>
     </div>
 
-    <!-- ==================== CHAT CS ==================== -->
     <div id="page-chat" class="hidden">
         <div class="card">
             <h2>💬 Hubungi Customer Service</h2>
@@ -250,12 +246,10 @@
         </div>
     </div>
 
-    <!-- ==================== OWNER PANEL ==================== -->
     <div id="page-owner" class="hidden">
         <div class="card">
             <h2>🔐 Panel Owner</h2>
 
-            <!-- DAFTAR KODE VERIFIKASI -->
             <h3 class="section-title">🔑 Kode Verifikasi Nomor</h3>
             <table>
                 <thead><tr><th>User</th><th>Negara/Layanan</th><th>Kode</th><th>Status</th><th>Aksi</th></tr></thead>
@@ -264,7 +258,6 @@
                 </tbody>
             </table>
 
-            <!-- DAFTAR PESANAN MASUK -->
             <h3 class="section-title">📥 Semua Pesanan Masuk</h3>
             <table>
                 <thead><tr><th>User</th><th>Tipe</th><th>Detail</th><th>Kode</th><th>Jumlah</th><th>Harga</th><th>Status</th><th>Aksi</th></tr></thead>
@@ -273,7 +266,6 @@
                 </tbody>
             </table>
 
-            <!-- CHAT DARI USER -->
             <h3 class="section-title">💬 Chat dari User</h3>
             <p style="color:var(--muted);font-size:13px;margin-bottom:10px;">Pilih user untuk membalas pesan</p>
             <div id="chat-user-list" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:15px;">
@@ -291,7 +283,6 @@
         </div>
     </div>
 
-    <!-- ==================== ADMIN PANEL ==================== -->
     <div id="page-admin" class="hidden">
         <div class="card">
             <h2>👨‍💼 Kelola Admin</h2>
@@ -313,7 +304,6 @@
         </div>
     </div>
 
-    <!-- ==================== RIWAYAT PESANAN ==================== -->
     <div id="page-pesanan" class="hidden">
         <div class="card">
             <h2>📋 Riwayat Pesanan</h2>
@@ -326,7 +316,6 @@
         </div>
     </div>
 
-    <!-- ==================== FORM PEMBAYARAN ==================== -->
     <div id="payment-form" class="hidden">
         <div class="card">
             <h2>💳 Pembayaran</h2>
@@ -339,7 +328,7 @@
                 <p class="total" id="pay-harga">Rp 0</p>
             </div>
 
-            <div class="info-box">
+            <div class="info-box" onclick="toggleInfo('pembayaran')">
                 <span>💳 Info Pembayaran</span>
                 <span id="icon-pembayaran">▼</span>
             </div>
@@ -363,7 +352,6 @@
 
 </div>
 
-<!-- === BOTTOM NAVIGASI === -->
 <div class="bottom-nav">
     <div class="nav-item" onclick="showPage('beranda')">
         <span class="nav-icon">🏠</span>Beranda
@@ -382,7 +370,6 @@
     </div>
 </div>
 
-<!-- === SCRIPT === -->
 <script src="js/config.js"></script>
 <script src="js/main.js"></script>
 
