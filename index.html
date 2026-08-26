@@ -4,328 +4,321 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>KIKO — Jasa Sosmed & Nomor Terpercaya</title>
+    <title>Store Jasa — Nomor & Sosmed Booster</title>
     <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-    <div class="container">
 
-        <!-- MODAL LOGIN / DAFTAR -->
-        <div id="auth-modal" class="modal">
-            <div class="modal-content">
-                <span class="close" onclick="closeAuthModal()">&times;</span>
-                <h2 id="auth-title">Login Akun</h2>
-                
-                <div id="login-form">
-                    <label>Username</label>
-                    <input type="text" id="login-usn" placeholder="Masukkan username">
-                    <label>Password</label>
-                    <input type="password" id="login-pw" placeholder="Masukkan password">
-                    <button class="btn" onclick="login()">Login</button>
-                    <p style="margin-top:15px;color:var(--muted);text-align:center;">
-                        Belum punya akun? <span class="link-text" onclick="showRegister()">Daftar disini</span>
-                    </p>
-                </div>
+<!-- === MODAL LOGIN / REGISTER === -->
+<div id="auth-modal" class="modal">
+    <div class="modal-content">
+        <span class="close" onclick="closeAuthModal()">&times;</span>
+        <h2 id="auth-title">Login Akun</h2>
 
-                <div id="register-form" class="hidden">
-                    <label>Username</label>
-                    <input type="text" id="reg-usn" placeholder="Masukkan username">
-                    <label>Password</label>
-                    <input type="password" id="reg-pw" placeholder="Masukkan password">
-                    <label>Metode Pembayaran</label>
-                    <select id="reg-bank">
-                        <option value="">-- Pilih --</option>
-                        <option value="Gopay">Gopay</option>
-                        <option value="Dana">Dana</option>
-                        <option value="BCA">BCA</option>
-                        <option value="Seabank">Seabank</option>
-                    </select>
-                    <label>Kode Negara</label>
-                    <select id="reg-country-code">
-                        <option value="+62">🇮🇩 Indonesia (+62)</option>
-                        <option value="+60">🇲🇾 Malaysia (+60)</option>
-                        <option value="+65">🇸🇬 Singapura (+65)</option>
-                        <option value="+66">🇹🇭 Thailand (+66)</option>
-                        <option value="+84">🇻🇳 Vietnam (+84)</option>
-                        <option value="+86">🇨🇳 China (+86)</option>
-                        <option value="+1">🇺🇸 USA/Canada (+1)</option>
-                        <option value="+44">🇬🇧 Inggris (+44)</option>
-                        <option value="+971">🇦🇪 UAE (+971)</option>
-                        <option value="+81">🇯🇵 Jepang (+81)</option>
-                        <option value="+82">🇰🇷 Korea Selatan (+82)</option>
-                    </select>
-                    <label>No. Telepon / Rekening</label>
-                    <input type="tel" id="reg-no" placeholder="Masukkan nomor tanpa angka 0 di depan">
-                    <button class="btn" onclick="register()">Daftar</button>
-                    <p style="margin-top:15px;color:var(--muted);text-align:center;">
-                        Sudah punya akun? <span class="link-text" onclick="showLogin()">Login disini</span>
-                    </p>
-                </div>
-            </div>
+        <!-- FORM LOGIN -->
+        <div id="login-form">
+            <label>Username</label>
+            <input type="text" id="login-usn" placeholder="Masukkan username">
+            <label>Password</label>
+            <input type="password" id="login-pw" placeholder="Masukkan password">
+            <button class="btn" onclick="login()">Masuk</button>
+            <p style="text-align:center;margin-top:15px;color:var(--muted);">
+                Belum punya akun? <span class="link-text" onclick="showRegister()">Daftar di sini</span>
+            </p>
         </div>
 
-        <!-- HEADER TABS -->
-        <div class="header-tabs">
-            <div class="tab active" id="tab-beranda" onclick="showPage('beranda')">Beranda</div>
-            <div class="tab inactive" id="tab-nomor" onclick="showPage('nomor')">📱 Nomor</div>
-            <div class="tab inactive" id="tab-booster" onclick="showPage('booster')">🚀 Sosmed Booster</div>
-            <div class="tab inactive" id="tab-chat" onclick="showPage('chat')">💬 Chat CS</div>
-            <div class="tab inactive hidden" id="tab-owner" onclick="showPage('owner')">Owner</div>
-            <div class="tab inactive hidden" id="tab-admin" onclick="showPage('admin')">Admin</div>
-        </div>
-
-        <!-- HALAMAN BERANDA — HANYA WELCOME -->
-        <div id="page-beranda">
-            <div class="welcome-section" style="text-align:center;padding:60px 20px;">
-                <h1 style="font-size:2.2rem;color:var(--gold);margin-bottom:15px;">Selamat Datang di KIKO 🎉</h1>
-                <p style="font-size:1.1rem;color:var(--muted);margin-bottom:10px;">Platform Jasa Sosmed & Nomor Virtual Terpercaya</p>
-                <p style="color:var(--muted);margin-bottom:30px;">Pilih menu di atas untuk mulai memesan</p>
-                <div style="display:flex;gap:15px;justify-content:center;flex-wrap:wrap;">
-                    <button class="btn" style="flex:1;min-width:140px;" onclick="showPage('nomor')">📱 Beli Nomor</button>
-                    <button class="btn" style="flex:1;min-width:140px;" onclick="showPage('booster')">🚀 Sosmed Booster</button>
-                </div>
-            </div>
-
-            <!-- INFO PENTING -->
-            <div class="info-box" onclick="toggleInfo('info-penting')">
-                <span class="info-text">⚠️ Info penting sebelum memesan</span>
-                <span class="dropdown-icon" id="icon-info-penting">▼</span>
-            </div>
-            <div id="info-penting" class="info-content hidden">
-                <ul>
-                    <li>Pastikan akun <strong>publik</strong> sebelum order booster.</li>
-                    <li>Nomor tidak bisa dikembalikan setelah dikirim.</li>
-                    <li>Order tidak bisa dibatalkan setelah pembayaran dikonfirmasi.</li>
-                    <li>Waktu pengerjaan 1–24 jam tergantung layanan.</li>
-                </ul>
-            </div>
-
-            <!-- KETENTUAN -->
-            <div class="info-box" onclick="toggleInfo('ketentuan')">
-                <span class="info-text">📋 Ketentuan — wajib baca</span>
-                <span class="dropdown-icon" id="icon-ketentuan">▼</span>
-            </div>
-            <div id="ketentuan" class="info-content hidden">
-                <ul>
-                    <li>Link/username salah / di-private setelah order → <strong>tidak ada refund</strong>.</li>
-                    <li>Jangan order 2 layanan sekaligus ke akun yang sama.</li>
-                    <li>Garansi refill jika turun >30% dalam 7 hari.</li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- HALAMAN NOMOR — KHUSUS BELI NOMOR VIRTUAL -->
-        <div id="page-nomor" class="hidden">
-            <h2 class="section-title">📱 Beli Nomor Virtual</h2>
-            <div class="card">
-                <label>Pilih Negara</label>
-                <select id="nomor-negara" onchange="updateNomorLayanan()">
-                    <option value="">-- Pilih Negara --</option>
-                    <option value="+62">🇮🇩 Indonesia (+62)</option>
-                    <option value="+60">🇲🇾 Malaysia (+60)</option>
-                    <option value="+65">🇸🇬 Singapura (+65)</option>
-                    <option value="+66">🇹🇭 Thailand (+66)</option>
-                    <option value="+84">🇻🇳 Vietnam (+84)</option>
-                    <option value="+86">🇨🇳 China (+86)</option>
-                    <option value="+1">🇺🇸 USA/Canada (+1)</option>
-                    <option value="+44">🇬🇧 Inggris (+44)</option>
+        <!-- FORM REGISTER -->
+        <div id="register-form" class="hidden">
+            <label>Username</label>
+            <input type="text" id="reg-usn" placeholder="Buat username">
+            <label>Password</label>
+            <input type="password" id="reg-pw" placeholder="Buat password">
+            <label>Metode Pembayaran</label>
+            <select id="reg-bank">
+                <option value="Seabank">Seabank</option>
+                <option value="DANA">DANA</option>
+                <option value="Gopay">Gopay</option>
+                <option value="BCA">BCA</option>
+            </select>
+            <label>Nomor WhatsApp</label>
+            <div style="display:flex;gap:8px;">
+                <select id="reg-country-code" style="width:30%;">
+                    <option value="+62">+62 🇮🇩</option>
+                    <option value="+60">+60 🇲🇾</option>
+                    <option value="+65">+65 🇸🇬</option>
+                    <option value="+1">+1 🇺🇸</option>
                 </select>
-                <label>Layanan Nomor</label>
-                <select id="nomor-layanan" onchange="updateNomorJumlah()">
-                    <option value="">-- Pilih Layanan Dulu --</option>
-                </select>
-                <label>Jumlah</label>
-                <select id="nomor-jumlah" onchange="updateNomorHarga()">
-                    <option value="">-- Pilih Jumlah --</option>
-                </select>
-                <div class="summary-box">
-                    <h4>Ringkasan Pesanan</h4>
-                    <p>Negara: <span id="nomor-sum-negara">-</span></p>
-                    <p>Layanan: <span id="nomor-sum-layanan">-</span></p>
-                    <p>Jumlah: <span id="nomor-sum-jumlah">-</span></p>
-                    <p class="total">Total: <span id="nomor-sum-harga">Rp 0</span></p>
-                </div>
-                <button class="btn" onclick="lanjutBayarNomor()">Lanjut ke Pembayaran</button>
+                <input type="tel" id="reg-no" placeholder="812xxxxxxx" style="width:70%;">
+            </div>
+            <button class="btn" onclick="register()">Daftar Akun</button>
+            <p style="text-align:center;margin-top:15px;color:var(--muted);">
+                Sudah punya akun? <span class="link-text" onclick="showLogin()">Login di sini</span>
+            </p>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <!-- === HEADER === -->
+    <div style="text-align:center;margin:20px 0;">
+        <h1 style="color:var(--gold);font-size:24px;">🛒 JASA BOOSTER & NOMOR</h1>
+        <p style="color:var(--muted);">Layanan Tercepat & Terpercaya ⚡</p>
+    </div>
+
+    <!-- === NAVIGASI TAB === -->
+    <div class="header-tabs">
+        <div class="tab active" id="tab-beranda" onclick="showPage('beranda')">🏠 Beranda</div>
+        <div class="tab inactive" id="tab-nomor" onclick="showPage('nomor')">📱 Nomor</div>
+        <div class="tab inactive" id="tab-booster" onclick="showPage('booster')">🚀 Booster</div>
+        <div class="tab inactive" id="tab-chat" onclick="showPage('chat')">💬 CS</div>
+        <div class="tab inactive hidden" id="tab-owner" onclick="showPage('owner')">🔐 Owner</div>
+        <div class="tab inactive hidden" id="tab-admin" onclick="showPage('admin')">👨‍💼 Admin</div>
+    </div>
+
+    <!-- ==================== BERANDA ==================== -->
+    <div id="page-beranda">
+        <div class="card">
+            <h2>👋 Selamat Datang!</h2>
+            <p>Terima kasih telah berbelanja di toko kami 😊</p>
+            <div class="note">
+                ⚡ <strong>Proses Cepat</strong> — Pesanan diproses maksimal 1x24 jam<br>
+                🔒 <strong>Aman</strong> — Data Anda terjamin aman<br>
+                💳 <strong>Pembayaran</strong> — Seabank, DANA, Gopay, BCA
             </div>
         </div>
 
-        <!-- HALAMAN BOOSTER — KHUSUS SOSMED SAJA -->
-        <div id="page-booster" class="hidden">
-            <h2 class="section-title">🚀 Sosmed Booster</h2>
-            <p style="color:var(--muted);margin-bottom:15px;">Pilih platform sosmed yang ingin di-boost:</p>
+        <div class="card">
+            <h3>🔥 Layanan Populer</h3>
             <div class="popular-grid">
-                <div class="popular-card" onclick="selectPlatform('Instagram')">
-                    <div class="popular-icon">📸</div>
+                <div class="popular-card" onclick="selectPlatform('Instagram'); showPage('booster')">
+                    <span class="popular-icon">📸</span>
                     <p>Instagram</p>
                 </div>
+                <div class="popular-card" onclick="selectPlatform('TikTok'); showPage('booster')">
+                    <span class="popular-icon">🎵</span>
+                    <p>TikTok</p>
+                </div>
+                <div class="popular-card" onclick="selectPlatform('YouTube'); showPage('booster')">
+                    <span class="popular-icon">▶️</span>
+                    <p>YouTube</p>
+                </div>
+                <div class="popular-card" onclick="showPage('nomor')">
+                    <span class="popular-icon">📱</span>
+                    <p>Nomor</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="card">
+            <h3>💰 Info Pembayaran</h3>
+            <p><strong>Seabank:</strong> 901369767087</p>
+            <p><strong>a.n:</strong> S Y</p>
+            <p style="color:var(--muted);font-size:13px;margin-top:8px;">Lakukan pembayaran lalu upload bukti di halaman pesanan</p>
+        </div>
+
+        <button class="btn btn-secondary" onclick="showPagePesanan()">📋 Riwayat Pesanan</button>
+        <button class="btn" style="background:#e74c3c;margin-top:10px;" onclick="logout()">🚪 Keluar Akun</button>
+    </div>
+
+    <!-- ==================== NOMOR ==================== -->
+    <div id="page-nomor" class="hidden">
+        <div class="card">
+            <h2>📱 Beli Nomor Virtual</h2>
+            
+            <label>Pilih Negara</label>
+            <select id="nomor-negara" onchange="updateNomorLayanan()">
+                <option value="">-- Pilih Negara --</option>
+                <option value="+62">🇮🇩 Indonesia (+62)</option>
+                <option value="+60">🇲🇾 Malaysia (+60)</option>
+                <option value="+65">🇸🇬 Singapura (+65)</option>
+                <option value="+1">🇺🇸 USA (+1)</option>
+            </select>
+
+            <label>Layanan</label>
+            <select id="nomor-layanan" onchange="updateNomorJumlah()">
+                <option value="">-- Pilih Layanan Dulu --</option>
+            </select>
+
+            <label>Jumlah</label>
+            <select id="nomor-jumlah" onchange="updateNomorHarga()">
+                <option value="">-- Pilih Jumlah --</option>
+            </select>
+
+            <!-- KODE VERIFIKASI OTOMATIS -->
+            <div id="verify-box" class="verify-box hidden">
+                <h4>🔑 Kode Verifikasi Pembelian</h4>
+                <p style="font-size:13px;color:#ccc;margin-bottom:8px;">Kode ini akan dikirim ke Owner untuk konfirmasi nomor</p>
+                <div id="kode-verifikasi" class="verify-code">- - - - - -</div>
+                <button class="btn chat-verify-btn" onclick="kirimKodeKeOwnerSekarang()">📨 Kirim Kode ke Owner</button>
+            </div>
+
+            <div class="summary-box">
+                <p>Negara: <span id="nomor-sum-negara">-</span></p>
+                <p>Layanan: <span id="nomor-sum-layanan">-</span></p>
+                <p>Jumlah: <span id="nomor-sum-jumlah">-</span></p>
+                <p class="total">Total: <span id="nomor-sum-harga">Rp 0</span></p>
+            </div>
+
+            <button class="btn" onclick="lanjutBayarNomor()">Lanjut ke Pembayaran →</button>
+        </div>
+    </div>
+
+    <!-- ==================== BOOSTER SOSMED ==================== -->
+    <div id="page-booster" class="hidden">
+        <div class="card">
+            <h2>🚀 Sosmed Booster</h2>
+            <p style="color:var(--muted);margin-bottom:15px;">Pilih platform yang ingin di-boost</p>
+
+            <div class="popular-grid">
+                <div class="popular-card" onclick="selectPlatform('Instagram')">
+                    <span class="popular-icon">📸</span>
+                    <p>Instagram</p>
+                </div>
+                <div class="popular-card" onclick="selectPlatform('TikTok')">
+                    <span class="popular-icon">🎵</span>
+                    <p>TikTok</p>
+                </div>
                 <div class="popular-card" onclick="selectPlatform('Facebook')">
-                    <div class="popular-icon">📘</div>
+                    <span class="popular-icon">📘</span>
                     <p>Facebook</p>
                 </div>
                 <div class="popular-card" onclick="selectPlatform('YouTube')">
-                    <div class="popular-icon">▶️</div>
+                    <span class="popular-icon">▶️</span>
                     <p>YouTube</p>
                 </div>
-                <div class="popular-card" onclick="selectPlatform('TikTok')">
-                    <div class="popular-icon">🎵</div>
-                    <p>TikTok</p>
-                </div>
                 <div class="popular-card" onclick="selectPlatform('Twitter/X')">
-                    <div class="popular-icon">🐦</div>
+                    <span class="popular-icon">🐦</span>
                     <p>Twitter/X</p>
                 </div>
                 <div class="popular-card" onclick="selectPlatform('Telegram')">
-                    <div class="popular-icon">✈️</div>
+                    <span class="popular-icon">✈️</span>
                     <p>Telegram</p>
                 </div>
                 <div class="popular-card" onclick="selectPlatform('LinkedIn')">
-                    <div class="popular-icon">💼</div>
+                    <span class="popular-icon">💼</span>
                     <p>LinkedIn</p>
                 </div>
                 <div class="popular-card" onclick="selectPlatform('Google')">
-                    <div class="popular-icon">🔍</div>
+                    <span class="popular-icon">🔍</span>
                     <p>Google</p>
                 </div>
             </div>
 
-            <!-- FORM PEMESANAN BOOSTER -->
-            <div id="booster-form" class="hidden card">
-                <h3>Form Pemesanan Sosmed</h3>
-                <label>Platform</label>
-                <input type="text" id="form-platform" readonly>
+            <!-- FORM BOOSTER -->
+            <div id="booster-form" class="hidden" style="margin-top:20px;">
+                <input type="hidden" id="form-platform">
+                
                 <label>Layanan</label>
                 <select id="form-layanan" onchange="updateJumlahBooster()">
                     <option value="">-- Pilih Layanan --</option>
                 </select>
+
                 <label>Jumlah</label>
                 <select id="form-jumlah" onchange="updateHargaBooster()">
                     <option value="">-- Pilih Jumlah --</option>
                 </select>
-                <label>Link / Username</label>
-                <input type="text" id="form-link" placeholder="Masukkan link atau username akun target">
-                <div class="note">⚠️ Pastikan akun publik & data benar. Tidak bisa refund jika salah.</div>
-                
+
+                <label>Link Akun/Postingan</label>
+                <input type="url" id="form-link" placeholder="https://...">
+
                 <div class="summary-box">
-                    <h4>Ringkasan Pesanan</h4>
                     <p>Platform: <span id="sum-platform">-</span></p>
                     <p>Layanan: <span id="sum-layanan">-</span></p>
                     <p>Jumlah: <span id="sum-jumlah">-</span></p>
                     <p class="total">Total: <span id="sum-harga">Rp 0</span></p>
                 </div>
-                <button class="btn" onclick="lanjutBayarBooster()">Lanjut ke Pembayaran</button>
+
+                <button class="btn" onclick="lanjutBayarBooster()">Lanjut ke Pembayaran →</button>
             </div>
         </div>
+    </div>
 
-        <!-- FORM PEMBAYARAN -->
-        <div id="payment-form" class="hidden card">
-            <h3>Pembayaran</h3>
-            <div class="summary-box">
-                <h4>Ringkasan Pesanan</h4>
-                <p id="pay-type">Tipe: -</p>
-                <p id="pay-platform-negara">Detail: -</p>
-                <p id="pay-layanan">Layanan: -</p>
-                <p id="pay-jumlah">Jumlah: -</p>
-                <p class="total">Total: <span id="pay-harga">Rp 0</span></p>
-            </div>
-            <div class="note">
-                <strong>Transfer ke:</strong><br>
-                Seabank — 901369767087<br>
-                a/n S Y
-            </div>
-            <label>Upload Bukti Transfer</label>
-            <div class="upload-box" onclick="document.getElementById('bukti-tf').click()">
-                <p>📷 Klik upload bukti TF</p>
-                <input type="file" id="bukti-tf" accept="image/*" hidden onchange="previewBukti()">
-                <img id="bukti-preview" class="preview-img" src="" alt="Preview bukti">
-            </div>
-            <button class="btn" onclick="kirimPesanan()">Kirim Pesanan</button>
-            <button class="btn btn-secondary" onclick="kembaliKeForm()">Kembali</button>
-        </div>
+    <!-- ==================== CHAT CS ==================== -->
+    <div id="page-chat" class="hidden">
+        <div class="card">
+            <h2>💬 Hubungi Customer Service</h2>
+            <p style="color:var(--muted);margin-bottom:15px;">Kirim pesan, owner akan membalas secepatnya</p>
 
-        <!-- HALAMAN CHAT CS — DIPERBAIKI BISA CHAT -->
-        <div id="page-chat" class="hidden">
-            <h2 class="section-title">💬 Chat Customer Service</h2>
-            <div class="card">
-                <p style="color:var(--muted);margin-bottom:15px;">Chat ini privat. Hanya Anda & Tim CS yang bisa melihat.</p>
-                <div id="chat-box" class="chat-box">
-                    <div class="chat-bubble system">Selamat datang di CS! Silakan tanya apa saja 😊</div>
-                </div>
-                <div class="chat-input-container">
-                    <input type="text" id="chat-input" placeholder="Ketik pesan Anda..." onkeypress="if(event.key==='Enter')kirimChat()">
-                    <button class="btn" style="width:auto;padding:10px 20px;margin:0;" onclick="kirimChat()">Kirim</button>
-                </div>
+            <div id="chat-box" class="chat-box">
+                <div class="chat-bubble system">Selamat datang di CS! Silakan tanya apa saja 😊</div>
+            </div>
+
+            <div class="chat-input-container">
+                <input type="text" id="chat-input" placeholder="Ketik pesan Anda...">
+                <button class="btn" style="width:auto;padding:0 20px;" onclick="kirimChat()">Kirim</button>
             </div>
         </div>
+    </div>
 
-        <!-- HALAMAN OWNER -->
-        <div id="page-owner" class="hidden">
-            <h2 class="section-title">Panel Owner</h2>
-            
-            <div class="card">
-                <h3>💬 Daftar User yang Chat</h3>
-                <div id="chat-user-list" style="display:flex;flex-wrap:wrap;gap:10px;margin-bottom:20px;">
-                    <p style="color:var(--muted);">Belum ada yang chat.</p>
-                </div>
-            </div>
+    <!-- ==================== OWNER PANEL ==================== -->
+    <div id="page-owner" class="hidden">
+        <div class="card">
+            <h2>🔐 Panel Owner</h2>
 
-            <div class="card">
-                <h3>Chat dengan: <span id="selected-chat-user">-</span></h3>
-                <div id="owner-chat-box" class="chat-box">
-                    <div class="chat-bubble system">Pilih user di atas untuk melihat chat.</div>
-                </div>
-                <div class="chat-input-container">
-                    <input type="text" id="owner-chat-input" placeholder="Ketik balasan..." onkeypress="if(event.key==='Enter')kirimBalasanOwner()">
-                    <button class="btn" style="width:auto;padding:10px 20px;margin:0;" onclick="kirimBalasanOwner()">Kirim</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <h3>Daftar Pesanan Masuk</h3>
-                <table>
-                    <thead><tr><th>User</th><th>Tipe</th><th>Detail</th><th>Jumlah</th><th>Total</th><th>Status</th><th>Aksi</th></tr></thead>
-                    <tbody id="owner-pesanan-list">
-                        <tr><td colspan="7" style="text-align:center;color:var(--muted);padding:20px;">Belum ada pesanan masuk.</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- HALAMAN ADMIN -->
-        <div id="page-admin" class="hidden">
-            <h2 class="section-title">Panel Admin</h2>
-            <div class="card">
-                <h3>Tambah Admin Baru</h3>
-                <label>Username</label>
-                <input type="text" id="new-admin-user" placeholder="Username admin">
-                <label>Password</label>
-                <input type="password" id="new-admin-pass" placeholder="Password admin">
-                <button class="btn" onclick="tambahAdmin()">Tambah Admin</button>
-            </div>
-            <div class="card">
-                <h3>Daftar Admin</h3>
-                <table>
-                    <thead><tr><th>Username</th><th>Tanggal</th><th>Aksi</th></tr></thead>
-                    <tbody id="admin-list-body">
-                        <tr><td colspan="3" style="text-align:center;color:var(--muted);">Belum ada admin.</td></tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-
-        <!-- NAVIGASI BAWAH — RIWAYAT PESANAN DI BAWAH -->
-        <div class="bottom-nav">
-            <div class="nav-item active" onclick="showPage('beranda')"><span class="nav-icon">🏠</span>Beranda</div>
-            <div class="nav-item" onclick="showPage('nomor')"><span class="nav-icon">📱</span>Nomor</div>
-            <div class="nav-item" onclick="showPage('booster')"><span class="nav-icon">🚀</span>Booster</div>
-            <div class="nav-item" onclick="showPage('chat')"><span class="nav-icon">💬</span>Chat CS</div>
-            <div class="nav-item" onclick="showPagePesanan()"><span class="nav-icon">📄</span>Pesanan</div>
-        </div>
-
-        <!-- HALAMAN RIWAYAT PESANAN -->
-        <div id="page-pesanan" class="hidden" style="margin-top:80px;">
-            <h2 class="section-title">📄 Riwayat Pesanan</h2>
+            <!-- DAFTAR KODE VERIFIKASI -->
+            <h3 class="section-title">🔑 Kode Verifikasi Nomor</h3>
             <table>
-                <thead><tr><th>Tipe</th><th>Detail</th><th>Jumlah</th><th>Total</th><th>Status</th></tr></thead>
+                <thead><tr><th>User</th><th>Negara/Layanan</th><th>Kode</th><th>Status</th><th>Aksi</th></tr></thead>
+                <tbody id="verify-list-body">
+                    <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">Belum ada kode verifikasi.</td></tr>
+                </tbody>
+            </table>
+
+            <!-- DAFTAR PESANAN MASUK -->
+            <h3 class="section-title">📥 Semua Pesanan Masuk</h3>
+            <table>
+                <thead><tr><th>User</th><th>Tipe</th><th>Detail</th><th>Kode</th><th>Jumlah</th><th>Harga</th><th>Status</th><th>Aksi</th></tr></thead>
+                <tbody id="owner-pesanan-list">
+                    <tr><td colspan="8" style="text-align:center;color:var(--muted);padding:20px;">Belum ada pesanan masuk.</td></tr>
+                </tbody>
+            </table>
+
+            <!-- CHAT DARI USER -->
+            <h3 class="section-title">💬 Chat dari User</h3>
+            <p style="color:var(--muted);font-size:13px;margin-bottom:10px;">Pilih user untuk membalas pesan</p>
+            <div id="chat-user-list" style="display:flex;flex-wrap:wrap;gap:8px;margin-bottom:15px;">
+                <p style="color:var(--muted);">Belum ada yang chat.</p>
+            </div>
+
+            <div id="selected-chat-area" class="hidden">
+                <p><strong>User:</strong> <span id="selected-chat-user"></span></p>
+                <div id="owner-chat-box" class="chat-box"></div>
+                <div class="chat-input-container">
+                    <input type="text" id="owner-chat-input" placeholder="Ketik balasan...">
+                    <button class="btn" style="width:auto;padding:0 20px;" onclick="kirimBalasanOwner()">Balas</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ==================== ADMIN PANEL ==================== -->
+    <div id="page-admin" class="hidden">
+        <div class="card">
+            <h2>👨‍💼 Kelola Admin</h2>
+            
+            <h3>Tambah Admin Baru</h3>
+            <label>Username Admin</label>
+            <input type="text" id="new-admin-user" placeholder="Username">
+            <label>Password Admin</label>
+            <input type="password" id="new-admin-pass" placeholder="Password">
+            <button class="btn" onclick="tambahAdmin()">+ Tambah Admin</button>
+
+            <h3 class="section-title">Daftar Admin</h3>
+            <table>
+                <thead><tr><th>Username</th><th>Tanggal Dibuat</th><th>Aksi</th></tr></thead>
+                <tbody id="admin-list-body">
+                    <tr><td colspan="3" style="text-align:center;color:var(--muted);">Belum ada admin.</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- ==================== RIWAYAT PESANAN ==================== -->
+    <div id="page-pesanan" class="hidden">
+        <div class="card">
+            <h2>📋 Riwayat Pesanan</h2>
+            <table>
+                <thead><tr><th>Tipe</th><th>Detail</th><th>Jumlah</th><th>Harga</th><th>Status</th></tr></thead>
                 <tbody id="pesanan-list">
                     <tr><td colspan="5" style="text-align:center;color:var(--muted);padding:20px;">Belum ada pesanan.</td></tr>
                 </tbody>
@@ -333,7 +326,65 @@
         </div>
     </div>
 
-    <script src="js/config.js"></script>
-    <script src="js/main.js"></script>
+    <!-- ==================== FORM PEMBAYARAN ==================== -->
+    <div id="payment-form" class="hidden">
+        <div class="card">
+            <h2>💳 Pembayaran</h2>
+            
+            <div class="summary-box">
+                <p id="pay-type">-</p>
+                <p id="pay-platform-negara">-</p>
+                <p id="pay-layanan">-</p>
+                <p id="pay-jumlah">-</p>
+                <p class="total" id="pay-harga">Rp 0</p>
+            </div>
+
+            <div class="info-box">
+                <span>💳 Info Pembayaran</span>
+                <span id="icon-pembayaran">▼</span>
+            </div>
+            <div id="info-pembayaran" class="info-content hidden">
+                <p><strong>Seabank:</strong> 901369767087</p>
+                <p><strong>a.n:</strong> S Y</p>
+                <p style="color:var(--muted);font-size:13px;">Transfer sesuai nominal di atas</p>
+            </div>
+
+            <label>Upload Bukti Transfer</label>
+            <div class="upload-box" onclick="document.getElementById('bukti-tf').click()">
+                📷 Klik untuk upload bukti pembayaran
+                <input type="file" id="bukti-tf" accept="image/*" style="display:none;" onchange="previewBukti()">
+                <img id="bukti-preview" class="preview-img" alt="Bukti TF">
+            </div>
+
+            <button class="btn" onclick="kirimPesanan()">✅ Kirim Pesanan</button>
+            <button class="btn btn-secondary" onclick="kembaliKeForm()">← Kembali</button>
+        </div>
+    </div>
+
+</div>
+
+<!-- === BOTTOM NAVIGASI === -->
+<div class="bottom-nav">
+    <div class="nav-item" onclick="showPage('beranda')">
+        <span class="nav-icon">🏠</span>Beranda
+    </div>
+    <div class="nav-item" onclick="showPage('nomor')">
+        <span class="nav-icon">📱</span>Nomor
+    </div>
+    <div class="nav-item" onclick="showPage('booster')">
+        <span class="nav-icon">🚀</span>Booster
+    </div>
+    <div class="nav-item" onclick="showPage('chat')">
+        <span class="nav-icon">💬</span>CS
+    </div>
+    <div class="nav-item" onclick="showPagePesanan()">
+        <span class="nav-icon">📋</span>Pesanan
+    </div>
+</div>
+
+<!-- === SCRIPT === -->
+<script src="js/config.js"></script>
+<script src="js/main.js"></script>
+
 </body>
 </html>
