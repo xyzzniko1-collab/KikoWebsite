@@ -1,6 +1,14 @@
 
 const CONFIG = {
-    ownerUsername: 'niko',
+    // ========== API INTEGRASI OTOMATIS ==========
+    API: {
+        BASE_URL: 'https://simuru.com',
+        OPENAPI_URL: 'https://simuru.com/openapi.json',
+        API_KEY: 'MstAiI7R5641sRxsk6ROWCed2nMb9xBsYNjCPwKW',
+        TIMEOUT: 30000
+    },
+
+    ownerUsername: 'owner',
     ownerPassword: 'owner123',
     bankName: 'Seabank',
     bankNumber: '901369767087',
@@ -15,8 +23,11 @@ const CONFIG = {
         CHAT_PREFIX: 'simuru_chat_',
         VERIFY_CODES: 'simuru_verify_codes',
         NOMOR_STOK: 'simuru_nomor_stok',
-        SETTINGS: 'simuru_settings'
+        SETTINGS: 'simuru_settings',
+        API_CACHE: 'simuru_api_cache'
     },
+
+    // ... (sisa config tetap sama seperti sebelumnya)
 
     nomorData: {
         '+62': {
