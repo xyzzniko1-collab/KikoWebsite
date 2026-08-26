@@ -6,363 +6,612 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Store Jasa — Nomor & Sosmed Booster</title>
     <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
 </head>
 <body>
 
+<!-- BACKGROUND GRADIENT -->
+<div class="bg-gradient"></div>
+
 <!-- MODAL LOGIN -->
 <div id="auth-modal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeAuthModal()">&times;</span>
-        <h2 id="auth-title">Login Akun</h2>
+    <div class="modal-content glass">
+        <span class="close" onclick="closeAuthModal()"><i class="fas fa-times"></i></span>
+        <div class="modal-header">
+            <h2 id="auth-title">👋 Selamat Datang</h2>
+            <p class="subtitle">Masuk untuk mulai berbelanja</p>
+        </div>
+        
         <div id="login-form">
-            <label>Username</label>
-            <input type="text" id="login-usn" placeholder="Masukkan username">
-            <label>Password</label>
-            <input type="password" id="login-pw" placeholder="Masukkan password">
-            <button class="btn" onclick="login()">Masuk</button>
-            <p style="text-align:center;margin-top:15px;color:var(--muted);">
-                Belum punya akun? <span class="link-text" onclick="showRegister()">Daftar di sini</span>
+            <div class="input-group">
+                <label><i class="fas fa-user"></i> Username</label>
+                <input type="text" id="login-usn" placeholder="Masukkan username">
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-lock"></i> Password</label>
+                <input type="password" id="login-pw" placeholder="Masukkan password">
+            </div>
+            <button class="btn primary-btn" onclick="login()">
+                <i class="fas fa-sign-in-alt"></i> Masuk
+            </button>
+            <p class="auth-switch">
+                Belum punya akun? 
+                <span class="link-text" onclick="showRegister()">Daftar di sini</span>
             </p>
         </div>
+
         <div id="register-form" class="hidden">
-            <label>Username</label>
-            <input type="text" id="reg-usn" placeholder="Buat username">
-            <label>Password</label>
-            <input type="password" id="reg-pw" placeholder="Buat password">
-            <label>Nomor WhatsApp</label>
-            <div style="display:flex;gap:8px;">
-                <select id="reg-country-code" style="width:30%;">
-                    <option value="+62">+62 🇮🇩</option>
-                    <option value="+60">+60 🇲🇾</option>
-                    <option value="+65">+65 🇸🇬</option>
-                    <option value="+1">+1 🇺🇸</option>
-                </select>
-                <input type="tel" id="reg-no" placeholder="812xxxxxxx" style="width:70%;">
+            <div class="input-group">
+                <label><i class="fas fa-user-plus"></i> Username</label>
+                <input type="text" id="reg-usn" placeholder="Buat username">
             </div>
-            <button class="btn" onclick="register()">Daftar Akun</button>
-            <p style="text-align:center;margin-top:15px;color:var(--muted);">
-                Sudah punya akun? <span class="link-text" onclick="showLogin()">Login di sini</span>
+            <div class="input-group">
+                <label><i class="fas fa-lock"></i> Password</label>
+                <input type="password" id="reg-pw" placeholder="Buat password">
+            </div>
+            <div class="input-group">
+                <label><i class="fas fa-phone"></i> Nomor WhatsApp</label>
+                <div class="input-row">
+                    <select id="reg-country-code">
+                        <option value="+62">+62 🇮🇩</option>
+                        <option value="+60">+60 🇲🇾</option>
+                        <option value="+65">+65 🇸🇬</option>
+                        <option value="+1">+1 🇺🇸</option>
+                    </select>
+                    <input type="tel" id="reg-no" placeholder="812xxxxxxx">
+                </div>
+            </div>
+            <button class="btn primary-btn" onclick="register()">
+                <i class="fas fa-user-check"></i> Daftar Akun
+            </button>
+            <p class="auth-switch">
+                Sudah punya akun? 
+                <span class="link-text" onclick="showLogin()">Login di sini</span>
             </p>
         </div>
     </div>
 </div>
 
 <div class="container">
-    <div style="text-align:center;margin:20px 0;">
-        <h1 style="color:var(--gold);font-size:24px;">🛒 JASA BOOSTER & NOMOR</h1>
-        <p style="color:var(--muted);">Layanan Tercepat & Terpercaya ⚡</p>
+    <!-- HEADER -->
+    <header class="header glass">
+        <div class="logo">
+            <span class="logo-icon">🛒</span>
+            <span class="logo-text">JASA BOOSTER</span>
+        </div>
+        <div class="user-info">
+            <span class="username" id="nama-user">Guest</span>
+        </div>
+    </header>
+
+    <!-- SALDO CARD -->
+    <div class="saldo-card glass">
+        <div class="saldo-left">
+            <p class="saldo-label">Total Saldo</p>
+            <p class="saldo-amount" id="user-saldo">Rp 0</p>
+        </div>
+        <button class="topup-btn" onclick="showPage('saldo')">
+            <i class="fas fa-plus"></i> Top Up
+        </button>
     </div>
 
-    <!-- SALDO -->
-    <div class="card saldo-card">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
-            <div>
-                <p style="color:var(--muted);font-size:13px;">Saldo Anda</p>
-                <p class="saldo-amount" id="user-saldo">Rp 0</p>
-            </div>
-            <button class="btn topup-btn" onclick="showPage('saldo')">💎 Top Up</button>
+    <!-- NAVIGASI TAB -->
+    <nav class="tabs-container">
+        <div class="tab active" id="tab-beranda" onclick="showPage('beranda')">
+            <i class="fas fa-home"></i> Beranda
         </div>
-    </div>
+        <div class="tab" id="tab-nomor" onclick="showPage('nomor')">
+            <i class="fas fa-mobile-alt"></i> Nomor
+        </div>
+        <div class="tab" id="tab-booster" onclick="showPage('booster')">
+            <i class="fas fa-rocket"></i> Booster
+        </div>
+        <div class="tab" id="tab-saldo" onclick="showPage('saldo')">
+            <i class="fas fa-wallet"></i> Saldo
+        </div>
+        <div class="tab" id="tab-chat" onclick="showPage('chat')">
+            <i class="fas fa-headset"></i> CS
+        </div>
+        <div class="tab hidden" id="tab-owner" onclick="showPage('owner')">
+            <i class="fas fa-crown"></i> Owner
+        </div>
+        <div class="tab hidden" id="tab-admin" onclick="showPage('admin')">
+            <i class="fas fa-user-tie"></i> Admin
+        </div>
+    </nav>
 
-    <div class="header-tabs">
-        <div class="tab active" id="tab-beranda" onclick="showPage('beranda')">🏠 Beranda</div>
-        <div class="tab inactive" id="tab-nomor" onclick="showPage('nomor')">📱 Nomor</div>
-        <div class="tab inactive" id="tab-booster" onclick="showPage('booster')">🚀 Booster</div>
-        <div class="tab inactive" id="tab-saldo" onclick="showPage('saldo')">💰 Saldo</div>
-        <div class="tab inactive" id="tab-chat" onclick="showPage('chat')">💬 CS</div>
-        <div class="tab inactive hidden" id="tab-owner" onclick="showPage('owner')">🔐 Owner</div>
-        <div class="tab inactive hidden" id="tab-admin" onclick="showPage('admin')">👨‍💼 Admin</div>
-    </div>
+    <!-- ============= BERANDA ============= -->
+    <main id="page-beranda" class="page active-page">
+        <div class="card glass welcome-card">
+            <h2>👋 Selamat Datang, <span id="welcome-name">User</span>!</h2>
+            <p class="welcome-desc">Layanan Sosmed Booster & Nomor Virtual Tercepat ⚡</p>
+            <div class="feature-list">
+                <div class="feature-item">
+                    <i class="fas fa-bolt"></i>
+                    <span>Proses Cepat</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-shield-alt"></i>
+                    <span>Aman & Terpercaya</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-money-bill-wave"></i>
+                    <span>Harga Termurah</span>
+                </div>
+                <div class="feature-item">
+                    <i class="fas fa-clock"></i>
+                    <span>24 Jam Nonstop</span>
+                </div>
+            </div>
+        </div>
 
-    <!-- BERANDA -->
-    <div id="page-beranda">
-        <div class="card">
-            <h2>👋 Selamat Datang, <span id="nama-user">-</span>!</h2>
-            <div class="note">
-                ⚡ Sistem Saldo — Potong Otomatis Saat Beli<br>
-                📱 Beli Nomor — Langsung Terkirim Otomatis<br>
-                💎 Top Up Saldo — Upload Bukti Transfer<br>
-                🔒 Data Aman & Terlindungi
+        <div class="card glass">
+            <h3 class="card-title"><i class="fas fa-fire"></i> Layanan Populer</h3>
+            <div class="platform-grid">
+                <div class="platform-card" onclick="selectPlatform('Instagram')">
+                    <span class="platform-icon ig">📸</span>
+                    <span class="platform-name">Instagram</span>
+                </div>
+                <div class="platform-card" onclick="selectPlatform('TikTok')">
+                    <span class="platform-icon tt">🎵</span>
+                    <span class="platform-name">TikTok</span>
+                </div>
+                <div class="platform-card" onclick="selectPlatform('Facebook')">
+                    <span class="platform-icon fb">📘</span>
+                    <span class="platform-name">Facebook</span>
+                </div>
+                <div class="platform-card" onclick="selectPlatform('YouTube')">
+                    <span class="platform-icon yt">▶️</span>
+                    <span class="platform-name">YouTube</span>
+                </div>
+                <div class="platform-card" onclick="selectPlatform('Twitter')">
+                    <span class="platform-icon tw">🐦</span>
+                    <span class="platform-name">Twitter/X</span>
+                </div>
+                <div class="platform-card" onclick="selectPlatform('Telegram')">
+                    <span class="platform-icon tg">✈️</span>
+                    <span class="platform-name">Telegram</span>
+                </div>
+                <div class="platform-card" onclick="selectPlatform('Twitch')">
+                    <span class="platform-icon twitch">🎮</span>
+                    <span class="platform-name">Twitch</span>
+                </div>
+                <div class="platform-card" onclick="selectPlatform('Spotify')">
+                    <span class="platform-icon sp">🎧</span>
+                    <span class="platform-name">Spotify</span>
+                </div>
             </div>
         </div>
-        <div class="card">
-            <h3>🔥 Layanan Populer</h3>
-            <div class="popular-grid">
-                <div class="popular-card" onclick="selectPlatform('Instagram')">
-                    <span class="popular-icon">📸</span><p>Instagram</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('TikTok')">
-                    <span class="popular-icon">🎵</span><p>TikTok</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('Facebook')">
-                    <span class="popular-icon">📘</span><p>Facebook</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('YouTube')">
-                    <span class="popular-icon">▶️</span><p>YouTube</p>
-                </div>
-            </div>
-        </div>
-        <button class="btn btn-secondary" onclick="showPage('pesanan')">📋 Riwayat Pesanan</button>
-        <button class="btn" style="background:#e74c3c;margin-top:10px;" onclick="logout()">🚪 Keluar Akun</button>
-    </div>
 
-    <!-- NOMOR — SEMUA LAYANAN LENGKAP -->
-    <div id="page-nomor" class="hidden">
-        <div class="card">
-            <h2>📱 Beli Nomor Virtual</h2>
-            <label>Pilih Negara</label>
-            <select id="nomor-negara" onchange="updateNomorLayanan()">
-                <option value="">-- Pilih Negara --</option>
-                <option value="+62">🇮🇩 Indonesia (+62)</option>
-                <option value="+60">🇲🇾 Malaysia (+60)</option>
-                <option value="+65">🇸🇬 Singapura (+65)</option>
-                <option value="+1">🇺🇸 USA (+1)</option>
-                <option value="+44">🇬🇧 UK (+44)</option>
-                <option value="+86">🇨🇳 China (+86)</option>
-                <option value="+81">🇯🇵 Jepang (+81)</option>
-            </select>
-            <label>Layanan</label>
-            <select id="nomor-layanan" onchange="updateNomorJumlah()">
-                <option value="">-- Pilih Layanan --</option>
-            </select>
-            <label>Jumlah</label>
-            <select id="nomor-jumlah" onchange="updateNomorHarga()">
-                <option value="">-- Pilih Jumlah --</option>
-            </select>
-            <div class="summary-box">
-                <p>Negara: <span id="nomor-sum-negara">-</span></p>
-                <p>Layanan: <span id="nomor-sum-layanan">-</span></p>
-                <p>Jumlah: <span id="nomor-sum-jumlah">-</span></p>
-                <p class="total">Total: <span id="nomor-sum-harga">Rp 0</span></p>
-                <p style="font-size:12px;color:var(--muted);">Sisa Saldo: <span id="nomor-sisa-saldo">Rp 0</span></p>
-            </div>
-            <button class="btn" onclick="beliNomor()">✅ Beli Sekarang</button>
+        <div class="btn-group">
+            <button class="btn secondary-btn" onclick="showPage('pesanan')">
+                <i class="fas fa-history"></i> Riwayat Pesanan
+            </button>
+            <button class="btn danger-btn" onclick="logout()">
+                <i class="fas fa-sign-out-alt"></i> Keluar
+            </button>
         </div>
-        <div id="nomor-hasil" class="card hidden">
-            <h3>✅ Berhasil!</h3>
-            <div class="nomor-keluar">
-                <p><strong>Nomor:</strong></p>
-                <div class="nomor-value" id="nomor-keluar-value">-</div>
-                <p><strong>Kode Verifikasi:</strong></p>
-                <div class="kode-value" id="kode-keluar-value">-</div>
-            </div>
-            <button class="btn btn-secondary" onclick="resetNomorForm()">Beli Lagi</button>
-        </div>
-    </div>
+    </main>
 
-    <!-- BOOSTER — SEMUA LAYANAN LENGKAP -->
-    <div id="page-booster" class="hidden">
-        <div class="card">
-            <h2>🚀 Sosmed Booster</h2>
-            <p style="color:var(--muted);margin-bottom:15px;">Pilih platform:</p>
-            <div class="popular-grid">
-                <div class="popular-card" onclick="selectPlatform('Instagram')">
-                    <span class="popular-icon">📸</span><p>Instagram</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('TikTok')">
-                    <span class="popular-icon">🎵</span><p>TikTok</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('Facebook')">
-                    <span class="popular-icon">📘</span><p>Facebook</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('YouTube')">
-                    <span class="popular-icon">▶️</span><p>YouTube</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('Twitter')">
-                    <span class="popular-icon">🐦</span><p>Twitter/X</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('Telegram')">
-                    <span class="popular-icon">✈️</span><p>Telegram</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('Twitch')">
-                    <span class="popular-icon">🎮</span><p>Twitch</p>
-                </div>
-                <div class="popular-card" onclick="selectPlatform('Spotify')">
-                    <span class="popular-icon">🎧</span><p>Spotify</p>
-                </div>
+    <!-- ============= NOMOR ============= -->
+    <section id="page-nomor" class="page">
+        <div class="card glass">
+            <h3 class="card-title"><i class="fas fa-mobile-alt"></i> Beli Nomor Virtual</h3>
+            
+            <div class="input-group">
+                <label><i class="fas fa-globe"></i> Pilih Negara</label>
+                <select id="nomor-negara" onchange="updateNomorLayanan()">
+                    <option value="">-- Pilih Negara --</option>
+                    <option value="+62">🇮🇩 Indonesia (+62)</option>
+                    <option value="+60">🇲🇾 Malaysia (+60)</option>
+                    <option value="+65">🇸🇬 Singapura (+65)</option>
+                    <option value="+1">🇺🇸 USA (+1)</option>
+                    <option value="+44">🇬🇧 UK (+44)</option>
+                    <option value="+86">🇨🇳 China (+86)</option>
+                    <option value="+81">🇯🇵 Jepang (+81)</option>
+                </select>
             </div>
-            <div id="booster-form" class="hidden" style="margin-top:20px;">
-                <label>Layanan</label>
-                <select id="form-layanan" onchange="updateJumlahBooster()">
+
+            <div class="input-group">
+                <label><i class="fas fa-cogs"></i> Layanan</label>
+                <select id="nomor-layanan" onchange="updateNomorJumlah()">
                     <option value="">-- Pilih Layanan --</option>
                 </select>
-                <label>Jumlah</label>
-                <select id="form-jumlah" onchange="updateHargaBooster()">
+            </div>
+
+            <div class="input-group">
+                <label><i class="fas fa-layer-group"></i> Jumlah</label>
+                <select id="nomor-jumlah" onchange="updateNomorHarga()">
                     <option value="">-- Pilih Jumlah --</option>
                 </select>
-                <label>Link Akun/Postingan</label>
-                <input type="url" id="form-link" placeholder="https://...">
-                <div class="summary-box">
-                    <p>Platform: <span id="sum-platform">-</span></p>
-                    <p>Layanan: <span id="sum-layanan">-</span></p>
-                    <p>Jumlah: <span id="sum-jumlah">-</span></p>
-                    <p class="total">Total: <span id="sum-harga">Rp 0</span></p>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-row">
+                    <span>Negara</span><span id="nomor-sum-negara">-</span>
                 </div>
-                <button class="btn" onclick="beliBooster()">✅ Beli Sekarang</button>
+                <div class="summary-row">
+                    <span>Layanan</span><span id="nomor-sum-layanan">-</span>
+                </div>
+                <div class="summary-row">
+                    <span>Jumlah</span><span id="nomor-sum-jumlah">-</span>
+                </div>
+                <div class="summary-row total-row">
+                    <span>Total</span><span id="nomor-sum-harga">Rp 0</span>
+                </div>
+                <div class="summary-row saldo-row">
+                    <span>Sisa Saldo</span><span id="nomor-sisa-saldo">Rp 0</span>
+                </div>
+            </div>
+
+            <button class="btn primary-btn full-btn" onclick="beliNomor()">
+                <i class="fas fa-shopping-cart"></i> Beli Sekarang
+            </button>
+        </div>
+
+        <div id="nomor-hasil" class="card glass success-card hidden">
+            <h3><i class="fas fa-check-circle"></i> Berhasil!</h3>
+            <div class="nomor-output">
+                <p><strong>Nomor:</strong></p>
+                <div class="nomor-val" id="nomor-keluar-value">-</div>
+                <p><strong>Kode Verifikasi:</strong></p>
+                <div class="kode-val" id="kode-keluar-value">-</div>
+            </div>
+            <button class="btn secondary-btn full-btn" onclick="resetNomorForm()">Beli Lagi</button>
+        </div>
+    </section>
+
+    <!-- ============= BOOSTER ============= -->
+    <section id="page-booster" class="page">
+        <div class="card glass">
+            <h3 class="card-title"><i class="fas fa-rocket"></i> Sosmed Booster</h3>
+            <p class="sub-text">Pilih platform terlebih dahulu</p>
+            
+            <div class="platform-select-grid">
+                <div class="platform-sel ig-sel" onclick="selectPlatform('Instagram')">
+                    <i class="fab fa-instagram"></i> Instagram
+                </div>
+                <div class="platform-sel tt-sel" onclick="selectPlatform('TikTok')">
+                    <i class="fab fa-tiktok"></i> TikTok
+                </div>
+                <div class="platform-sel fb-sel" onclick="selectPlatform('Facebook')">
+                    <i class="fab fa-facebook-f"></i> Facebook
+                </div>
+                <div class="platform-sel yt-sel" onclick="selectPlatform('YouTube')">
+                    <i class="fab fa-youtube"></i> YouTube
+                </div>
+                <div class="platform-sel tw-sel" onclick="selectPlatform('Twitter')">
+                    <i class="fab fa-twitter"></i> Twitter/X
+                </div>
+                <div class="platform-sel tg-sel" onclick="selectPlatform('Telegram')">
+                    <i class="fab fa-telegram-plane"></i> Telegram
+                </div>
+                <div class="platform-sel twitch-sel" onclick="selectPlatform('Twitch')">
+                    <i class="fab fa-twitch"></i> Twitch
+                </div>
+                <div class="platform-sel sp-sel" onclick="selectPlatform('Spotify')">
+                    <i class="fab fa-spotify"></i> Spotify
+                </div>
+            </div>
+
+            <div id="booster-form" class="hidden booster-form">
+                <div class="divider">
+                    <span>Detail Pesanan</span>
+                </div>
+                
+                <div class="input-group">
+                    <label><i class="fas fa-tag"></i> Layanan</label>
+                    <select id="form-layanan" onchange="updateJumlahBooster()">
+                        <option value="">-- Pilih Layanan --</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label><i class="fas fa-hashtag"></i> Jumlah</label>
+                    <select id="form-jumlah" onchange="updateHargaBooster()">
+                        <option value="">-- Pilih Jumlah --</option>
+                    </select>
+                </div>
+
+                <div class="input-group">
+                    <label><i class="fas fa-link"></i> Link Akun/Postingan</label>
+                    <input type="url" id="form-link" placeholder="https://...">
+                </div>
+
+                <div class="summary-card">
+                    <div class="summary-row"><span>Platform</span><span id="sum-platform">-</span></div>
+                    <div class="summary-row"><span>Layanan</span><span id="sum-layanan">-</span></div>
+                    <div class="summary-row"><span>Jumlah</span><span id="sum-jumlah">-</span></div>
+                    <div class="summary-row total-row"><span>Total</span><span id="sum-harga">Rp 0</span></div>
+                </div>
+
+                <button class="btn primary-btn full-btn" onclick="beliBooster()">
+                    <i class="fas fa-rocket"></i> Pesan Sekarang
+                </button>
             </div>
         </div>
-    </div>
+    </section>
 
-    <!-- SALDO & TOP UP — FIX BISA UPLOAD BUKTI -->
-    <div id="page-saldo" class="hidden">
-        <div class="card">
-            <h2>💰 Saldo & Top Up</h2>
-            <div class="saldo-box">
-                <p style="color:var(--muted);">Saldo Saat Ini</p>
-                <p class="saldo-besar" id="saldo-page-saldo">Rp 0</p>
+    <!-- ============= SALDO & TOP UP ============= -->
+    <section id="page-saldo" class="page">
+        <div class="card glass">
+            <h3 class="card-title"><i class="fas fa-wallet"></i> Saldo & Top Up</h3>
+            
+            <div class="saldo-display-card">
+                <p class="saldo-label-big">Saldo Saat Ini</p>
+                <p class="saldo-big" id="saldo-page-saldo">Rp 0</p>
             </div>
-            <h3>💎 Top Up Saldo</h3>
-            <label>Jumlah Top Up</label>
-            <select id="topup-jumlah" onchange="updateTopUpTotal()">
-                <option value="">-- Pilih Nominal --</option>
-                <option value="10000">Rp 10.000</option>
-                <option value="20000">Rp 20.000</option>
-                <option value="50000">Rp 50.000</option>
-                <option value="100000">Rp 100.000</option>
-                <option value="200000">Rp 200.000</option>
-                <option value="500000">Rp 500.000</option>
-                <option value="1000000">Rp 1.000.000</option>
-                <option value="custom">Lainnya...</option>
-            </select>
-            <div id="topup-custom-box" class="hidden">
+
+            <h4 class="sub-title"><i class="fas fa-coins"></i> Top Up Saldo</h4>
+            
+            <div class="input-group">
+                <label>Nominal Top Up</label>
+                <select id="topup-jumlah" onchange="updateTopUpTotal()">
+                    <option value="">-- Pilih Nominal --</option>
+                    <option value="10000">Rp 10.000</option>
+                    <option value="20000">Rp 20.000</option>
+                    <option value="50000">Rp 50.000</option>
+                    <option value="100000">Rp 100.000</option>
+                    <option value="200000">Rp 200.000</option>
+                    <option value="500000">Rp 500.000</option>
+                    <option value="1000000">Rp 1.000.000</option>
+                    <option value="custom">Lainnya...</option>
+                </select>
+            </div>
+
+            <div id="topup-custom-box" class="input-group hidden">
                 <label>Jumlah Custom</label>
                 <input type="number" id="topup-custom" placeholder="Masukkan jumlah" oninput="updateTopUpTotal()">
             </div>
-            <label>Metode Pembayaran</label>
-            <select id="topup-metode">
-                <option value="Seabank">Seabank — 901369767087 a.n S Y</option>
-                <option value="DANA">DANA</option>
-                <option value="Gopay">Gopay</option>
-                <option value="BCA">BCA</option>
-            </select>
-            <div class="summary-box">
-                <p>Jumlah: <span id="topup-total">Rp 0</span></p>
-                <p>Metode: <span id="topup-metode-text">-</span></p>
+
+            <div class="input-group">
+                <label>Metode Pembayaran</label>
+                <select id="topup-metode">
+                    <option value="Seabank">🏦 Seabank — 901369767087 a.n S Y</option>
+                    <option value="DANA">💳 DANA</option>
+                    <option value="Gopay">📱 Gopay</option>
+                    <option value="BCA">🏛️ BCA</option>
+                </select>
             </div>
-            <label>📸 Upload Bukti Transfer (SS)</label>
-            <div class="upload-box" onclick="document.getElementById('topup-bukti').click()">
-                📷 Klik untuk upload bukti / screenshot
+
+            <div class="summary-card">
+                <div class="summary-row total-row">
+                    <span>Jumlah Transfer</span><span id="topup-total">Rp 0</span>
+                </div>
+            </div>
+
+            <div class="upload-area" onclick="document.getElementById('topup-bukti').click()">
+                <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                <p>Klik untuk upload bukti transfer <br><small>(Screenshot / Foto)</small></p>
                 <input type="file" id="topup-bukti" accept="image/*,.png,.jpg,.jpeg" style="display:none;" onchange="previewBuktiTopUp()">
             </div>
-            <div id="bukti-preview-container" class="hidden">
-                <p style="margin:10px 0 5px 0;color:var(--success);">✅ Bukti Terupload:</p>
-                <img id="bukti-preview-img" class="bukti-img" alt="Bukti Transfer">
+
+            <div id="bukti-preview-container" class="preview-box hidden">
+                <p class="preview-label"><i class="fas fa-check-circle"></i> Bukti Terupload</p>
+                <img id="bukti-preview-img" class="preview-img" alt="Bukti Transfer">
             </div>
-            <button class="btn" onclick="kirimTopUp()">✅ Kirim Permintaan Top Up</button>
+
+            <button class="btn primary-btn full-btn" onclick="kirimTopUp()">
+                <i class="fas fa-paper-plane"></i> Kirim Permintaan
+            </button>
         </div>
 
-        <!-- RIWAYAT TOP UP USER -->
-        <div class="card">
-            <h3>📋 Riwayat Top Up Saldo</h3>
-            <table>
-                <thead><tr><th>Waktu</th><th>Jumlah</th><th>Metode</th><th>Status</th></tr></thead>
-                <tbody id="riwayat-topup-user"></tbody>
-            </table>
-        </div>
-
-        <div class="card">
-            <h3>📊 Riwayat Saldo</h3>
-            <table><thead><tr><th>Waktu</th><th>Tipe</th><th>Jumlah</th></tr></thead>
-                <tbody id="riwayat-saldo-body"></tbody>
-            </table>
-        </div>
-    </div>
-
-    <!-- CHAT CS -->
-    <div id="page-chat" class="hidden">
-        <div class="card">
-            <h2>💬 Hubungi Customer Service</h2>
-            <p style="color:var(--muted);margin-bottom:15px;">Pesan hanya terlihat oleh Anda & Owner 🔒</p>
-            <div id="chat-box" class="chat-box">
-                <div class="chat-bubble system">Selamat datang di CS! Silakan tanya apa saja 😊</div>
-            </div>
-            <div class="chat-input-container">
-                <input type="text" id="chat-input" placeholder="Ketik pesan Anda...">
-                <button class="btn" style="width:auto;padding:0 15px;" onclick="kirimChat()">Kirim</button>
+        <!-- RIWAYAT TOP UP -->
+        <div class="card glass">
+            <h3 class="card-title"><i class="fas fa-history"></i> Riwayat Top Up</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Waktu</th>
+                            <th>Jumlah</th>
+                            <th>Metode</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="riwayat-topup-user"></tbody>
+                </table>
             </div>
         </div>
-    </div>
 
-    <!-- OWNER PANEL — LENGKAP SEMUA FITUR -->
-    <div id="page-owner" class="hidden">
-        <div class="card">
-            <h2>🔐 Panel Owner</h2>
+        <!-- RIWAYAT SALDO -->
+        <div class="card glass">
+            <h3 class="card-title"><i class="fas fa-coins"></i> Riwayat Saldo</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Waktu</th>
+                            <th>Tipe</th>
+                            <th>Jumlah</th>
+                        </tr>
+                    </thead>
+                    <tbody id="riwayat-saldo-body"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 
-            <!-- TOP UP KONFIRMASI — ACC / TOLAK -->
-            <h3 class="section-title">💎 Permintaan Top Up Saldo</h3>
-            <table>
-                <thead><tr><th>User</th><th>Jumlah</th><th>Metode</th><th>Bukti</th><th>Status</th><th>Aksi</th></tr></thead>
-                <tbody id="topup-request-body">
-                    <tr><td colspan="6" style="text-align:center;color:var(--muted);padding:20px;">Belum ada permintaan top up.</td></tr>
-                </tbody>
-            </table>
+    <!-- ============= CHAT CS ============= -->
+    <section id="page-chat" class="page">
+        <div class="card glass">
+            <h3 class="card-title"><i class="fas fa-headset"></i> Customer Service</h3>
+            <p class="privacy-note"><i class="fas fa-lock"></i> Pesan hanya terlihat oleh Anda & Owner</p>
+            
+            <div id="chat-box" class="chat-container">
+                <div class="chat-bubble system">
+                    <i class="fas fa-robot"></i> Selamat datang! Silakan tanya apa saja 😊
+                </div>
+            </div>
+            
+            <div class="chat-input-wrap">
+                <input type="text" id="chat-input" placeholder="Ketik pesan Anda..." onkeypress="if(event.key==='Enter')kirimChat()">
+                <button class="send-btn" onclick="kirimChat()">
+                    <i class="fas fa-paper-plane"></i>
+                </button>
+            </div>
+        </div>
+    </section>
 
-            <!-- TAMBAH SALDO USER MANUAL -->
-            <h3 class="section-title">💰 Tambah / Kurangi Saldo User</h3>
-            <label>Username User</label>
-            <input type="text" id="saldo-user" placeholder="Masukkan username">
-            <label>Jumlah (positif = tambah, negatif = kurangi)</label>
-            <input type="number" id="saldo-jumlah" placeholder="Contoh: 50000 atau -10000">
-            <button class="btn" onclick="ubahSaldoUser()">✅ Simpan Perubahan</button>
+    <!-- ============= OWNER PANEL ============= -->
+    <section id="page-owner" class="page">
+        <div class="card glass">
+            <h3 class="card-title crown-title"><i class="fas fa-crown"></i> Panel Owner</h3>
 
-            <!-- RIWAYAT PESANAN SEMUA USER -->
-            <h3 class="section-title">📋 Riwayat Semua Pesanan</h3>
-            <table>
-                <thead><tr><th>User</th><th>Tipe</th><th>Detail</th><th>Jumlah</th><th>Harga</th><th>Status</th></tr></thead>
-                <tbody id="semua-pesanan-body"></tbody>
-            </table>
+            <!-- KONFIRMASI TOP UP -->
+            <div class="panel-section">
+                <h4 class="section-heading"><i class="fas fa-coins"></i> Permintaan Top Up</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>User</th>
+                                <th>Jumlah</th>
+                                <th>Metode</th>
+                                <th>Bukti</th>
+                                <th>Status</th>
+                                <th>Aksi</th>
+                            </tr>
+                        </thead>
+                        <tbody id="topup-request-body">
+                            <tr><td colspan="6" class="empty-state">Belum ada permintaan top up.</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- UBAH SALDO -->
+            <div class="panel-section">
+                <h4 class="section-heading"><i class="fas fa-wallet"></i> Ubah Saldo User</h4>
+                <div class="input-group">
+                    <label>Username</label>
+                    <input type="text" id="saldo-user" placeholder="Username">
+                </div>
+                <div class="input-group">
+                    <label>Jumlah (+ tambah / - kurangi)</label>
+                    <input type="number" id="saldo-jumlah" placeholder="Contoh: 50000 atau -10000">
+                </div>
+                <button class="btn primary-btn" onclick="ubahSaldoUser()">
+                    <i class="fas fa-save"></i> Simpan Perubahan
+                </button>
+            </div>
 
             <!-- KELOLA ADMIN -->
-            <h3 class="section-title">👨‍💼 Kelola Admin</h3>
-            <label>Username Admin Baru</label>
-            <input type="text" id="new-admin-user" placeholder="Username">
-            <label>Password Admin Baru</label>
-            <input type="password" id="new-admin-pass" placeholder="Password">
-            <button class="btn" onclick="tambahAdmin()">+ Tambah Admin</button>
-            <table style="margin-top:15px;">
-                <thead><tr><th>Username</th><th>Tanggal Dibuat</th><th>Aksi</th></tr></thead>
-                <tbody id="admin-list-body"></tbody>
-            </table>
-        </div>
-    </div>
+            <div class="panel-section">
+                <h4 class="section-heading"><i class="fas fa-user-tie"></i> Kelola Admin</h4>
+                <div class="input-group">
+                    <label>Username Admin Baru</label>
+                    <input type="text" id="new-admin-user" placeholder="Username">
+                </div>
+                <div class="input-group">
+                    <label>Password Admin Baru</label>
+                    <input type="password" id="new-admin-pass" placeholder="Password">
+                </div>
+                <button class="btn primary-btn" onclick="tambahAdmin()">
+                    <i class="fas fa-user-plus"></i> Tambah Admin
+                </button>
+                <div class="table-wrapper" style="margin-top:15px;">
+                    <table>
+                        <thead>
+                            <tr><th>Username</th><th>Dibuat</th><th>Aksi</th></tr>
+                        </thead>
+                        <tbody id="admin-list-body"></tbody>
+                    </table>
+                </div>
+            </div>
 
-    <!-- ADMIN PANEL -->
-    <div id="page-admin" class="hidden">
-        <div class="card">
-            <h2>👨‍💼 Panel Admin</h2>
-            <h3 class="section-title">💎 Konfirmasi Top Up</h3>
-            <table>
-                <thead><tr><th>User</th><th>Jumlah</th><th>Metode</th><th>Bukti</th><th>Aksi</th></tr></thead>
-                <tbody id="admin-topup-body"></tbody>
-            </table>
-            <h3 class="section-title">📋 Semua Pesanan</h3>
-            <table>
-                <thead><tr><th>User</th><th>Tipe</th><th>Detail</th><th>Jumlah</th><th>Status</th></tr></thead>
-                <tbody id="admin-pesanan-body"></tbody>
-            </table>
+            <!-- SEMUA PESANAN -->
+            <div class="panel-section">
+                <h4 class="section-heading"><i class="fas fa-clipboard-list"></i> Semua Pesanan</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr><th>User</th><th>Tipe</th><th>Detail</th><th>Jumlah</th><th>Harga</th><th>Status</th></tr>
+                        </thead>
+                        <tbody id="semua-pesanan-body"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 
-    <!-- RIWAYAT PESANAN USER -->
-    <div id="page-pesanan" class="hidden">
-        <div class="card">
-            <h2>📋 Riwayat Pesanan Saya</h2>
-            <table>
-                <thead><tr><th>Tipe</th><th>Detail</th><th>Jumlah</th><th>Harga</th><th>Nomor/Kode</th><th>Status</th></tr></thead>
-                <tbody id="pesanan-list"></tbody>
-            </table>
+    <!-- ============= ADMIN PANEL ============= -->
+    <section id="page-admin" class="page">
+        <div class="card glass">
+            <h3 class="card-title"><i class="fas fa-user-tie"></i> Panel Admin</h3>
+            
+            <div class="panel-section">
+                <h4 class="section-heading"><i class="fas fa-coins"></i> Konfirmasi Top Up</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr><th>User</th><th>Jumlah</th><th>Metode</th><th>Bukti</th><th>Aksi</th></tr>
+                        </thead>
+                        <tbody id="admin-topup-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="panel-section">
+                <h4 class="section-heading"><i class="fas fa-clipboard-list"></i> Semua Pesanan</h4>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr><th>User</th><th>Tipe</th><th>Detail</th><th>Jumlah</th><th>Status</th></tr>
+                        </thead>
+                        <tbody id="admin-pesanan-body"></tbody>
+                    </table>
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
+
+    <!-- ============= RIWAYAT PESANAN ============= -->
+    <section id="page-pesanan" class="page">
+        <div class="card glass">
+            <h3 class="card-title"><i class="fas fa-history"></i> Riwayat Pesanan Saya</h3>
+            <div class="table-wrapper">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Tipe</th>
+                            <th>Detail</th>
+                            <th>Jumlah</th>
+                            <th>Harga</th>
+                            <th>Nomor/Kode</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="pesanan-list"></tbody>
+                </table>
+            </div>
+        </div>
+    </section>
 </div>
 
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
-    <div class="nav-item" onclick="showPage('beranda')"><span class="nav-icon">🏠</span>Beranda</div>
-    <div class="nav-item" onclick="showPage('nomor')"><span class="nav-icon">📱</span>Nomor</div>
-    <div class="nav-item" onclick="showPage('booster')"><span class="nav-icon">🚀</span>Booster</div>
-    <div class="nav-item" onclick="showPage('saldo')"><span class="nav-icon">💰</span>Saldo</div>
-    <div class="nav-item" onclick="showPage('pesanan')"><span class="nav-icon">📋</span>Pesanan</div>
-</div>
+<!-- BOTTOM NAVIGASI -->
+<nav class="bottom-nav">
+    <div class="nav-btm-item" onclick="showPage('beranda')">
+        <i class="fas fa-home"></i>
+        <span>Beranda</span>
+    </div>
+    <div class="nav-btm-item" onclick="showPage('nomor')">
+        <i class="fas fa-mobile-alt"></i>
+        <span>Nomor</span>
+    </div>
+    <div class="nav-btm-item" onclick="showPage('booster')">
+        <i class="fas fa-rocket"></i>
+        <span>Booster</span>
+    </div>
+    <div class="nav-btm-item" onclick="showPage('saldo')">
+        <i class="fas fa-wallet"></i>
+        <span>Saldo</span>
+    </div>
+    <div class="nav-btm-item" onclick="showPage('pesanan')">
+        <i class="fas fa-history"></i>
+        <span>Pesanan</span>
+    </div>
+</nav>
 
 <script src="js/main.js"></script>
 </body>
