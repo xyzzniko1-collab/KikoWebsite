@@ -1,367 +1,1020 @@
 
 
 <!DOCTYPE html>
-<html lang="id">
+<html lang="id" class="h-full bg-slate-950 text-slate-100">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Store Jasa — Nomor & Sosmed Booster</title>
-    <link rel="stylesheet" href="css/style.css">
+    <title>ayamclup System - Premium POS Dashboard</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+        /* Custom scrollbar for slate theme */
+        ::-webkit-scrollbar {
+            width: 6px;
+            height: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0f172a; /* slate-900 */
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b; /* slate-800 */
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #3b82f6; /* blue-500 */
+        }
+        /* Pulse Animation for Live Indicator */
+        .live-dot {
+            box-shadow: 0 0 0 0 rgba(59, 130, 246, 0.7);
+            animation: pulse 1.6s infinite cubic-bezier(0.66, 0, 0, 1);
+        }
+        @keyframes pulse {
+            to {
+                box-shadow: 0 0 0 8px rgba(59, 130, 246, 0);
+            }
+        }
+        /* Receipt Printing Optimization */
+        @media print {
+            body * {
+                visibility: hidden;
+            }
+            #receipt-print, #receipt-print * {
+                visibility: visible;
+            }
+            #receipt-print {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 80mm; /* Standard thermal roll width */
+                color: #000;
+                background: #fff;
+                font-family: monospace;
+                padding: 10px;
+            }
+        }
+    </style>
 </head>
-<body>
+<body class="h-full flex overflow-hidden">
 
-<!-- MODAL LOGIN -->
-<div id="auth-modal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closeAuthModal()">&times;</span>
-        <h2 id="auth-title">Login Akun</h2>
-        <div id="login-form">
-            <label>Username</label>
-            <input type="text" id="login-usn" placeholder="Masukkan username">
-            <label>Password</label>
-            <input type="password" id="login-pw" placeholder="Masukkan password">
-            <button class="btn" onclick="login()">Masuk</button>
-            <p style="text-align:center;margin-top:15px;">
-                Belum punya akun? <span class="link-text" onclick="showRegister()">Daftar di sini</span>
-            </p>
-        </div>
-        <div id="register-form" class="hidden">
-            <label>Username</label>
-            <input type="text" id="reg-usn" placeholder="Buat username">
-            <label>Password</label>
-            <input type="password" id="reg-pw" placeholder="Buat password">
-            <label>Nomor WhatsApp</label>
-            <div style="display:flex;gap:8px;">
-                <select id="reg-country-code" style="width:30%;">
-                    <option value="+62">+62 🇮🇩</option>
-                    <option value="+60">+60 🇲🇾</option>
-                    <option value="+65">+65 🇸🇬</option>
-                    <option value="+1">+1 🇺🇸</option>
-                </select>
-                <input type="tel" id="reg-no" placeholder="812xxxxxxx" style="width:70%;">
+    <!-- SIDEBAR -->
+    <aside class="hidden md:flex flex-col w-64 bg-slate-900 border-r border-slate-800 flex-shrink-0">
+        <!-- Logo Header -->
+        <div class="h-20 flex items-center px-6 border-b border-slate-800 gap-3">
+            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-cyan-400 flex items-center justify-center shadow-lg shadow-blue-500/20">
+                <i class="fa-solid fa-drumstick-bite text-white text-lg"></i>
             </div>
-            <button class="btn" onclick="register()">Daftar Akun</button>
-            <p style="text-align:center;margin-top:15px;">
-                Sudah punya akun? <span class="link-text" onclick="showLogin()">Login di sini</span>
-            </p>
-        </div>
-    </div>
-</div>
-
-<div class="container">
-    <div style="text-align:center;margin:20px 0;">
-        <h1>🛒 JASA BOOSTER & NOMOR</h1>
-        <p>Layanan Tercepat & Terpercaya ⚡</p>
-    </div>
-
-    <!-- SALDO -->
-    <div class="card saldo-card">
-        <div style="display:flex;justify-content:space-between;align-items:center;">
             <div>
-                <p class="saldo-label">Saldo Anda</p>
-                <p class="saldo-amount" id="user-saldo">Rp 0</p>
+                <h1 class="text-base font-extrabold tracking-wider bg-gradient-to-r from-white to-slate-400 bg-clip-text text-transparent">AYAMCLUP</h1>
+                <span class="text-[10px] text-blue-400 font-semibold tracking-widest uppercase">POS System v1.2</span>
             </div>
-            <button class="btn topup-btn" onclick="showPage('saldo')">💎 Top Up</button>
+        </div>
+
+        <!-- Sidebar Navigation -->
+        <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
+            <button onclick="switchView('pos')" id="btn-nav-pos" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 bg-blue-600/15 text-blue-400 border border-blue-500/20 shadow-sm shadow-blue-500/5">
+                <i class="fa-solid fa-cash-register text-base"></i>
+                <span>Mesin Kasir / POS</span>
+            </button>
+            <button onclick="switchView('history')" id="btn-nav-history" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent">
+                <i class="fa-solid fa-clock-rotate-left text-base"></i>
+                <span>Riwayat Transaksi</span>
+            </button>
+            <button onclick="switchView('inventory')" id="btn-nav-inventory" class="nav-btn w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 text-slate-400 hover:text-slate-200 hover:bg-slate-800/50 border border-transparent">
+                <i class="fa-solid fa-boxes-stacked text-base"></i>
+                <span>Kelola Menu</span>
+            </button>
+        </nav>
+
+        <!-- Sidebar Footer / Cashier Info -->
+        <div class="p-4 border-t border-slate-800 bg-slate-950/40">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-full bg-slate-800 flex items-center justify-center border border-slate-700">
+                    <i class="fa-solid fa-user-tie text-blue-400"></i>
+                </div>
+                <div>
+                    <h4 class="text-xs font-semibold text-slate-200">Kasir Utama</h4>
+                    <p class="text-[10px] text-emerald-400 font-medium flex items-center gap-1.5 mt-0.5">
+                        <span class="w-2 h-2 rounded-full bg-emerald-500 live-dot"></span> Online
+                    </p>
+                </div>
+            </div>
+        </div>
+    </aside>
+
+    <!-- MAIN WRAPPER -->
+    <main class="flex-1 flex flex-col min-w-0 bg-slate-950 overflow-hidden">
+        
+        <!-- TOPBAR HEADER -->
+        <header class="h-20 border-b border-slate-800 bg-slate-900/60 backdrop-blur-md px-6 flex items-center justify-between z-10">
+            <!-- Mobile Menu Switcher -->
+            <div class="flex items-center gap-4">
+                <button class="md:hidden text-slate-400 hover:text-white" id="mobile-menu-btn" onclick="toggleMobileSidebar()">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+                <div class="hidden sm:block">
+                    <h2 id="view-title" class="text-lg font-bold text-slate-100">Mesin Kasir (POS)</h2>
+                    <p class="text-xs text-slate-400">Kelola pesanan pelanggan dengan cepat dan efisien</p>
+                </div>
+            </div>
+
+            <!-- Live Stats & Clock -->
+            <div class="flex items-center gap-6">
+                <!-- Clock -->
+                <div class="hidden md:flex flex-col text-right">
+                    <span id="live-time" class="text-sm font-bold text-slate-200 tracking-wide">12:45:00 PM</span>
+                    <span id="live-date" class="text-[10px] text-slate-400">Sabtu, 26 Oktober 2024</span>
+                </div>
+                <!-- Mini Quick Analytics Stats -->
+                <div class="flex items-center gap-3 bg-slate-950/60 px-4 py-2 rounded-xl border border-slate-800">
+                    <div class="text-right">
+                        <span class="text-[10px] text-slate-400 uppercase font-bold tracking-wider">Omset Hari Ini</span>
+                        <h4 id="today-revenue" class="text-sm font-extrabold text-blue-400">Rp 0</h4>
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- MOBILE SIDEBAR DRAWER (Hidden by Default) -->
+        <div id="mobile-sidebar" class="fixed inset-0 bg-slate-950/80 z-50 backdrop-blur-sm hidden transition-all duration-300">
+            <div class="w-64 bg-slate-900 h-full flex flex-col border-r border-slate-800">
+                <div class="h-20 flex items-center justify-between px-6 border-b border-slate-800">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-blue-600 flex items-center justify-center">
+                            <i class="fa-solid fa-drumstick-bite text-white text-sm"></i>
+                        </div>
+                        <h1 class="text-sm font-extrabold tracking-wider text-white">AYAMCLUP</h1>
+                    </div>
+                    <button class="text-slate-400 hover:text-white" onclick="toggleMobileSidebar()">
+                        <i class="fa-solid fa-xmark text-lg"></i>
+                    </button>
+                </div>
+                <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
+                    <button onclick="switchView('pos'); toggleMobileSidebar()" class="nav-btn-mob w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 bg-blue-600 text-white">
+                        <i class="fa-solid fa-cash-register"></i>
+                        <span>Mesin Kasir / POS</span>
+                    </button>
+                    <button onclick="switchView('history'); toggleMobileSidebar()" class="nav-btn-mob w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 text-slate-400 hover:bg-slate-800">
+                        <i class="fa-solid fa-clock-rotate-left"></i>
+                        <span>Riwayat Transaksi</span>
+                    </button>
+                    <button onclick="switchView('inventory'); toggleMobileSidebar()" class="nav-btn-mob w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition-all duration-200 text-slate-400 hover:bg-slate-800">
+                        <i class="fa-solid fa-boxes-stacked"></i>
+                        <span>Kelola Menu</span>
+                    </button>
+                </nav>
+            </div>
+        </div>
+
+        <!-- CONTENT VIEWS WRAPPER -->
+        <div class="flex-1 overflow-hidden relative">
+
+            <!-- VIEW 1: POS / MESIN KASIR -->
+            <div id="view-pos" class="absolute inset-0 flex flex-col lg:flex-row divide-y lg:divide-y-0 lg:divide-x divide-slate-800 transition-opacity duration-300">
+                
+                <!-- Left Column: Catalog & Custom Item Form -->
+                <div class="flex-1 flex flex-col overflow-hidden min-h-0 bg-slate-950">
+                    
+                    <!-- Form Tambah Barang Manual (Sesuai Permintaan) -->
+                    <div class="p-6 border-b border-slate-800 bg-slate-900/40">
+                        <div class="flex items-center gap-2 mb-4">
+                            <span class="w-1.5 h-4 rounded-full bg-blue-500"></span>
+                            <h3 class="text-sm font-bold text-slate-100 uppercase tracking-wider">Input Manual Barang Baru</h3>
+                        </div>
+                        <form id="form-custom-item" onsubmit="handleCustomItemSubmit(event)" class="grid grid-cols-1 md:grid-cols-12 gap-4">
+                            <div class="md:col-span-5">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1.5">Nama Barang / Menu</label>
+                                <div class="relative">
+                                    <i class="fa-solid fa-utensils absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+                                    <input type="text" id="manual-name" required placeholder="Contoh: Ayam Krispi Jumbo" class="w-full bg-slate-950/80 border border-slate-800 focus:border-blue-500/80 focus:ring-1 focus:ring-blue-500 rounded-xl pl-9 pr-4 py-2.5 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all duration-200">
+                                </div>
+                            </div>
+                            <div class="md:col-span-3">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1.5">Harga Satuan (Rp)</label>
+                                <div class="relative">
+                                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs font-bold">Rp</span>
+                                    <input type="number" id="manual-price" required min="1" placeholder="0" class="w-full bg-slate-950/80 border border-slate-800 focus:border-blue-500/80 focus:ring-1 focus:ring-blue-500 rounded-xl pl-9 pr-4 py-2.5 text-sm text-slate-100 placeholder-slate-600 outline-none transition-all duration-200">
+                                </div>
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-xs font-semibold text-slate-400 mb-1.5">Jumlah</label>
+                                <div class="relative">
+                                    <i class="fa-solid fa-calculator absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs"></i>
+                                    <input type="number" id="manual-qty" required min="1" value="1" class="w-full bg-slate-950/80 border border-slate-800 focus:border-blue-500/80 focus:ring-1 focus:ring-blue-500 rounded-xl pl-9 pr-4 py-2.5 text-sm text-slate-100 outline-none transition-all duration-200">
+                                </div>
+                            </div>
+                            <div class="md:col-span-2 flex items-end">
+                                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 active:bg-blue-700 text-white font-bold text-sm px-4 py-2.5 rounded-xl transition-all duration-150 flex items-center justify-center gap-2 shadow-lg shadow-blue-500/10">
+                                    <i class="fa-solid fa-plus"></i>
+                                    <span>Tambah</span>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                    <!-- Catalog Predefined Items -->
+                    <div class="flex-1 overflow-y-auto p-6">
+                        <div class="flex items-center justify-between mb-4">
+                            <div class="flex items-center gap-2">
+                                <span class="w-1.5 h-4 rounded-full bg-cyan-500"></span>
+                                <h3 class="text-sm font-bold text-slate-100 uppercase tracking-wider">Katalog Cepat Menu Terlaris</h3>
+                            </div>
+                            <span class="text-xs text-slate-400">Klik item untuk menambahkan langsung</span>
+                        </div>
+
+                        <!-- Menu Cards Grid -->
+                        <div id="catalog-grid" class="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-4">
+                            <!-- Populated by JS -->
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column: Cart / Transaksi Berjalan -->
+                <div class="w-full lg:w-[420px] bg-slate-900 flex flex-col flex-shrink-0 overflow-hidden min-h-0">
+                    <!-- Cart Header -->
+                    <div class="px-5 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/20">
+                        <div class="flex items-center gap-2.5">
+                            <div class="p-1.5 rounded-lg bg-blue-500/10 text-blue-400">
+                                <i class="fa-solid fa-receipt text-sm"></i>
+                            </div>
+                            <h3 class="text-sm font-extrabold uppercase tracking-wider text-slate-100">Pesanan Saat Ini</h3>
+                        </div>
+                        <button onclick="clearCart()" class="text-xs font-semibold text-rose-400 hover:text-rose-300 flex items-center gap-1.5 transition-colors">
+                            <i class="fa-solid fa-trash-can"></i>
+                            <span>Kosongkan</span>
+                        </button>
+                    </div>
+
+                    <!-- Cart Item List Table -->
+                    <div class="flex-1 overflow-y-auto px-5 py-3 divide-y divide-slate-800/60" id="cart-list">
+                        <!-- Populated by JS -->
+                        <div class="h-full flex flex-col items-center justify-center text-center text-slate-500 py-12">
+                            <i class="fa-solid fa-basket-shopping text-4xl mb-3 text-slate-700"></i>
+                            <p class="text-sm font-medium">Keranjang masih kosong</p>
+                            <p class="text-[11px] text-slate-600 mt-1">Gunakan form input atau katalog cepat</p>
+                        </div>
+                    </div>
+
+                    <!-- Cart Calculation Section -->
+                    <div class="p-5 border-t border-slate-800 bg-slate-950/40 space-y-3.5">
+                        <div class="space-y-2 text-xs">
+                            <div class="flex justify-between text-slate-400">
+                                <span>Subtotal</span>
+                                <span id="cart-subtotal" class="font-semibold text-slate-200">Rp 0</span>
+                            </div>
+                            <div class="flex justify-between text-slate-400">
+                                <span>Pajak (PB1 10%)</span>
+                                <span id="cart-tax" class="font-semibold text-slate-200">Rp 0</span>
+                            </div>
+                            <div class="flex justify-between items-center pt-2 border-t border-slate-800/80">
+                                <span class="text-sm font-extrabold text-slate-300">Total Akhir</span>
+                                <span id="cart-total" class="text-lg font-black text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-cyan-300">Rp 0</span>
+                            </div>
+                        </div>
+
+                        <!-- Cashier Payment Process -->
+                        <div class="space-y-3 pt-2">
+                            <div>
+                                <label class="block text-[10px] uppercase font-bold text-slate-400 tracking-wider mb-1.5">Uang Diterima (Tunai)</label>
+                                <div class="relative">
+                                    <span class="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-500 text-xs font-extrabold">Rp</span>
+                                    <input type="number" id="cash-payment" min="0" oninput="calculateChange()" placeholder="Masukkan nominal tunai..." class="w-full bg-slate-950 border border-slate-800 focus:border-emerald-500/80 focus:ring-1 focus:ring-emerald-500 rounded-xl pl-9 pr-4 py-2.5 text-sm text-emerald-400 font-extrabold placeholder-slate-700 outline-none transition-all duration-200">
+                                </div>
+                            </div>
+                            
+                            <div class="flex justify-between items-center bg-slate-950/60 p-3 rounded-xl border border-slate-800/80">
+                                <span class="text-xs font-semibold text-slate-400">Uang Kembalian</span>
+                                <span id="cash-change" class="text-sm font-black text-slate-200">Rp 0</span>
+                            </div>
+
+                            <button onclick="processCheckout()" class="w-full bg-gradient-to-r from-blue-600 to-cyan-500 hover:from-blue-500 hover:to-cyan-400 active:scale-[0.98] text-white font-extrabold text-sm py-3.5 rounded-xl transition-all duration-150 flex items-center justify-center gap-2 shadow-lg shadow-blue-500/20">
+                                <i class="fa-solid fa-print"></i>
+                                <span>Proses Transaksi & Cetak Struk</span>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 2: RIWAYAT TRANSAKSI -->
+            <div id="view-history" class="absolute inset-0 p-6 flex flex-col gap-6 hidden overflow-y-auto">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-base font-bold text-slate-200">Riwayat Pembelian & Omset</h3>
+                        <p class="text-xs text-slate-400">Seluruh data transaksi kasir yang disimpan pada perangkat ini.</p>
+                    </div>
+                    <button onclick="clearAllHistory()" class="bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 text-rose-400 font-semibold text-xs px-4 py-2 rounded-xl transition-all">
+                        <i class="fa-solid fa-trash-arrow-up mr-1.5"></i> Hapus Semua Riwayat
+                    </button>
+                </div>
+
+                <!-- History Table Card -->
+                <div class="bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl flex-1 flex flex-col min-h-0">
+                    <div class="flex-1 overflow-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="bg-slate-950/50 border-b border-slate-800/80">
+                                    <th class="p-4 text-xs font-bold uppercase tracking-wider text-slate-400">ID Transaksi</th>
+                                    <th class="p-4 text-xs font-bold uppercase tracking-wider text-slate-400">Tanggal/Waktu</th>
+                                    <th class="p-4 text-xs font-bold uppercase tracking-wider text-slate-400">Daftar Menu</th>
+                                    <th class="p-4 text-xs font-bold uppercase tracking-wider text-slate-400">Total Akhir</th>
+                                    <th class="p-4 text-xs font-bold uppercase tracking-wider text-slate-400">Status</th>
+                                    <th class="p-4 text-xs font-bold uppercase tracking-wider text-slate-400 text-right">Aksi</th>
+                                </tr>
+                            </thead>
+                            <tbody id="history-table-body" class="divide-y divide-slate-800/60">
+                                <!-- Populated dynamically by JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- VIEW 3: INVENTORY MANAGEMENT / KELOLA MENU -->
+            <div id="view-inventory" class="absolute inset-0 p-6 flex flex-col gap-6 hidden overflow-y-auto">
+                <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+                    <div>
+                        <h3 class="text-base font-bold text-slate-200">Manajemen Produk / Katalog</h3>
+                        <p class="text-xs text-slate-400">Atur menu makanan dan minuman yang akan tampil pada katalog kasir.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 xl:grid-cols-12 gap-6 items-start">
+                    <!-- Form Input Baru -->
+                    <div class="xl:col-span-4 bg-slate-900 border border-slate-800 rounded-2xl p-5 shadow-xl space-y-4">
+                        <div class="flex items-center gap-2 mb-2">
+                            <span class="w-1.5 h-4 rounded-full bg-blue-500"></span>
+                            <h4 class="text-xs font-bold text-slate-200 uppercase tracking-wider">Tambah Menu Baru</h4>
+                        </div>
+                        <form id="form-manage-product" onsubmit="handleManageProductSubmit(event)" class="space-y-4">
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1.5">Nama Produk</label>
+                                <input type="text" id="inv-name" required placeholder="Contoh: Paket Ayam Geprek 2" class="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-700 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1.5">Harga Jual (Rp)</label>
+                                <input type="number" id="inv-price" required min="1" placeholder="0" class="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-700 outline-none">
+                            </div>
+                            <div>
+                                <label class="block text-xs font-semibold text-slate-400 mb-1.5 font-medium">Gambar Produk (Opsional URL)</label>
+                                <input type="url" id="inv-img" placeholder="https://example.com/image.jpg" class="w-full bg-slate-950 border border-slate-800 focus:border-blue-500 focus:ring-1 focus:ring-blue-500 rounded-xl px-4 py-2.5 text-sm text-slate-100 placeholder-slate-700 outline-none">
+                            </div>
+                            <button type="submit" class="w-full bg-blue-600 hover:bg-blue-500 font-bold text-sm py-2.5 rounded-xl transition-all duration-150 flex items-center justify-center gap-2">
+                                <i class="fa-solid fa-plus-circle"></i>
+                                <span>Simpan ke Database</span>
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Tabel List Produk Terdaftar -->
+                    <div class="xl:col-span-8 bg-slate-900 border border-slate-800 rounded-2xl overflow-hidden shadow-xl">
+                        <div class="p-4 border-b border-slate-800/80 bg-slate-950/20">
+                            <h4 class="text-xs font-bold text-slate-200 uppercase tracking-wider">Produk Terdaftar</h4>
+                        </div>
+                        <div class="overflow-x-auto">
+                            <table class="w-full text-left border-collapse">
+                                <thead>
+                                    <tr class="bg-slate-950/50 border-b border-slate-800/80">
+                                        <th class="p-4 text-xs font-bold uppercase tracking-wider text-slate-400">Menu</th>
+                                        <th class="p-4 text-xs font-bold uppercase tracking-wider text-slate-400">Harga Satuan</th>
+                                        <th class="p-4 text-xs font-bold uppercase tracking-wider text-slate-400 text-right">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="inv-table-body" class="divide-y divide-slate-800/60">
+                                    <!-- Populated by JS -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </main>
+
+    <!-- MODAL RECEIPT / STRUK POPUP -->
+    <div id="receipt-modal" class="fixed inset-0 z-50 bg-slate-950/80 backdrop-blur-sm hidden flex items-center justify-center p-4">
+        <div class="bg-slate-900 border border-slate-800 w-full max-w-sm rounded-2xl shadow-2xl flex flex-col max-h-[90vh] overflow-hidden">
+            <!-- Modal Header -->
+            <div class="px-5 py-4 border-b border-slate-800 flex items-center justify-between bg-slate-950/40">
+                <span class="text-xs font-extrabold uppercase tracking-widest text-slate-300">Struk Transaksi Selesai</span>
+                <button onclick="closeReceiptModal()" class="text-slate-400 hover:text-white transition-colors">
+                    <i class="fa-solid fa-xmark text-lg"></i>
+                </button>
+            </div>
+
+            <!-- Receipt Content (Thermal Paper Design) -->
+            <div class="p-6 overflow-y-auto bg-white text-slate-900 flex justify-center">
+                <div id="receipt-print" class="w-full max-w-[300px] text-xs font-mono select-text bg-white p-2">
+                    <div class="text-center space-y-1 mb-4">
+                        <h2 class="text-base font-black tracking-wider uppercase">AYAMCLUP</h2>
+                        <p class="text-[10px]">Grand Depok City, Sektor Melati, Depok</p>
+                        <p class="text-[10px]">Telp: 0812-3456-7890</p>
+                        <div class="border-b border-dashed border-slate-500 my-2"></div>
+                    </div>
+                    
+                    <div class="space-y-1 text-[10px] mb-4">
+                        <div class="flex justify-between">
+                            <span>No: <strong id="rec-id">TRX-0000</strong></span>
+                            <span id="rec-date">26/10/2024</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Kasir: <strong>Utama</strong></span>
+                            <span id="rec-time">12:00:00</span>
+                        </div>
+                    </div>
+
+                    <div class="border-b border-dashed border-slate-500 my-2"></div>
+
+                    <!-- Items -->
+                    <div id="rec-items" class="space-y-2 text-[10px] my-3">
+                        <!-- Populated by JS -->
+                    </div>
+
+                    <div class="border-b border-dashed border-slate-500 my-2"></div>
+
+                    <div class="space-y-1 text-[10px] text-right font-bold">
+                        <div class="flex justify-between">
+                            <span>Subtotal:</span>
+                            <span id="rec-subtotal">Rp 0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>PB1 (10%):</span>
+                            <span id="rec-tax">Rp 0</span>
+                        </div>
+                        <div class="flex justify-between text-xs font-black pt-1">
+                            <span>Total Tagihan:</span>
+                            <span id="rec-total">Rp 0</span>
+                        </div>
+                        <div class="flex justify-between border-t border-dotted border-slate-500 pt-1">
+                            <span>Uang Tunai:</span>
+                            <span id="rec-cash">Rp 0</span>
+                        </div>
+                        <div class="flex justify-between">
+                            <span>Kembalian:</span>
+                            <span id="rec-change">Rp 0</span>
+                        </div>
+                    </div>
+
+                    <div class="border-b border-dashed border-slate-500 my-4"></div>
+                    
+                    <div class="text-center space-y-1 text-[10px] text-slate-500">
+                        <p class="font-bold">Terima kasih atas kunjungan Anda!</p>
+                        <p>Nikmat renyahnya ayamclup bikin nagih!</p>
+                        <p class="text-[8px] mt-2 text-slate-400">Powered by ayamclup System</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal Action Footer -->
+            <div class="p-4 border-t border-slate-800 bg-slate-950/60 flex gap-3">
+                <button onclick="closeReceiptModal()" class="flex-1 bg-slate-800 hover:bg-slate-700 text-slate-300 font-bold text-xs py-2.5 rounded-xl transition-all">
+                    Tutup
+                </button>
+                <button onclick="window.print()" class="flex-1 bg-emerald-600 hover:bg-emerald-500 text-white font-bold text-xs py-2.5 rounded-xl transition-all flex items-center justify-center gap-1.5">
+                    <i class="fa-solid fa-print"></i> Cetak Struk (PDF)
+                </button>
+            </div>
         </div>
     </div>
 
-    <!-- TAB NAVIGASI -->
-    <div class="tabs">
-        <div class="tab active" id="tab-beranda" onclick="showPage('beranda')">🏠 Beranda</div>
-        <div class="tab" id="tab-nomor" onclick="showPage('nomor')">📱 Nomor</div>
-        <div class="tab" id="tab-booster" onclick="showPage('booster')">🚀 Booster</div>
-        <div class="tab" id="tab-saldo" onclick="showPage('saldo')">💰 Saldo</div>
-        <div class="tab" id="tab-chat" onclick="showPage('chat')">💬 CS</div>
-        <div class="tab hidden" id="tab-owner" onclick="showPage('owner')">🔐 Owner</div>
-        <div class="tab hidden" id="tab-admin" onclick="showPage('admin')">👨‍💼 Admin</div>
-    </div>
+    <!-- CLIENT LOGIC JAVASCRIPT -->
+    <script>
+        // Core State
+        let cart = [];
+        let menuCatalog = [];
+        let transactionHistory = [];
 
-    <!-- BERANDA -->
-    <div id="page-beranda" class="page">
-        <div class="card">
-            <h2>👋 Selamat Datang, <span id="nama-user">-</span>!</h2>
-            <div class="info-box">
-                ⚡ Sistem Saldo — Potong Otomatis Saat Beli<br>
-                📱 Beli Nomor — Langsung Terkirim Otomatis<br>
-                💎 Top Up Saldo — Upload Bukti Transfer<br>
-                🔒 Data Aman & Terlindungi
-            </div>
-        </div>
-        <div class="card">
-            <h3>🔥 Layanan Populer</h3>
-            <div class="platform-grid">
-                <div class="platform-card" onclick="selectPlatform('Instagram')">
-                    <span class="icon">📸</span><p>Instagram</p>
-                </div>
-                <div class="platform-card" onclick="selectPlatform('TikTok')">
-                    <span class="icon">🎵</span><p>TikTok</p>
-                </div>
-                <div class="platform-card" onclick="selectPlatform('Facebook')">
-                    <span class="icon">📘</span><p>Facebook</p>
-                </div>
-                <div class="platform-card" onclick="selectPlatform('YouTube')">
-                    <span class="icon">▶️</span><p>YouTube</p>
-                </div>
-            </div>
-        </div>
-        <button class="btn btn-secondary" onclick="showPage('pesanan')">📋 Riwayat Pesanan</button>
-        <button class="btn btn-danger" onclick="logout()" style="margin-top:10px;">🚪 Keluar Akun</button>
-    </div>
+        // Predefined Dummy Products (Katalog Standar Penjualan)
+        const defaultProducts = [
+            { id: 1, name: "Ayam Goreng Clup (Dada)", price: 18000, img: "https://images.unsplash.com/photo-1569058242253-92a9c755a0ec?auto=format&fit=crop&q=80&w=400" },
+            { id: 2, name: "Ayam Krispi Sambal Korek", price: 20000, img: "https://images.unsplash.com/photo-1626082927389-6cd097cdc6ec?auto=format&fit=crop&q=80&w=400" },
+            { id: 3, name: "Nasi Putih Premium", price: 6000, img: "https://images.unsplash.com/photo-1516685018646-549198525c1b?auto=format&fit=crop&q=80&w=400" },
+            { id: 4, name: "Es Teh Manis Jumbo", price: 5000, img: "https://images.unsplash.com/photo-1556679343-c7306c1976bc?auto=format&fit=crop&q=80&w=400" },
+            { id: 5, name: "Paket Clup Hemat (Nasi+Ayam)", price: 22000, img: "https://images.unsplash.com/photo-1606755962773-d324e0a13086?auto=format&fit=crop&q=80&w=400" },
+            { id: 6, name: "Kulit Ayam Crispy Pedas", price: 12000, img: "https://images.unsplash.com/photo-1562967914-608f82629710?auto=format&fit=crop&q=80&w=400" }
+        ];
 
-    <!-- NOMOR -->
-    <div id="page-nomor" class="page hidden">
-        <div class="card">
-            <h2>📱 Beli Nomor Virtual</h2>
-            <label>Pilih Negara</label>
-            <select id="nomor-negara" onchange="updateNomorLayanan()">
-                <option value="">-- Pilih Negara --</option>
-                <option value="+62">🇮🇩 Indonesia (+62)</option>
-                <option value="+60">🇲🇾 Malaysia (+60)</option>
-                <option value="+65">🇸🇬 Singapura (+65)</option>
-                <option value="+1">🇺🇸 USA (+1)</option>
-                <option value="+44">🇬🇧 UK (+44)</option>
-                <option value="+86">🇨🇳 China (+86)</option>
-                <option value="+81">🇯🇵 Jepang (+81)</option>
-            </select>
-            <label>Layanan</label>
-            <select id="nomor-layanan" onchange="updateNomorJumlah()">
-                <option value="">-- Pilih Layanan --</option>
-            </select>
-            <label>Jumlah</label>
-            <select id="nomor-jumlah" onchange="updateNomorHarga()">
-                <option value="">-- Pilih Jumlah --</option>
-            </select>
-            <div class="summary-box">
-                <p>Negara: <span id="nomor-sum-negara">-</span></p>
-                <p>Layanan: <span id="nomor-sum-layanan">-</span></p>
-                <p>Jumlah: <span id="nomor-sum-jumlah">-</span></p>
-                <p class="total">Total: <span id="nomor-sum-harga">Rp 0</span></p>
-                <p class="saldo-info">Sisa Saldo: <span id="nomor-sisa-saldo">Rp 0</span></p>
-            </div>
-            <button class="btn" onclick="beliNomor()">✅ Beli Sekarang</button>
-        </div>
-        <div id="nomor-hasil" class="card success-box hidden">
-            <h3>✅ Berhasil!</h3>
-            <div class="nomor-output">
-                <p><strong>Nomor:</strong></p>
-                <div class="nomor-val" id="nomor-keluar-value">-</div>
-                <p><strong>Kode Verifikasi:</strong></p>
-                <div class="kode-val" id="kode-keluar-value">-</div>
-            </div>
-            <button class="btn btn-secondary" onclick="resetNomorForm()">Beli Lagi</button>
-        </div>
-    </div>
+        // Format Currency Helper
+        function formatIDR(amount) {
+            return 'Rp ' + amount.toLocaleString('id-ID');
+        }
 
-    <!-- BOOSTER -->
-    <div id="page-booster" class="page hidden">
-        <div class="card">
-            <h2>🚀 Sosmed Booster</h2>
-            <p class="desc">Pilih platform:</p>
-            <div class="platform-grid">
-                <div class="platform-card" onclick="selectPlatform('Instagram')">
-                    <span class="icon">📸</span><p>Instagram</p>
-                </div>
-                <div class="platform-card" onclick="selectPlatform('TikTok')">
-                    <span class="icon">🎵</span><p>TikTok</p>
-                </div>
-                <div class="platform-card" onclick="selectPlatform('Facebook')">
-                    <span class="icon">📘</span><p>Facebook</p>
-                </div>
-                <div class="platform-card" onclick="selectPlatform('YouTube')">
-                    <span class="icon">▶️</span><p>YouTube</p>
-                </div>
-                <div class="platform-card" onclick="selectPlatform('Twitter')">
-                    <span class="icon">🐦</span><p>Twitter/X</p>
-                </div>
-                <div class="platform-card" onclick="selectPlatform('Telegram')">
-                    <span class="icon">✈️</span><p>Telegram</p>
-                </div>
-                <div class="platform-card" onclick="selectPlatform('Twitch')">
-                    <span class="icon">🎮</span><p>Twitch</p>
-                </div>
-                <div class="platform-card" onclick="selectPlatform('Spotify')">
-                    <span class="icon">🎧</span><p>Spotify</p>
-                </div>
-            </div>
-            <div id="booster-form" class="hidden" style="margin-top:20px;">
-                <label>Layanan</label>
-                <select id="form-layanan" onchange="updateJumlahBooster()">
-                    <option value="">-- Pilih Layanan --</option>
-                </select>
-                <label>Jumlah</label>
-                <select id="form-jumlah" onchange="updateHargaBooster()">
-                    <option value="">-- Pilih Jumlah --</option>
-                </select>
-                <label>Link Akun/Postingan</label>
-                <input type="url" id="form-link" placeholder="https://...">
-                <div class="summary-box">
-                    <p>Platform: <span id="sum-platform">-</span></p>
-                    <p>Layanan: <span id="sum-layanan">-</span></p>
-                    <p>Jumlah: <span id="sum-jumlah">-</span></p>
-                    <p class="total">Total: <span id="sum-harga">Rp 0</span></p>
-                </div>
-                <button class="btn" onclick="beliBooster()">✅ Beli Sekarang</button>
-            </div>
-        </div>
-    </div>
+        // Live Date & Time Tracker
+        function updateClock() {
+            const days = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+            const months = ["Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
+            const now = new Date();
+            
+            document.getElementById('live-time').innerText = now.toLocaleTimeString('id-ID', { hour12: false });
+            document.getElementById('live-date').innerText = `${days[now.getDay()]}, ${now.getDate()} ${months[now.getMonth()]} ${now.getFullYear()}`;
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
 
-    <!-- SALDO & TOP UP -->
-    <div id="page-saldo" class="page hidden">
-        <div class="card">
-            <h2>💰 Saldo & Top Up</h2>
-            <div class="saldo-big-box">
-                <p>Saldo Saat Ini</p>
-                <p class="saldo-big" id="saldo-page-saldo">Rp 0</p>
-            </div>
-            <h3>💎 Top Up Saldo</h3>
-            <label>Nominal Top Up</label>
-            <select id="topup-jumlah" onchange="updateTopUpTotal()">
-                <option value="">-- Pilih Nominal --</option>
-                <option value="10000">Rp 10.000</option>
-                <option value="20000">Rp 20.000</option>
-                <option value="50000">Rp 50.000</option>
-                <option value="100000">Rp 100.000</option>
-                <option value="200000">Rp 200.000</option>
-                <option value="500000">Rp 500.000</option>
-                <option value="1000000">Rp 1.000.000</option>
-                <option value="custom">Lainnya...</option>
-            </select>
-            <div id="topup-custom-box" class="hidden">
-                <label>Jumlah Custom</label>
-                <input type="number" id="topup-custom" placeholder="Masukkan jumlah" oninput="updateTopUpTotal()">
-            </div>
-            <label>Metode Pembayaran</label>
-            <select id="topup-metode">
-                <option value="Seabank">Seabank — 901369767087 a.n S Y</option>
-                <option value="DANA">DANA</option>
-                <option value="Gopay">Gopay</option>
-                <option value="BCA">BCA</option>
-            </select>
-            <div class="summary-box">
-                <p>Jumlah: <span id="topup-total">Rp 0</span></p>
-                <p>Metode: <span id="topup-metode-text">-</span></p>
-            </div>
-            <label>📸 Upload Bukti Transfer</label>
-            <div class="upload-box" onclick="document.getElementById('topup-bukti').click()">
-                📷 Klik untuk upload bukti / screenshot
-                <input type="file" id="topup-bukti" accept="image/*,.png,.jpg,.jpeg" style="display:none;" onchange="previewBuktiTopUp()">
-            </div>
-            <div id="bukti-preview-container" class="hidden">
-                <p class="success-text">✅ Bukti Terupload:</p>
-                <img id="bukti-preview-img" class="preview-img" alt="Bukti Transfer">
-            </div>
-            <button class="btn" onclick="kirimTopUp()">✅ Kirim Permintaan Top Up</button>
-        </div>
+        // Initialization
+        window.addEventListener('DOMContentLoaded', () => {
+            // Load from LocalStorage
+            const storedProducts = localStorage.getItem('ayamclup_products');
+            if (storedProducts) {
+                menuCatalog = JSON.parse(storedProducts);
+            } else {
+                menuCatalog = [...defaultProducts];
+                localStorage.setItem('ayamclup_products', JSON.stringify(menuCatalog));
+            }
 
-        <!-- RIWAYAT TOP UP -->
-        <div class="card">
-            <h3>📋 Riwayat Top Up Saldo</h3>
-            <table>
-                <thead><tr><th>Waktu</th><th>Jumlah</th><th>Metode</th><th>Status</th></tr></thead>
-                <tbody id="riwayat-topup-user"></tbody>
-            </table>
-        </div>
+            const storedHistory = localStorage.getItem('ayamclup_history');
+            if (storedHistory) {
+                transactionHistory = JSON.parse(storedHistory);
+            }
 
-        <div class="card">
-            <h3>📊 Riwayat Saldo</h3>
-            <table><thead><tr><th>Waktu</th><th>Tipe</th><th>Jumlah</th></tr></thead>
-                <tbody id="riwayat-saldo-body"></tbody>
-            </table>
-        </div>
-    </div>
+            renderCatalog();
+            renderCart();
+            renderHistoryView();
+            renderInventoryView();
+            updateDashboardMetrics();
+        });
 
-    <!-- CHAT CS -->
-    <div id="page-chat" class="page hidden">
-        <div class="card">
-            <h2>💬 Customer Service</h2>
-            <p class="privacy-note">🔒 Pesan hanya terlihat oleh Anda & Owner</p>
-            <div id="chat-box" class="chat-box">
-                <div class="chat-bubble system">Selamat datang di CS! Silakan tanya apa saja 😊</div>
-            </div>
-            <div class="chat-input-wrap">
-                <input type="text" id="chat-input" placeholder="Ketik pesan Anda..." onkeypress="if(event.key==='Enter')kirimChat()">
-                <button class="btn send-btn" onclick="kirimChat()">Kirim</button>
-            </div>
-        </div>
-    </div>
+        // VIEW CONTROLLER
+        function switchView(viewId) {
+            const views = ['pos', 'history', 'inventory'];
+            views.forEach(v => {
+                const el = document.getElementById(`view-${v}`);
+                if (v === viewId) {
+                    el.classList.remove('hidden');
+                    // Add fade-in effect
+                    el.style.opacity = '0';
+                    setTimeout(() => el.style.opacity = '1', 50);
+                } else {
+                    el.classList.add('hidden');
+                }
+            });
 
-    <!-- OWNER PANEL -->
-    <div id="page-owner" class="page hidden">
-        <div class="card">
-            <h2>🔐 Panel Owner</h2>
+            // Update Desktop Sidebar Buttons State
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                if (btn.id === `btn-nav-${viewId}`) {
+                    btn.classList.add('bg-blue-600/15', 'text-blue-400', 'border-blue-500/20');
+                    btn.classList.remove('text-slate-400', 'hover:text-slate-200', 'hover:bg-slate-800/50', 'border-transparent');
+                } else {
+                    btn.classList.remove('bg-blue-600/15', 'text-blue-400', 'border-blue-500/20');
+                    btn.classList.add('text-slate-400', 'hover:text-slate-200', 'hover:bg-slate-800/50', 'border-transparent');
+                }
+            });
 
-            <h3 class="section-title">💎 Permintaan Top Up Saldo</h3>
-            <table>
-                <thead><tr><th>User</th><th>Jumlah</th><th>Metode</th><th>Bukti</th><th>Status</th><th>Aksi</th></tr></thead>
-                <tbody id="topup-request-body">
-                    <tr><td colspan="6" class="text-center">Belum ada permintaan top up.</td></tr>
-                </tbody>
-            </table>
+            // Change page header title
+            const headerTitles = {
+                'pos': { title: 'Mesin Kasir (POS)', desc: 'Kelola pesanan pelanggan dengan cepat dan efisien' },
+                'history': { title: 'Riwayat Transaksi', desc: 'Daftar semua transaksi penjualan di sistem ayamclup' },
+                'inventory': { title: 'Kelola Menu / Produk', desc: 'Kelola item menu makanan, minuman, dan harga jual' }
+            };
+            document.getElementById('view-title').innerText = headerTitles[viewId].title;
+            document.querySelector('#view-title + p').innerText = headerTitles[viewId].desc;
+        }
 
-            <h3 class="section-title">💰 Ubah Saldo User</h3>
-            <label>Username User</label>
-            <input type="text" id="saldo-user" placeholder="Masukkan username">
-            <label>Jumlah (+ tambah / - kurangi)</label>
-            <input type="number" id="saldo-jumlah" placeholder="Contoh: 50000 atau -10000">
-            <button class="btn" onclick="ubahSaldoUser()">✅ Simpan Perubahan</button>
+        function toggleMobileSidebar() {
+            const sidebar = document.getElementById('mobile-sidebar');
+            if (sidebar.classList.contains('hidden')) {
+                sidebar.classList.remove('hidden');
+            } else {
+                sidebar.classList.add('hidden');
+            }
+        }
 
-            <h3 class="section-title">👨‍💼 Kelola Admin</h3>
-            <label>Username Admin Baru</label>
-            <input type="text" id="new-admin-user" placeholder="Username">
-            <label>Password Admin Baru</label>
-            <input type="password" id="new-admin-pass" placeholder="Password">
-            <button class="btn" onclick="tambahAdmin()">+ Tambah Admin</button>
-            <table style="margin-top:15px;">
-                <thead><tr><th>Username</th><th>Tanggal Dibuat</th><th>Aksi</th></tr></thead>
-                <tbody id="admin-list-body"></tbody>
-            </table>
+        // --- POS CORE LOGIC ---
 
-            <h3 class="section-title">📋 Riwayat Semua Pesanan</h3>
-            <table>
-                <thead><tr><th>User</th><th>Tipe</th><th>Detail</th><th>Jumlah</th><th>Harga</th><th>Status</th></tr></thead>
-                <tbody id="semua-pesanan-body"></tbody>
-            </table>
-        </div>
-    </div>
+        // Render Quick Catalog
+        function renderCatalog() {
+            const grid = document.getElementById('catalog-grid');
+            grid.innerHTML = '';
+            
+            menuCatalog.forEach(p => {
+                // Ensure there is an image placeholder if custom product has no image
+                const fallbackImg = "https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=400";
+                const imgUrl = p.img ? p.img : fallbackImg;
 
-    <!-- ADMIN PANEL -->
-    <div id="page-admin" class="page hidden">
-        <div class="card">
-            <h2>👨‍💼 Panel Admin</h2>
-            <h3 class="section-title">💎 Konfirmasi Top Up</h3>
-            <table>
-                <thead><tr><th>User</th><th>Jumlah</th><th>Metode</th><th>Bukti</th><th>Aksi</th></tr></thead>
-                <tbody id="admin-topup-body"></tbody>
-            </table>
-            <h3 class="section-title">📋 Semua Pesanan</h3>
-            <table>
-                <thead><tr><th>User</th><th>Tipe</th><th>Detail</th><th>Jumlah</th><th>Status</th></tr></thead>
-                <tbody id="admin-pesanan-body"></tbody>
-            </table>
-        </div>
-    </div>
+                grid.innerHTML += `
+                    <div onclick="addToCart(${p.id})" class="group cursor-pointer bg-slate-900 border border-slate-800 hover:border-blue-500/50 hover:shadow-lg hover:shadow-blue-500/5 rounded-2xl overflow-hidden transition-all duration-200 flex flex-col">
+                        <div class="h-28 overflow-hidden relative bg-slate-950">
+                            <img src="${imgUrl}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300 opacity-80 group-hover:opacity-100">
+                            <div class="absolute inset-0 bg-gradient-to-t from-slate-950 via-transparent to-transparent"></div>
+                        </div>
+                        <div class="p-3 flex-1 flex flex-col justify-between gap-1">
+                            <h4 class="text-xs font-bold text-slate-100 group-hover:text-blue-400 line-clamp-2 transition-colors duration-200">${p.name}</h4>
+                            <span class="text-xs font-black text-blue-400 mt-1">${formatIDR(p.price)}</span>
+                        </div>
+                    </div>
+                `;
+            });
+        }
 
-    <!-- RIWAYAT PESANAN -->
-    <div id="page-pesanan" class="page hidden">
-        <div class="card">
-            <h2>📋 Riwayat Pesanan Saya</h2>
-            <table>
-                <thead><tr><th>Tipe</th><th>Detail</th><th>Jumlah</th><th>Harga</th><th>Nomor/Kode</th><th>Status</th></tr></thead>
-                <tbody id="pesanan-list"></tbody>
-            </table>
-        </div>
-    </div>
-</div>
+        // Add Product from Catalog
+        function addToCart(productId) {
+            const product = menuCatalog.find(p => p.id === productId);
+            if (!product) return;
 
-<!-- BOTTOM NAV -->
-<div class="bottom-nav">
-    <div class="nav-item" onclick="showPage('beranda')">🏠 Beranda</div>
-    <div class="nav-item" onclick="showPage('nomor')">📱 Nomor</div>
-    <div class="nav-item" onclick="showPage('booster')">🚀 Booster</div>
-    <div class="nav-item" onclick="showPage('saldo')">💰 Saldo</div>
-    <div class="nav-item" onclick="showPage('pesanan')">📋 Pesanan</div>
-</div>
+            const existing = cart.find(item => item.id === productId);
+            if (existing) {
+                existing.qty++;
+            } else {
+                cart.push({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    qty: 1
+                });
+            }
+            renderCart();
+        }
 
-<script src="js/main.js"></script>
+        // Handle Form Input Manual Custom Item (Sesuai Permintaan)
+        function handleCustomItemSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('manual-name').value.trim();
+            const price = parseFloat(document.getElementById('manual-price').value);
+            const qty = parseInt(document.getElementById('manual-qty').value);
+
+            if (!name || isNaN(price) || isNaN(qty)) return;
+
+            // Generate unique virtual ID for custom item
+            const customId = Date.now();
+
+            cart.push({
+                id: customId,
+                name: name,
+                price: price,
+                qty: qty
+            });
+
+            // Reset Form Fields
+            document.getElementById('manual-name').value = '';
+            document.getElementById('manual-price').value = '';
+            document.getElementById('manual-qty').value = '1';
+
+            renderCart();
+        }
+
+        // Render Current Cart List Table
+        function renderCart() {
+            const container = document.getElementById('cart-list');
+            
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="h-full flex flex-col items-center justify-center text-center text-slate-500 py-12">
+                        <i class="fa-solid fa-basket-shopping text-3xl mb-3 text-slate-700"></i>
+                        <p class="text-xs font-semibold">Keranjang Masih Kosong</p>
+                        <p class="text-[10px] text-slate-600 mt-0.5">Gunakan form di atas atau katalog cepat</p>
+                    </div>
+                `;
+                updateTotals(0);
+                return;
+            }
+
+            container.innerHTML = '';
+            let subtotal = 0;
+
+            cart.forEach((item, index) => {
+                const itemTotal = item.price * item.qty;
+                subtotal += itemTotal;
+
+                container.innerHTML += `
+                    <div class="py-3 flex flex-col gap-1.5">
+                        <div class="flex justify-between items-start gap-2">
+                            <span class="text-xs font-bold text-slate-100 line-clamp-2">${item.name}</span>
+                            <span class="text-xs font-extrabold text-slate-200 shrink-0">${formatIDR(itemTotal)}</span>
+                        </div>
+                        <div class="flex items-center justify-between">
+                            <span class="text-[10px] text-slate-500 font-medium">${formatIDR(item.price)} / pcs</span>
+                            <div class="flex items-center gap-1.5">
+                                <button onclick="changeQty(${item.id}, -1)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-all">
+                                    <i class="fa-solid fa-minus text-[10px]"></i>
+                                </button>
+                                <span class="text-xs font-bold w-6 text-center text-slate-200">${item.qty}</span>
+                                <button onclick="changeQty(${item.id}, 1)" class="w-6 h-6 rounded-lg bg-slate-800 hover:bg-slate-700 flex items-center justify-center text-slate-400 hover:text-white transition-all">
+                                    <i class="fa-solid fa-plus text-[10px]"></i>
+                                </button>
+                                <button onclick="removeFromCart(${item.id})" class="ml-2 text-rose-500 hover:text-rose-400 p-1">
+                                    <i class="fa-solid fa-trash-can text-xs"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            updateTotals(subtotal);
+        }
+
+        // Change Quantity in Cart
+        function changeQty(id, delta) {
+            const item = cart.find(i => i.id === id);
+            if (item) {
+                item.qty += delta;
+                if (item.qty <= 0) {
+                    removeFromCart(id);
+                } else {
+                    renderCart();
+                }
+            }
+        }
+
+        // Remove Single Item
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            renderCart();
+        }
+
+        // Clear Entire Cart
+        function clearCart() {
+            if (confirm("Apakah Anda yakin ingin membatalkan semua pesanan?")) {
+                cart = [];
+                document.getElementById('cash-payment').value = '';
+                renderCart();
+            }
+        }
+
+        // Calculate and Update Totals Automatically (PB1 Tax 10%)
+        function updateTotals(subtotal) {
+            const tax = Math.round(subtotal * 0.10);
+            const total = subtotal + tax;
+
+            document.getElementById('cart-subtotal').innerText = formatIDR(subtotal);
+            document.getElementById('cart-tax').innerText = formatIDR(tax);
+            document.getElementById('cart-total').innerText = formatIDR(total);
+            
+            // Set values as custom attributes for easy access
+            document.getElementById('cart-total').dataset.val = total;
+            document.getElementById('cart-subtotal').dataset.val = subtotal;
+            document.getElementById('cart-tax').dataset.val = tax;
+
+            calculateChange();
+        }
+
+        // Calculate Change Dynamically
+        function calculateChange() {
+            const total = parseFloat(document.getElementById('cart-total').dataset.val) || 0;
+            const payInput = parseFloat(document.getElementById('cash-payment').value) || 0;
+            const changeNode = document.getElementById('cash-change');
+
+            if (payInput === 0 || payInput < total) {
+                changeNode.innerText = "Rp 0";
+                changeNode.className = "text-sm font-black text-slate-500";
+            } else {
+                const change = payInput - total;
+                changeNode.innerText = formatIDR(change);
+                changeNode.className = "text-sm font-black text-emerald-400";
+            }
+        }
+
+        // Process Checkout Transaction
+        function processCheckout() {
+            if (cart.length === 0) {
+                alert("Keranjang masih kosong! Silakan pilih atau masukkan barang terlebih dahulu.");
+                return;
+            }
+
+            const grandTotal = parseFloat(document.getElementById('cart-total').dataset.val) || 0;
+            const cashAmount = parseFloat(document.getElementById('cash-payment').value) || 0;
+
+            if (cashAmount < grandTotal) {
+                alert("Uang pembayaran tidak mencukupi atau belum diinput.");
+                return;
+            }
+
+            const changeAmount = cashAmount - grandTotal;
+            const trxId = "TRX-" + Math.floor(100000 + Math.random() * 900000);
+            const now = new Date();
+            const dateStr = now.toLocaleDateString('id-ID');
+            const timeStr = now.toLocaleTimeString('id-ID', { hour12: false });
+
+            // Structure transaction record object
+            const currentTrx = {
+                id: trxId,
+                date: dateStr,
+                time: timeStr,
+                items: [...cart],
+                subtotal: parseFloat(document.getElementById('cart-subtotal').dataset.val),
+                tax: parseFloat(document.getElementById('cart-tax').dataset.val),
+                total: grandTotal,
+                cash: cashAmount,
+                change: changeAmount
+            };
+
+            // Save to LocalStorage array
+            transactionHistory.unshift(currentTrx);
+            localStorage.setItem('ayamclup_history', JSON.stringify(transactionHistory));
+
+            // Populate Modal Receipt Elements for Preview/Print
+            document.getElementById('rec-id').innerText = trxId;
+            document.getElementById('rec-date').innerText = dateStr;
+            document.getElementById('rec-time').innerText = timeStr;
+            document.getElementById('rec-subtotal').innerText = formatIDR(currentTrx.subtotal);
+            document.getElementById('rec-tax').innerText = formatIDR(currentTrx.tax);
+            document.getElementById('rec-total').innerText = formatIDR(currentTrx.total);
+            document.getElementById('rec-cash').innerText = formatIDR(currentTrx.cash);
+            document.getElementById('rec-change').innerText = formatIDR(currentTrx.change);
+
+            const recItemsContainer = document.getElementById('rec-items');
+            recItemsContainer.innerHTML = '';
+            cart.forEach(item => {
+                recItemsContainer.innerHTML += `
+                    <div>
+                        <div class="flex justify-between font-bold">
+                            <span>${item.name}</span>
+                            <span>${formatIDR(item.price * item.qty)}</span>
+                        </div>
+                        <div class="text-[9px] text-slate-600">${item.qty} pcs x ${formatIDR(item.price)}</div>
+                    </div>
+                `;
+            });
+
+            // Show Receipt Modal Popup
+            document.getElementById('receipt-modal').classList.remove('hidden');
+
+            // Reset States
+            cart = [];
+            document.getElementById('cash-payment').value = '';
+            renderCart();
+            renderHistoryView();
+            updateDashboardMetrics();
+        }
+
+        // Close Modal
+        function closeReceiptModal() {
+            document.getElementById('receipt-modal').classList.add('hidden');
+        }
+
+        // Update Dashboard Revenue Metrics dynamically
+        function updateDashboardMetrics() {
+            const todayStr = new Date().toLocaleDateString('id-ID');
+            let todayRevenue = 0;
+
+            transactionHistory.forEach(trx => {
+                if (trx.date === todayStr) {
+                    todayRevenue += trx.total;
+                }
+            });
+
+            document.getElementById('today-revenue').innerText = formatIDR(todayRevenue);
+        }
+
+        // --- HISTORY VIEW CONTROLLER ---
+        function renderHistoryView() {
+            const tbody = document.getElementById('history-table-body');
+            
+            if (transactionHistory.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="p-8 text-center text-sm text-slate-500">
+                            <i class="fa-solid fa-folder-open text-3xl mb-2 text-slate-700"></i>
+                            <p>Belum ada riwayat transaksi yang tersimpan.</p>
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = '';
+            transactionHistory.forEach(trx => {
+                // Compile list items text for display column
+                const itemsSummary = trx.items.map(i => `${i.name} (${i.qty})`).join(', ');
+
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-800/30 transition-colors">
+                        <td class="p-4 text-xs font-bold text-blue-400">${trx.id}</td>
+                        <td class="p-4 text-xs text-slate-300">
+                            <div>${trx.date}</div>
+                            <div class="text-[10px] text-slate-500">${trx.time}</div>
+                        </td>
+                        <td class="p-4 text-xs text-slate-300 max-w-xs truncate" title="${itemsSummary}">${itemsSummary}</td>
+                        <td class="p-4 text-xs font-black text-slate-100">${formatIDR(trx.total)}</td>
+                        <td class="p-4 text-xs">
+                            <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full text-[10px] font-bold bg-emerald-500/10 text-emerald-400 border border-emerald-500/20">
+                                <span class="w-1.5 h-1.5 rounded-full bg-emerald-500"></span> Sukses / Lunas
+                            </span>
+                        </td>
+                        <td class="p-4 text-xs text-right">
+                            <button onclick="reprintFromHistory('${trx.id}')" class="bg-slate-800 hover:bg-slate-700 border border-slate-700 text-slate-300 hover:text-white px-3 py-1.5 rounded-lg transition-all inline-flex items-center gap-1.5">
+                                <i class="fa-solid fa-print"></i> Re-print
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Reprint Struk from History
+        function reprintFromHistory(trxId) {
+            const trx = transactionHistory.find(t => t.id === trxId);
+            if (!trx) return;
+
+            document.getElementById('rec-id').innerText = trx.id;
+            document.getElementById('rec-date').innerText = trx.date;
+            document.getElementById('rec-time').innerText = trx.time;
+            document.getElementById('rec-subtotal').innerText = formatIDR(trx.subtotal);
+            document.getElementById('rec-tax').innerText = formatIDR(trx.tax);
+            document.getElementById('rec-total').innerText = formatIDR(trx.total);
+            document.getElementById('rec-cash').innerText = formatIDR(trx.cash);
+            document.getElementById('rec-change').innerText = formatIDR(trx.change);
+
+            const recItemsContainer = document.getElementById('rec-items');
+            recItemsContainer.innerHTML = '';
+            trx.items.forEach(item => {
+                recItemsContainer.innerHTML += `
+                    <div>
+                        <div class="flex justify-between font-bold">
+                            <span>${item.name}</span>
+                            <span>${formatIDR(item.price * item.qty)}</span>
+                        </div>
+                        <div class="text-[9px] text-slate-600">${item.qty} pcs x ${formatIDR(item.price)}</div>
+                    </div>
+                `;
+            });
+
+            document.getElementById('receipt-modal').classList.remove('hidden');
+        }
+
+        // Clear All local Database History
+        function clearAllHistory() {
+            if (confirm("Apakah Anda yakin ingin menghapus SELURUH riwayat transaksi? Tindakan ini tidak dapat dibatalkan!")) {
+                transactionHistory = [];
+                localStorage.removeItem('ayamclup_history');
+                renderHistoryView();
+                updateDashboardMetrics();
+            }
+        }
+
+        // --- MANAGE INVENTORY / PRODUCT VIEW ---
+        function renderInventoryView() {
+            const tbody = document.getElementById('inv-table-body');
+            tbody.innerHTML = '';
+
+            menuCatalog.forEach(p => {
+                tbody.innerHTML += `
+                    <tr class="hover:bg-slate-800/30 transition-colors">
+                        <td class="p-4 flex items-center gap-3">
+                            <img src="${p.img || 'https://images.unsplash.com/photo-1546069901-ba9599a7e63c?auto=format&fit=crop&q=80&w=400'}" alt="" class="w-10 h-10 rounded-lg object-cover bg-slate-950">
+                            <span class="text-xs font-bold text-slate-200">${p.name}</span>
+                        </td>
+                        <td class="p-4 text-xs font-extrabold text-blue-400">${formatIDR(p.price)}</td>
+                        <td class="p-4 text-xs text-right">
+                            <button onclick="deleteProduct(${p.id})" class="bg-rose-500/10 hover:bg-rose-500/20 border border-rose-500/20 text-rose-400 p-2 rounded-lg transition-all" title="Hapus Menu">
+                                <i class="fa-solid fa-trash-can"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            });
+        }
+
+        // Add item through Inventory Management
+        function handleManageProductSubmit(e) {
+            e.preventDefault();
+            const name = document.getElementById('inv-name').value.trim();
+            const price = parseFloat(document.getElementById('inv-price').value);
+            const img = document.getElementById('inv-img').value.trim();
+
+            if (!name || isNaN(price)) return;
+
+            const newProduct = {
+                id: Date.now(),
+                name: name,
+                price: price,
+                img: img || ""
+            };
+
+            menuCatalog.push(newProduct);
+            localStorage.setItem('ayamclup_products', JSON.stringify(menuCatalog));
+
+            // Reset inputs
+            document.getElementById('inv-name').value = '';
+            document.getElementById('inv-price').value = '';
+            document.getElementById('inv-img').value = '';
+
+            // Update Views
+            renderCatalog();
+            renderInventoryView();
+            alert("Menu baru berhasil disimpan ke database lokal!");
+        }
+
+        // Delete Product from Catalog
+        function deleteProduct(productId) {
+            if (confirm("Hapus menu ini dari database?")) {
+                menuCatalog = menuCatalog.filter(p => p.id !== productId);
+                localStorage.setItem('ayamclup_products', JSON.stringify(menuCatalog));
+                renderCatalog();
+                renderInventoryView();
+            }
+        }
+    </script>
 </body>
 </html>
